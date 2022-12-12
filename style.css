@@ -1,3 +1,70 @@
 body {
-  background: yellow;
+  margin: 0px;
+  padding: 0px;
+}
+
+.pet-home {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cpu {
+  fill: #e4e4e4;
+  stroke: #383a53;
+  stroke-width: 2;
+}
+
+.robo-color {
+  fill: #e4e4e4;
+  stroke: #383a53;
+  stroke-width: 4;
+}
+
+.robo-eyes {
+  fill: rgb(138, 196, 216);
+}
+
+.cpu-text {
+  stroke-width: 1;
+}
+
+@keyframes idle {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes shadow {
+  0% {
+    opacity: 0.7;
+    transform: scaleX(1.2);
+    transform-origin: center;
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+    transform-origin: center;
+  }
+  100% {
+    opacity: 0.7;
+    transform: scaleX(1.2);
+    transform-origin: center;
+  }
+}
+
+.robo-full {
+  animation: idle 1.2s linear infinite;
+}
+
+.idle-shadow {
+  animation: shadow 1.2s linear infinite;
 }
