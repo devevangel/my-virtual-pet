@@ -67,6 +67,55 @@
     </g>
     <use class="idle-shadow" href="#robo-shadow" x="180" y="310" />
   </svg>
+
+  <div class="dialogue">
+    <div class="display">
+      Charge🔋
+      <div id="power-display">100%</div>
+    </div>
+    <div class="display">
+      RAM💽
+      <div id="ram-display">3%</div>
+    </div>
+    <div class="display">
+      Cache💿
+      <div id="cache-display">0/80</div>
+    </div>
+    <div class="display">
+      Status😃
+      <div id="status-display">Idle</div>
+    </div>
+    <input
+      placeholder="say hi..."
+      id="user-input"
+      class="user-input-area"
+      type="tex"
+    />
+    <input
+      placeholder="Give me a suitable name"
+      id="name-input"
+      class="hide"
+      type="tex"
+    />
+
+    <div id="robo-output"></div>
+    <div class="buttons-container">
+      <button>Feed Me 🔋</button>
+      <button>Sleep😴</button>
+      <button id="clean-cache">Clean Cache🧹</button>
+      <button>Update OS💻</button>
+    </div>
+  </div>
 </div>
+
+<!-- 
+  <ul id="action-list">
+        <li>Arithmetics: enter '1+'</li>
+        <li>Time: enter 'time'</li>
+        <li>Play: enter 'play'</li>
+        <li>Copy: enter 'copy'</li>
+        <li>Self Destruct: enter 'kill'</li>
+  </ul>
+ -->
 
 <script src="index.js"></script>
