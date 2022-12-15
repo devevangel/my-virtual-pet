@@ -59,7 +59,6 @@ function initScript() {
   // handlers and functions
   function talkToBot(e) {
     if (e.keyCode === 13) {
-      calcCache(currentUserInput);
       let parsedUserInput = currentUserInput
         .toLowerCase()
         .replaceAll(/\s/g, "");
@@ -76,6 +75,13 @@ function initScript() {
         }
         return;
       }
+
+      if (parsedUserInput === "clear") {
+        cleanCache();
+        return;
+      }
+
+      calcCache(parsedUserInput);
 
       switch (parsedUserInput) {
         case "hi":
@@ -263,7 +269,7 @@ function initScript() {
       roboOutput.textContent =
         "Oh men!!! I'm really low at the moment can't clear cache. Please plug me in.";
     } else {
-      cache = [];
+      roboCache = [];
       const newCache = roboCache.length;
       cacheDisplay.textContent = `${newCache}/80`;
       roboOutput.textContent = "";
