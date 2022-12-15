@@ -12,15 +12,12 @@ body {
 }
 
 .cpu {
-  fill: #e4e4e4;
-  stroke: #383a53;
   stroke-width: 2;
 }
 
 .robo-color {
-  fill: #e4e4e4;
-  stroke: #383a53;
   stroke-width: 4;
+  stroke: #383a53;
 }
 
 .robo-eyes {
@@ -29,6 +26,7 @@ body {
 
 .cpu-text {
   stroke-width: 1;
+  stroke: #383a53;
 }
 
 @keyframes idle {
@@ -58,7 +56,11 @@ body {
   }
 }
 
-.robo-full {
+#robo-full {
+  animation: idle 1.2s linear infinite;
+}
+
+#clone-1 {
   animation: idle 1.2s linear infinite;
 }
 
@@ -72,6 +74,7 @@ body {
   border-radius: 5px;
   width: 209px;
   height: 200px;
+  overflow-y: auto;
 }
 
 .dialogue {
@@ -100,4 +103,36 @@ body {
 
 .buttons-container > button {
   width: 103px;
+}
+
+.robo-main {
+  fill: #e4e4e4;
+}
+
+.robo-red {
+  fill: red;
+}
+
+.robo-green {
+  fill: greenyellow;
+}
+
+.robo-blue {
+  fill: rgb(68, 68, 206);
+}
+
+.robo-grey {
+  fill: grey;
+}
+
+.robo-orange {
+  fill: orange;
+}
+
+.robo-yellow {
+  fill: yellow;
+}
+
+.robo-light-blue {
+  fill: blueviolet;
 }
