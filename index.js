@@ -56,7 +56,7 @@ function initScript() {
   updateOSButton.addEventListener("click", updateOSManual);
   chargeButton.addEventListener("click", feedMe);
 
-  // handlers and functions
+  // switch
   function talkToBot(e) {
     if (e.keyCode === 13) {
       let parsedUserInput = currentUserInput
@@ -211,10 +211,9 @@ function initScript() {
   }
 
   // timers
-
   setInterval(calcRamUsageIdle, 3000);
 
-  // function
+  // functions
   function handleUserInput(e) {
     roboOutput.textContent = "";
     listOrder.innerHTML = "";
@@ -228,9 +227,13 @@ function initScript() {
   }
 
   function feedMe() {
-    if (roboChargePercent > 90) return;
-    roboChargePercent = roboChargePercent + 1.5;
-    roboPowerDisplay.textContent = `${roboChargePercent.toFixed(2)} %`;
+    if (roboChargePercent > 90) {
+      roboOutput.textContent = "Oops battery sufficiently charged...";
+    } else {
+      roboOutput.textContent = "";
+      roboChargePercent = roboChargePercent + 1.5;
+      roboPowerDisplay.textContent = `${roboChargePercent.toFixed(2)} %`;
+    }
   }
 
   function calcRamUsageIdle() {
