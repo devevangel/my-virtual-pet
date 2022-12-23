@@ -44,6 +44,7 @@ function initScript() {
   const cacheDisplay = document.querySelector("#cache-display");
   const listOrder = document.createElement("ul");
   const chargeButton = document.querySelector("#feed-me");
+  const mainRobo = document.querySelector("#main-robo");
 
   // ui buttons
   const cleanCacheButton = document.querySelector("#clean-cache");
@@ -76,7 +77,7 @@ function initScript() {
         return;
       }
 
-      if (parsedUserInput === "clear") {
+      if (parsedUserInput === "clearcache") {
         cleanCache();
         return;
       }
@@ -201,6 +202,9 @@ function initScript() {
         case "date":
           const date = new Date(Date.now());
           roboOutput.textContent = `Today is ${date.toDateString()}.`;
+          break;
+        case "kill":
+          kill();
           break;
         default:
           takeCharge(0.3);
@@ -327,5 +331,18 @@ function initScript() {
     roboClone1.classList.add(roboSkin[selectRoboColorIndex]);
     calcRamUsageProcessing(80);
     takeCharge(10);
+  }
+
+  function kill() {
+    mainRobo.classList.add("hide");
+    title.classList.add("hide");
+    userInput.classList.add("hide");
+    roboOutput.classList.add("hide");
+    roboPowerDisplay.classList.add("hide");
+    ramDisplay.classList.add("hide");
+    statusDisplay.classList.add("hide");
+    cacheDisplay.classList.add("hide");
+    listOrder.classList.add("hide");
+    chargeButton.classList.add("hide");
   }
 }

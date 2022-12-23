@@ -10,7 +10,7 @@
     width="360"
     height="360"
     xmlns="http://www.w3.org/2000/svg"
-    class="pet-container"
+    id="main-robo"
   >
     <defs>
       <g id="robo-head" class="robo-color">
@@ -149,14 +149,15 @@
       Status😃
       <div id="status-display">Idle</div>
     </div>
+
+    <div id="robo-output"></div>
     <input
       placeholder="say hi..."
       id="user-input"
       class="user-input-area"
       type="tex"
+      autofocus
     />
-
-    <div id="robo-output"></div>
     <div class="buttons-container">
       <button id="feed-me">Feed Me 🔋</button>
       <button>Sleep😴</button>
