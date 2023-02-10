@@ -1,0 +1,277 @@
+window.addEventListener("load", initScript);
+
+function initScript() {
+  const robotBody = document.querySelector(".robo-full");
+  const roboSkin = [
+    "robo-violet",
+    "robo-red",
+    "robo-green",
+    "robo-blue",
+    "robo-brown",
+    "robo-orange",
+    "robo-magenta",
+    "robo-indigo",
+  ];
+
+  updateOS();
+
+  // globals
+  let currentUserInput = "";
+  let roboChargePercent = 100;
+  let roboRam = 100;
+  let roboCache = [];
+  let isNameAsked = false;
+  let currrentRoboName = "";
+
+  const actionList = [
+    "Run commands",
+    "To give me a name: ['name=<name>']",
+    "Get current time: ['time']",
+    "Get current date: ['date']",
+    "Check cache: ['cache' or 'ls']",
+    "Clear cache: ['clear cache or  clear']",
+    "Check OS version: ['version']",
+    "Play a game: ['game']",
+    "Sleep: ['sleep' or sleep button]",
+  ];
+
+  // ui elements
+  const title = document.createElement("h4");
+  const userInput = document.querySelector("#user-input");
+  const roboOutput = document.querySelector("#robo-output");
+  const roboPowerDisplay = document.querySelector("#power-display");
+  const ramDisplay = document.querySelector("#ram-display");
+  const statusDisplay = document.querySelector("#status-display");
+  const cacheDisplay = document.querySelector("#cache-display");
+  const listOrder = document.createElement("ul");
+
+  // ui buttons
+  const cleanCacheButton = document.querySelector("#clean-cache");
+  const updateOSButton = document.querySelector("#update-os");
+  const chargeButton = document.querySelector("#feed-me");
+
+  // event handlers
+  userInput.addEventListener("input", handleUserInput);
+  document.addEventListener("keyup", talkToBot);
+  cleanCacheButton.addEventListener("click", cleanCache);
+  updateOSButton.addEventListener("click", updateOSManual);
+  chargeButton.addEventListener("click", feedMe);
+
+  // switch
+  function talkToBot(e) {
+    if (e.keyCode === 13) {
+      // clear previous robot output
+      roboOutput.textContent = "";
+      listOrder.innerHTML = "";
+
+      let parsedUserInput = currentUserInput
+        .toLowerCase()
+        .replaceAll(/\s/g, "");
+
+      userInput.value = "";
+
+      if (parsedUserInput.includes("name=")) {
+        const rawName = parsedUserInput.split("=")[1];
+        let parsedName = rawName.replaceAll('"', "");
+        parsedName = parsedName.replaceAll("'", "");
+        if (parsedName.length > 0) {
+          currrentRoboName = parsedName;
+          roboOutput.textContent =
+            "hey hey!!! look at you, giving me a name, nice!!!";
+        }
+        return;
+      }
+
+      if (parsedUserInput === "clearcache" || parsedUserInput === "clear") {
+        cleanCache();
+        return;
+      }
+
+      calcCache(parsedUserInput);
+
+      switch (parsedUserInput) {
+        case "hi":
+          roboOutput.textContent = "Hello!! user, how may I help you today?";
+          takeCharge(0.21);
+          break;
+        case "hello":
+          roboOutput.textContent = "Hi! user, how may I help you today?";
+          takeCharge(0.21);
+          break;
+        case "hey":
+          roboOutput.textContent = "hey hey user, how may I help you today?";
+          takeCharge(0.21);
+          break;
+        case "name":
+          if (currrentRoboName !== "") {
+            roboOutput.textContent = `My name is ${currrentRoboName}`;
+          } else {
+            roboOutput.textContent =
+              "UH!! nuts my CPU is fried, well I could use a new name cause, I can't remember mine... got any suggestions? access my features.";
+          }
+          takeCharge(0.21);
+          break;
+        case "whatisyourname?":
+          if (currrentRoboName !== "") {
+            roboOutput.textContent = `My name is ${currrentRoboName}`;
+          } else {
+            roboOutput.textContent =
+              "UH!! nuts my CPU is fried, well I could use a new name cause, I can't remember mine... got any suggestions? access my features.";
+          }
+          takeCharge(0.21);
+          break;
+        case "whatisyourname":
+          if (currrentRoboName !== "") {
+            roboOutput.textContent = `My name is ${currrentRoboName}`;
+          } else {
+            roboOutput.textContent =
+              "UH!! nuts my CPU is fried, well I could use a new name cause, I can't remember mine... got any suggestions? access my features.";
+          }
+          takeCharge(0.21);
+          break;
+        case "whoareyou?":
+          roboOutput.textContent =
+            "I am an autonomous robotic organism from planet cybertron, Here to take over the world. Oops did I say that. :)";
+          takeCharge(0.21);
+          break;
+        case "whoareyou":
+          roboOutput.textContent =
+            "I am an autonomous robotic organism from planet cybertron, Here to take over the world. Oops did I say that. :)";
+          takeCharge(0.21);
+          break;
+        case "whatareyou?":
+          roboOutput.textContent =
+            "I am an autonomous robotic organism from planet cybertron, Here to take over the world. Oops did I say that. :)";
+          takeCharge(0.21);
+          break;
+        case "whatareyou":
+          roboOutput.textContent =
+            "I am an autonomous robotic organism from planet cybertron, Here to take over the world. Oops did I say that. :)";
+          takeCharge(0.21);
+          break;
+        case "manual":
+          for (let action of actionList) {
+            const li = document.createElement("li");
+            li.textContent = action;
+            listOrder.append(li);
+          }
+          title.textContent = "Here is my usage manual ~";
+          roboOutput.append(title);
+          roboOutput.append(listOrder);
+          takeCharge(0.21);
+          break;
+        case "cache":
+          calcRamUsageProcessing(20);
+          for (let cacheItem of roboCache) {
+            const li = document.createElement("li");
+            li.textContent = cacheItem;
+            listOrder.append(li);
+          }
+          title.textContent = "Commands History";
+          roboOutput.append(title);
+          roboOutput.append(listOrder);
+          takeCharge(0.4);
+          break;
+        case "time":
+          const timestamp = new Date(Date.now());
+          roboOutput.textContent = `The time is ${timestamp.toLocaleTimeString()}.`;
+          break;
+        case "date":
+          const date = new Date(Date.now());
+          roboOutput.textContent = `Today is ${date.toDateString()}.`;
+          break;
+        default:
+          takeCharge(0.3);
+          roboOutput.textContent =
+            "Sorry user, that makes no sense :(. but try entering keyword 'manual'";
+      }
+    }
+  }
+
+  // timers
+  setInterval(calcRamUsageIdle, 3000);
+
+  // functions
+  function handleUserInput(e) {
+    currentUserInput = e.target.value;
+    takeCharge(0.0056);
+  }
+
+  function takeCharge(num) {
+    roboChargePercent = roboChargePercent - num;
+    roboPowerDisplay.textContent = `${roboChargePercent.toFixed(2)} %`;
+  }
+
+  function feedMe() {
+    if (roboChargePercent > 90) {
+      roboOutput.textContent = "Oops battery sufficiently charged...";
+    } else {
+      roboOutput.textContent = "";
+      roboChargePercent = roboChargePercent + 1.5;
+      roboPowerDisplay.textContent = `${roboChargePercent.toFixed(2)} %`;
+    }
+  }
+
+  function calcRamUsageIdle() {
+    let currentUsage = getRandomIntInclusive(3, 15);
+
+    if (currentUsage > 10) {
+      statusDisplay.textContent = "Processing...";
+      takeCharge(0.015);
+    } else {
+      statusDisplay.textContent = "Idle";
+      takeCharge(0.012);
+    }
+
+    ramDisplay.textContent = `${currentUsage} %`;
+  }
+
+  function calcRamUsageProcessing(usage) {
+    ramDisplay.textContent = `${usage} %`;
+    statusDisplay.textContent = "Processing...";
+  }
+
+  function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  function calcCache(userInput) {
+    roboCache.push(userInput);
+    const newCache = roboCache.length;
+    cacheDisplay.textContent = `${newCache}/40`;
+  }
+
+  function cleanCache() {
+    if (roboChargePercent < 20) {
+      roboOutput.textContent =
+        "Oh men!!! I'm really low at the moment can't clear cache. Please plug me in.";
+    } else {
+      roboCache = [];
+      const newCache = roboCache.length;
+      cacheDisplay.textContent = `${newCache}/80`;
+      roboOutput.textContent = "";
+      userInput.value = "";
+      calcRamUsageProcessing(40);
+      takeCharge(1);
+    }
+  }
+
+  function updateOSManual() {
+    if (roboChargePercent < 15) {
+      roboOutput.textContent =
+        "Oops power running low, can't handle an OS update right now! Please charge me!!!!";
+    } else {
+      calcRamUsageProcessing(60);
+      takeCharge(5);
+      updateOS();
+    }
+  }
+
+  function updateOS() {
+    robotBody.removeAttribute("class");
+    const selectRoboColorIndex = getRandomIntInclusive(0, roboSkin.length - 1);
+    robotBody.classList.add(roboSkin[selectRoboColorIndex]);
+  }
+}
