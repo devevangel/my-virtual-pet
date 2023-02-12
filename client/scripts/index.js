@@ -2,11 +2,9 @@ window.addEventListener("load", initScript);
 
 function initScript() {
   const robotBody = document.querySelector(".robo-full");
-  const roboSkin = [
+  const roboSkins = [
     "robo-violet",
-    "robo-red",
     "robo-green",
-    "robo-blue",
     "robo-brown",
     "robo-orange",
     "robo-magenta",
@@ -15,220 +13,292 @@ function initScript() {
 
   updateOS();
 
-  // globals
-  let currentUserInput = "";
-  let roboChargePercent = 100;
-  let roboRam = 100;
-  let roboCache = [];
-  let isNameAsked = false;
-  let currrentRoboName = "";
+  // global constants
+  const maxCache = 25;
 
-  const actionList = [
-    "Run commands",
+  // global variables
+  let currentUserInput = "";
+
+  // robo
+  let roboChargePercent =
+    JSON.parse(localStorage.getItem("roboChargePercent")) || 100;
+  let roboCache = JSON.parse(localStorage.getItem("roboCache")) || [];
+  let roboName = localStorage.getItem("roboName") || "nill";
+  let roboState = localStorage.getItem("roboState") || "😃😃😃";
+  let roboVersion = JSON.parse(localStorage.getItem("roboVersion")) || 1;
+
+  // states
+  let isGame = false;
+
+  const manual = [
+    "To see manual: ['manual' or 'how to']",
     "To give me a name: ['name=<name>']",
     "Get current time: ['time']",
     "Get current date: ['date']",
     "Check cache: ['cache' or 'ls']",
-    "Clear cache: ['clear cache or  clear']",
+    "Clean cache: ['cls or clean button']",
     "Check OS version: ['version']",
     "Play a game: ['game']",
     "Sleep: ['sleep' or sleep button]",
   ];
 
-  // ui elements
-  const title = document.createElement("h4");
+  // HOD
+  const title = document.createElement("div");
   const userInput = document.querySelector("#user-input");
-  const roboOutput = document.querySelector("#robo-output");
+  const roboNameDisplay = document.querySelector("#name");
+  const roboOutput = document.querySelector("#robo-output-main");
   const roboPowerDisplay = document.querySelector("#power-display");
-  const ramDisplay = document.querySelector("#ram-display");
   const statusDisplay = document.querySelector("#status-display");
   const cacheDisplay = document.querySelector("#cache-display");
   const listOrder = document.createElement("ul");
+
+  // set robo initial stats
+  setInitRoboStats();
 
   // ui buttons
   const cleanCacheButton = document.querySelector("#clean-cache");
   const updateOSButton = document.querySelector("#update-os");
   const chargeButton = document.querySelector("#feed-me");
+  const sleepButton = document.querySelector("#sleep");
 
   // event handlers
   userInput.addEventListener("input", handleUserInput);
   document.addEventListener("keyup", talkToBot);
   cleanCacheButton.addEventListener("click", cleanCache);
   updateOSButton.addEventListener("click", updateOSManual);
-  chargeButton.addEventListener("click", feedMe);
+  chargeButton.addEventListener("click", () => feedMe(0.5));
+  sleepButton.addEventListener("click", sleep);
 
   // switch
   function talkToBot(e) {
     if (e.keyCode === 13) {
+      if (roboChargePercent <= 1) {
+        roboOutput.textContent = "Insufficent power out please recharge me";
+        return;
+      }
+
+      if (roboCache.length >= 14) {
+        roboOutput.textContent =
+          "Cache memory at maximum usage please clear cache";
+        return;
+      }
+
       // clear previous robot output
       roboOutput.textContent = "";
       listOrder.innerHTML = "";
 
-      let parsedUserInput = currentUserInput
-        .toLowerCase()
-        .replaceAll(/\s/g, "");
-
+      // convert user into to lowercase and remove all white space
+      let parsedUserInput = parseUserInput(currentUserInput);
       userInput.value = "";
-
-      if (parsedUserInput.includes("name=")) {
-        const rawName = parsedUserInput.split("=")[1];
-        let parsedName = rawName.replaceAll('"', "");
-        parsedName = parsedName.replaceAll("'", "");
-        if (parsedName.length > 0) {
-          currrentRoboName = parsedName;
-          roboOutput.textContent =
-            "hey hey!!! look at you, giving me a name, nice!!!";
-        }
-        return;
-      }
-
-      if (parsedUserInput === "clearcache" || parsedUserInput === "clear") {
-        cleanCache();
-        return;
-      }
 
       calcCache(parsedUserInput);
 
       switch (parsedUserInput) {
         case "hi":
-          roboOutput.textContent = "Hello!! user, how may I help you today?";
-          takeCharge(0.21);
+          roboSendResponse("Hello! How can I help you today?", "text");
+          takeCharge(0.5);
           break;
         case "hello":
-          roboOutput.textContent = "Hi! user, how may I help you today?";
-          takeCharge(0.21);
+          roboSendResponse(
+            `Hi! Is there anything you would like to ask or talk about? I'm here to assist you.`,
+            "text"
+          );
+          takeCharge(0.5);
           break;
         case "hey":
-          roboOutput.textContent = "hey hey user, how may I help you today?";
-          takeCharge(0.21);
+          roboSendResponse("Hello! How can I assist you today?", "text");
+          takeCharge(0.5);
           break;
         case "name":
-          if (currrentRoboName !== "") {
-            roboOutput.textContent = `My name is ${currrentRoboName}`;
+          if (roboName !== "") {
+            roboSendResponse(`My name is ${roboName}`, "text");
           } else {
-            roboOutput.textContent =
-              "UH!! nuts my CPU is fried, well I could use a new name cause, I can't remember mine... got any suggestions? access my features.";
+            roboSendResponse(
+              `I don't have a name at the moment but I would love one. Check my how to manual to give me a name.`,
+              "text"
+            );
           }
-          takeCharge(0.21);
+          takeCharge(0.5);
           break;
         case "whatisyourname?":
-          if (currrentRoboName !== "") {
-            roboOutput.textContent = `My name is ${currrentRoboName}`;
+          if (roboName !== "") {
+            roboSendResponse(`My name is ${roboName}`, "text");
           } else {
-            roboOutput.textContent =
-              "UH!! nuts my CPU is fried, well I could use a new name cause, I can't remember mine... got any suggestions? access my features.";
+            roboSendResponse(
+              `I don't have a name at the moment but I would love one. Check my how to manual to give me a name.`,
+              "text"
+            );
           }
-          takeCharge(0.21);
+          takeCharge(0.5);
           break;
         case "whatisyourname":
-          if (currrentRoboName !== "") {
-            roboOutput.textContent = `My name is ${currrentRoboName}`;
+          if (roboName !== "") {
+            roboSendResponse(`My name is ${roboName}`, "text");
           } else {
-            roboOutput.textContent =
-              "UH!! nuts my CPU is fried, well I could use a new name cause, I can't remember mine... got any suggestions? access my features.";
+            roboSendResponse(
+              `I don't have a name at the moment but I would love one. Check my how to manual to give me a name.`,
+              "text"
+            );
           }
-          takeCharge(0.21);
+          takeCharge(0.5);
           break;
         case "whoareyou?":
-          roboOutput.textContent =
-            "I am an autonomous robotic organism from planet cybertron, Here to take over the world. Oops did I say that. :)";
-          takeCharge(0.21);
+          roboSendResponse(
+            `Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword 'manual' to learn more about me.`,
+            "text"
+          );
+          takeCharge(0.5);
           break;
         case "whoareyou":
-          roboOutput.textContent =
-            "I am an autonomous robotic organism from planet cybertron, Here to take over the world. Oops did I say that. :)";
-          takeCharge(0.21);
+          roboSendResponse(
+            `Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword 'manual' to learn more about me.`,
+            "text"
+          );
+          takeCharge(0.5);
           break;
         case "whatareyou?":
-          roboOutput.textContent =
-            "I am an autonomous robotic organism from planet cybertron, Here to take over the world. Oops did I say that. :)";
-          takeCharge(0.21);
+          roboSendResponse(
+            `Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword 'manual' to learn more about me.`,
+            "text"
+          );
+          takeCharge(0.5);
           break;
         case "whatareyou":
-          roboOutput.textContent =
-            "I am an autonomous robotic organism from planet cybertron, Here to take over the world. Oops did I say that. :)";
-          takeCharge(0.21);
+          roboSendResponse(
+            `Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword 'manual' to learn more about me.`,
+            "text"
+          );
+          takeCharge(0.5);
           break;
         case "manual":
-          for (let action of actionList) {
+          for (let action of manual) {
             const li = document.createElement("li");
             li.textContent = action;
             listOrder.append(li);
           }
-          title.textContent = "Here is my usage manual ~";
-          roboOutput.append(title);
-          roboOutput.append(listOrder);
-          takeCharge(0.21);
+          roboSendResponse(null, "node", {
+            title: "Usage Manual",
+            node: listOrder,
+          });
+          takeCharge(0.4);
+          break;
+        case "howto":
+          for (let action of manual) {
+            const li = document.createElement("li");
+            li.textContent = action;
+            listOrder.append(li);
+          }
+          roboSendResponse(null, "node", {
+            title: "Usage Manual",
+            node: listOrder,
+          });
+          takeCharge(0.4);
+          break;
+        case "help":
+          for (let action of manual) {
+            const li = document.createElement("li");
+            li.textContent = action;
+            listOrder.append(li);
+          }
+          roboSendResponse(null, "node", {
+            title: "Usage Manual",
+            node: listOrder,
+          });
+          takeCharge(0.4);
           break;
         case "cache":
-          calcRamUsageProcessing(20);
           for (let cacheItem of roboCache) {
             const li = document.createElement("li");
             li.textContent = cacheItem;
             listOrder.append(li);
           }
-          title.textContent = "Commands History";
-          roboOutput.append(title);
-          roboOutput.append(listOrder);
+          roboSendResponse(null, "node", {
+            title: "Commands History",
+            node: listOrder,
+          });
+          takeCharge(0.4);
+          break;
+        case "ls":
+          for (let cacheItem of roboCache) {
+            const li = document.createElement("li");
+            li.textContent = cacheItem;
+            listOrder.append(li);
+          }
+          roboSendResponse(null, "node", {
+            title: "Commands History",
+            node: listOrder,
+          });
           takeCharge(0.4);
           break;
         case "time":
           const timestamp = new Date(Date.now());
-          roboOutput.textContent = `The time is ${timestamp.toLocaleTimeString()}.`;
+          roboSendResponse(
+            `The time is ${timestamp.toLocaleTimeString()}.`,
+            "text"
+          );
+          takeCharge(0.2);
           break;
         case "date":
           const date = new Date(Date.now());
-          roboOutput.textContent = `Today is ${date.toDateString()}.`;
+          roboSendResponse(`Today is ${date.toDateString()}.`, "text");
+          takeCharge(0.2);
+          break;
+
+        case "name=":
+          const rawName = parsedUserInput.split("=")[1];
+          let parsedName = rawName.replaceAll('"', "").replaceAll("'", "");
+          if (parsedName.length > 0) {
+            setRoboName(parsedName);
+          }
+          roboSendResponse("Name updated successfully.", "text");
+          takeCharge(0.2);
+          break;
+
+        case "clearcache":
+          takeCharge(0.5);
+          cleanCache();
+          break;
+
+        case "clear":
+          takeCharge(0.5);
+          cleanCache();
+          break;
+        case "sleep":
+          sleep();
+          break;
+        case "game":
+          setGameState();
+          break;
+        case "version":
+          getRoboVersion();
+          break;
+        case "about":
+          getRoboVersion();
           break;
         default:
-          takeCharge(0.3);
-          roboOutput.textContent =
-            "Sorry user, that makes no sense :(. but try entering keyword 'manual'";
+          roboSendResponse(
+            "I'm sorry I don't quite understand want you meant there, trying entering key word 'how to' to learn about me.",
+            "text"
+          );
       }
     }
   }
 
-  // timers
-  setInterval(calcRamUsageIdle, 3000);
-
   // functions
   function handleUserInput(e) {
     currentUserInput = e.target.value;
-    takeCharge(0.0056);
   }
 
-  function takeCharge(num) {
-    roboChargePercent = roboChargePercent - num;
-    roboPowerDisplay.textContent = `${roboChargePercent.toFixed(2)} %`;
+  function setInitRoboStats() {
+    roboNameDisplay.textContent = roboName;
+    roboPowerDisplay.textContent = `${roboChargePercent} %`;
+    cacheDisplay.textContent = `${roboCache.length}/${maxCache}`;
+    statusDisplay.textContent = roboState;
   }
 
-  function feedMe() {
-    if (roboChargePercent > 90) {
-      roboOutput.textContent = "Oops battery sufficiently charged...";
-    } else {
-      roboOutput.textContent = "";
-      roboChargePercent = roboChargePercent + 1.5;
-      roboPowerDisplay.textContent = `${roboChargePercent.toFixed(2)} %`;
-    }
-  }
-
-  function calcRamUsageIdle() {
-    let currentUsage = getRandomIntInclusive(3, 15);
-
-    if (currentUsage > 10) {
-      statusDisplay.textContent = "Processing...";
-      takeCharge(0.015);
-    } else {
-      statusDisplay.textContent = "Idle";
-      takeCharge(0.012);
-    }
-
-    ramDisplay.textContent = `${currentUsage} %`;
-  }
-
-  function calcRamUsageProcessing(usage) {
-    ramDisplay.textContent = `${usage} %`;
-    statusDisplay.textContent = "Processing...";
+  // 😡😴😃🌝🎮
+  function setRoboStatus(emoji) {
+    statusDisplay.textContent = emoji;
   }
 
   function getRandomIntInclusive(min, max) {
@@ -237,41 +307,90 @@ function initScript() {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  function parseUserInput(rawUserInput) {
+    return rawUserInput.toLowerCase().replaceAll(/\s/g, "");
+  }
+
   function calcCache(userInput) {
     roboCache.push(userInput);
     const newCache = roboCache.length;
-    cacheDisplay.textContent = `${newCache}/40`;
+    cacheDisplay.textContent = `${newCache}/${maxCache}`;
+  }
+
+  function sleep() {
+    alert("Feature in progress");
+  }
+
+  function getRoboVersion() {
+    roboSendResponse(`version: ${roboVersion}.0.0`, "text");
+  }
+
+  function upgradeRoboVersion() {
+    roboVersion = roboVersion + 1;
+  }
+
+  function setGameState() {
+    alert("Feature in progress");
   }
 
   function cleanCache() {
     if (roboChargePercent < 20) {
-      roboOutput.textContent =
-        "Oh men!!! I'm really low at the moment can't clear cache. Please plug me in.";
+      roboSendResponse("Insufficient battery power, please charge me.", "text");
     } else {
       roboCache = [];
-      const newCache = roboCache.length;
-      cacheDisplay.textContent = `${newCache}/80`;
+      roboCacheCount = 0;
+      cacheDisplay.textContent = `${roboCacheCount}/${maxCache}`;
       roboOutput.textContent = "";
       userInput.value = "";
-      calcRamUsageProcessing(40);
-      takeCharge(1);
     }
   }
 
   function updateOSManual() {
     if (roboChargePercent < 15) {
-      roboOutput.textContent =
-        "Oops power running low, can't handle an OS update right now! Please charge me!!!!";
-    } else {
-      calcRamUsageProcessing(60);
-      takeCharge(5);
-      updateOS();
+      roboSendResponse(
+        "Power running low, can't handle an OS update right now! Please charge me!!!!",
+        "text"
+      );
+      return;
     }
+    upgradeRoboVersion();
+    takeCharge(0.5);
+    updateOS();
   }
 
   function updateOS() {
     robotBody.removeAttribute("class");
-    const selectRoboColorIndex = getRandomIntInclusive(0, roboSkin.length - 1);
-    robotBody.classList.add(roboSkin[selectRoboColorIndex]);
+    const selectRoboColorIndex = getRandomIntInclusive(0, roboSkins.length - 1);
+    robotBody.classList.add(roboSkins[selectRoboColorIndex]);
+  }
+
+  function takeCharge(num) {
+    roboChargePercent = roboChargePercent - (num / 5) * 100;
+    roboPowerDisplay.textContent = `${roboChargePercent} %`;
+  }
+
+  function setRoboName(name) {
+    localStorage.setItem("roboName", name);
+    roboNameDisplay.textContent = name;
+  }
+
+  function feedMe(num) {
+    if (roboChargePercent === 100) {
+      roboSendResponse("Battery sufficiently charged", "text");
+    } else {
+      roboOutput.textContent = "";
+      roboChargePercent = roboChargePercent + (num / 5) * 100;
+      roboPowerDisplay.textContent = `${roboChargePercent}%`;
+    }
+  }
+
+  function roboSendResponse(message = null, type = "text", nodeObj = null) {
+    if (type === "text" && message) {
+      roboOutput.textContent = message;
+    } else if (type === "node" && nodeObj) {
+      title.textContent = nodeObj.title;
+      title.style = "text-align: center; text-decoration: underline";
+      roboOutput.append(title, nodeObj.node);
+    }
   }
 }
