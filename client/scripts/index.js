@@ -1,7 +1,12 @@
 window.addEventListener("load", initScript);
 
 function initScript() {
-  const robotBody = document.querySelector(".robo-full");
+  const roboBody = document.querySelector("#robo-full");
+  const roboShadow = document.querySelector("#idle-shadow");
+
+  console.log(roboBody, roboShadow);
+
+  console.log();
   const roboSkins = [
     "robo-violet",
     "robo-green",
@@ -94,6 +99,8 @@ function initScript() {
   // switch
   function talkToBot(e) {
     if (e.keyCode === 13) {
+      if (isSleeping) return;
+
       // clear last user input
       roboOutput.textContent = "";
       listOrder.innerHTML = "";
@@ -275,6 +282,7 @@ function initScript() {
 
   // functions
   function handleUserInput(e) {
+    if (isSleeping) return;
     currentUserInput = e.target.value;
   }
 
@@ -327,7 +335,24 @@ function initScript() {
   }
 
   function sleep() {
-    alert("Feature in progress");
+    if (isSleeping) {
+      isSleeping = false;
+      batteryInterval = setInterval(takeCharge, 9000, 0.5);
+      updateRoboMood(roboCache.length, roboChargePercent);
+      sleepButton.textContent = "Sleep 😴";
+      roboBody.setAttribute("id", "robo-full");
+      roboShadow.setAttribute("id", "idle-shadow");
+      roboSendResponse("Hello!🖐, good to see you again");
+      return;
+    }
+
+    isSleeping = true;
+    clearInterval(batteryInterval);
+    setRoboStatus("😴");
+    sleepButton.textContent = "Awaken ☀️";
+    roboBody.setAttribute("id", "robo-sleep");
+    roboShadow.setAttribute("id", "sleep-shadow");
+    roboSendResponse("Sleeping😴....");
   }
 
   function roboSendResponse(message = null, type = "text", nodeObj = null) {
@@ -437,6 +462,7 @@ function initScript() {
   }
 
   function cleanCache() {
+    if (isSleeping) return;
     roboCache = [];
     roboCacheCount = 0;
     cacheDisplay.textContent = `${roboCacheCount}/${maxCache}`;
@@ -446,15 +472,16 @@ function initScript() {
   }
 
   function updateOSManual() {
+    if (isSleeping) return;
     upgradeRoboVersion();
     takeCharge(0.5);
     updateOS();
   }
 
   function updateOS() {
-    robotBody.removeAttribute("class");
+    roboBody.removeAttribute("class");
     const selectRoboColorIndex = getRandomIntInclusive(0, roboSkins.length - 1);
-    robotBody.classList.add(roboSkins[selectRoboColorIndex]);
+    roboBody.classList.add(roboSkins[selectRoboColorIndex]);
   }
 
   function takeCharge(num) {
@@ -469,6 +496,7 @@ function initScript() {
   }
 
   function feedMe(num) {
+    if (isSleeping) return;
     if (roboChargePercent >= 100) {
       roboSendResponse("Battery sufficiently charged", "text");
       return;

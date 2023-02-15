@@ -156,12 +156,17 @@ body {
   animation: idle 1.2s linear infinite;
 }
 
-#clone-1 {
-  animation: idle 1.2s linear infinite;
+#idle-shadow {
+  animation: shadow 1.2s linear infinite;
+  transform-origin: center;
 }
 
-.idle-shadow {
-  animation: shadow 1.2s linear infinite;
+#robo-sleep {
+  animation: idle 3.5s linear infinite;
+}
+
+#sleep-shadow {
+  animation: shadow 3.5s linear infinite;
   transform-origin: center;
 }
 
