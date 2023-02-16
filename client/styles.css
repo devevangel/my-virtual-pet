@@ -162,11 +162,11 @@ body {
 }
 
 #robo-sleep {
-  animation: idle 3.5s linear infinite;
+  animation: idle 4s linear infinite;
 }
 
 #sleep-shadow {
-  animation: shadow 3.5s linear infinite;
+  animation: shadow 4s linear infinite;
   transform-origin: center;
 }
 
@@ -195,4 +195,35 @@ body {
     opacity: 0.3;
     transform: scaleX(1.3);
   }
+}
+
+/* Die classes */
+
+.robo-eyes-die {
+  fill: none;
+  stroke: white;
+  stroke-opacity: 0.3;
+}
+
+.cpu-text-die {
+  stroke-width: 1;
+  stroke: none;
+  font-family: "Monospace" !important;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.robo-full-die {
+  fill: none;
+  animation: none !important;
+}
+
+.shadow-gone {
+  display: none;
+}
+
+.robo-color-die {
+  stroke-width: 4;
+  stroke: white;
+  stroke-opacity: 0.3;
 }

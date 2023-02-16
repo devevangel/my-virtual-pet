@@ -1,12 +1,6 @@
 window.addEventListener("load", initScript);
 
 function initScript() {
-  const roboBody = document.querySelector("#robo-full");
-  const roboShadow = document.querySelector("#idle-shadow");
-
-  console.log(roboBody, roboShadow);
-
-  console.log();
   const roboSkins = [
     "robo-violet",
     "robo-green",
@@ -20,8 +14,6 @@ function initScript() {
     "robo-light-orange",
   ];
 
-  updateOS();
-
   // global constants
   const maxCache = 10;
 
@@ -31,15 +23,17 @@ function initScript() {
   // robo
   let roboChargePercent = 100;
   let roboCache = [];
-  let roboName = "nill";
+  let roboName = "";
   let roboState = "😃";
   let roboVersion = 1;
+  let roboSkinclass = "";
 
   // states
   let roboGuessVal = 0;
   let isGameInit = false;
   let isGameStarted = false;
   let isSleeping = false;
+  let isDead = false;
 
   const manual = [
     "To see manual: ['manual' or 'how to']",
@@ -67,18 +61,23 @@ function initScript() {
     "To play on enter a guess value",
   ];
 
+  // robo body
+  const roboBody = document.querySelector("#robo-full");
+  const roboShadow = document.querySelector("#idle-shadow");
+  const bodyParts = document.querySelectorAll(".robo-color");
+  const roboCPUText = document.querySelector(".cpu-text");
+  const roboEyes = document.querySelectorAll(".robo-eyes");
+
   // HOD
   const title = document.createElement("div");
   const userInput = document.querySelector("#user-input");
   const roboNameDisplay = document.querySelector("#name");
   const roboOutput = document.querySelector("#robo-output-main");
   const roboPowerDisplay = document.querySelector("#power-display");
+  const roboTimeLivedDisplay = document.querySelector("#time-display");
   const statusDisplay = document.querySelector("#status-display");
   const cacheDisplay = document.querySelector("#cache-display");
   const listOrder = document.createElement("ul");
-
-  // actual 9000
-  let batteryInterval = setInterval(takeCharge, 9000, 0.5);
 
   // ui buttons
   const cleanCacheButton = document.querySelector("#clean-cache");
@@ -94,12 +93,18 @@ function initScript() {
   chargeButton.addEventListener("click", () => feedMe(0.5));
   sleepButton.addEventListener("click", sleep);
 
+  updateOS();
   setInitRoboStats();
+
+  // intervals
+  let batteryInterval = setInterval(takeCharge, 9000, 0.5);
+  const timeStarted = new Date();
+  let timeLivedInterval = setInterval(setTimeLived, 5000, timeStarted);
 
   // switch
   function talkToBot(e) {
     if (e.keyCode === 13) {
-      if (isSleeping) return;
+      if (isSleeping || isDead) return;
 
       // clear last user input
       roboOutput.textContent = "";
@@ -127,6 +132,7 @@ function initScript() {
       if (isGameStarted) {
         if (parsedUserInput === "end") {
           handleGameInit(parsedUserInput);
+
           return;
         } else if (parsedUserInput === "help") {
           for (let helpText of gameHelp) {
@@ -282,8 +288,29 @@ function initScript() {
 
   // functions
   function handleUserInput(e) {
-    if (isSleeping) return;
+    if (isSleeping || isDead) {
+      e.target.value = "";
+      return;
+    }
     currentUserInput = e.target.value;
+  }
+
+  function setTimeLived(startTime) {
+    const now = new Date();
+    const timeDiff = now.getTime() - startTime.getTime();
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+
+    if (hours >= 1) {
+      roboTimeLivedDisplay.textContent = `${hours} ${hours > 1 ? "hrs" : "hr"}`;
+    } else if (minutes >= 1) {
+      roboTimeLivedDisplay.textContent = `${minutes} ${
+        minutes > 1 ? "mins" : "min"
+      }`;
+    } else {
+      roboTimeLivedDisplay.textContent = `${seconds} sec`;
+    }
   }
 
   function setInitRoboStats() {
@@ -308,7 +335,29 @@ function initScript() {
     } else if (chargeVal >= 1) {
       setRoboStatus("😡");
     } else if (chargeVal === 0) {
+      roboBody.classList.remove(roboSkinclass);
+      roboCPUText.classList.remove("cpu-text");
+      for (let eye of roboEyes) {
+        eye.classList.remove("robo-eyes");
+        eye.classList.add("robo-eyes-die");
+      }
+      for (let part of bodyParts) {
+        part.classList.remove("robo-color");
+        part.classList.add("robo-color-die");
+      }
+      roboCPUText.classList.add("cpu-text-die");
+      roboShadow.classList.add("shadow-gone");
+      roboBody.classList.add("robo-full-die");
+
+      clearInterval(timeLivedInterval);
+      roboSendResponse(
+        `${
+          roboName !== "" ? roboName : "Virtual Pet"
+        } Died☠️, refresh to get a new pet.`
+      );
       setRoboStatus("☠️☠️☠️☠️");
+      isDead = true;
+      // bodyParts roboCPUText  roboEyes roboBody roboShadow
     }
   }
 
@@ -335,6 +384,8 @@ function initScript() {
   }
 
   function sleep() {
+    if (isDead) return;
+
     if (isSleeping) {
       isSleeping = false;
       batteryInterval = setInterval(takeCharge, 9000, 0.5);
@@ -411,7 +462,8 @@ function initScript() {
     });
 
     clearInterval(batteryInterval);
-    setTimeout(roboSendResponse, 4000, "Try guessing my number");
+    setRoboStatus("🎮");
+    // setTimeout(roboSendResponse, 4000, "Try guessing my number");
   }
 
   function handleGameInit(userInput) {
@@ -449,6 +501,7 @@ function initScript() {
         isGameStarted = false;
         roboGuessVal = 0;
         batteryInterval = setInterval(takeCharge, 9000, 0.5);
+        updateRoboMood(roboCache.length, roboChargePercent);
         break;
       default:
         roboSendResponse(
@@ -462,7 +515,7 @@ function initScript() {
   }
 
   function cleanCache() {
-    if (isSleeping) return;
+    if (isSleeping || isDead) return;
     roboCache = [];
     roboCacheCount = 0;
     cacheDisplay.textContent = `${roboCacheCount}/${maxCache}`;
@@ -472,7 +525,7 @@ function initScript() {
   }
 
   function updateOSManual() {
-    if (isSleeping) return;
+    if (isSleeping || isDead) return;
     upgradeRoboVersion();
     takeCharge(0.5);
     updateOS();
@@ -481,7 +534,8 @@ function initScript() {
   function updateOS() {
     roboBody.removeAttribute("class");
     const selectRoboColorIndex = getRandomIntInclusive(0, roboSkins.length - 1);
-    roboBody.classList.add(roboSkins[selectRoboColorIndex]);
+    roboSkinclass = roboSkins[selectRoboColorIndex];
+    roboBody.classList.add(roboSkinclass);
   }
 
   function takeCharge(num) {
@@ -492,11 +546,12 @@ function initScript() {
   }
 
   function setRoboName(name) {
+    roboName = name;
     roboNameDisplay.textContent = name;
   }
 
   function feedMe(num) {
-    if (isSleeping) return;
+    if (isSleeping || isDead) return;
     if (roboChargePercent >= 100) {
       roboSendResponse("Battery sufficiently charged", "text");
       return;
