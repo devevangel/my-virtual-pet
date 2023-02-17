@@ -15,6 +15,6 @@ app.get("/pet/:petId", getPetStats);
 app.patch("/pet/:petId", setPetStats);
 app.post("/pet", createPet);
 
-const port= process.env.PORT || 8080
+const port = process.env.PORT || 8080;
 
 app.listen(port);
