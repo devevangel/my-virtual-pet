@@ -1,20 +1,19 @@
-import express from "express";
-import {
-  getPetStats,
-  setPetStats,
-  createPet,
-} from "./controllers/pet-controller.js";
+const express = require("express");
 
 const app = express();
+const PORT = 4000;
 
-app.use(express.static("client"));
-app.use(express.json());
+app.listen(PORT, () => {
+  console.log(`API listening on PORT ${PORT} `);
+});
 
-// routes
-app.get("/pet/:petId", getPetStats);
-app.patch("/pet/:petId", setPetStats);
-app.post("/pet", createPet);
+app.get("/", (req, res) => {
+  res.send("Hey this is my API running 🥳");
+});
 
-const port = process.env.PORT || 8080;
+app.get("/about", (req, res) => {
+  res.send("This is my about route..... ");
+});
 
-app.listen(port);
+// Export the Express API
+module.exports = app;

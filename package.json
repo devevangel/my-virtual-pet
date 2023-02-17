@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "sever.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server"
   },
   "repository": {
     "type": "git",
