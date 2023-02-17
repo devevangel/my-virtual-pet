@@ -1,7 +1,7 @@
 const fs = require("fs/promises");
 const uuid = require("uuid-random");
 
-let roboDB = JSON.parse(await fs.readFile("data/robos.json", "utf-8"));
+// let roboDB = JSON.parse(await fs.readFile("data/robos.json", "utf-8"));
 
 export function createPet(req, res) {
   const newBotId = uuid;
@@ -42,7 +42,7 @@ export async function setPetStats(req, res) {
     ...req.body,
   };
 
-  await fs.writeFile("data/robos.json", JSON.stringify(roboDB));
+  // await fs.writeFile("data/robos.json", JSON.stringify(roboDB));
 
   res.status(200).json({
     flag: "SUCCESS",
