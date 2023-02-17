@@ -72,6 +72,7 @@ body {
   padding: 5px 5px;
   font-size: 13px;
   font-weight: 100;
+  position: relative;
 }
 
 .buttons-container {
@@ -149,6 +150,15 @@ body {
 
 .robo-indigo {
   fill: #4b0082;
+}
+
+.info-display {
+  position: absolute;
+  color: #ff2400;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
 
 /* Animantions */

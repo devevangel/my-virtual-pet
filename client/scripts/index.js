@@ -22,6 +22,7 @@ function initScript() {
 
   // robo
   let roboChargePercent = 100;
+  let roboCachePercent = 0;
   let roboCache = [];
   let roboName = "";
   let roboState = "😃";
@@ -34,6 +35,7 @@ function initScript() {
   let isGameStarted = false;
   let isSleeping = false;
   let isDead = false;
+  let isError = false;
 
   const manual = [
     "To see manual: ['manual' or 'how to']",
@@ -72,6 +74,7 @@ function initScript() {
   const title = document.createElement("div");
   const userInput = document.querySelector("#user-input");
   const roboNameDisplay = document.querySelector("#name");
+  const roboErrorDisplay = document.querySelector(".info-display");
   const roboOutput = document.querySelector("#robo-output-main");
   const roboPowerDisplay = document.querySelector("#power-display");
   const roboTimeLivedDisplay = document.querySelector("#time-display");
@@ -95,11 +98,12 @@ function initScript() {
 
   updateOS();
   setInitRoboStats();
+  calcCache();
 
   // intervals
   let batteryInterval = setInterval(takeCharge, 9000, 0.5);
   const timeStarted = new Date();
-  let timeLivedInterval = setInterval(setTimeLived, 5000, timeStarted);
+  let timeLivedInterval = setInterval(setTimeLived, 1500, timeStarted);
 
   // switch
   function talkToBot(e) {
@@ -282,6 +286,7 @@ function initScript() {
             "I'm sorry I don't quite understand want you meant there, trying entering key word 'help' to learn about me.",
             "text"
           );
+          updateRoboMood(roboCachePercent, roboChargePercent);
       }
     }
   }
@@ -315,8 +320,8 @@ function initScript() {
 
   function setInitRoboStats() {
     roboNameDisplay.textContent = roboName;
-    roboPowerDisplay.textContent = `${roboChargePercent} %`;
-    cacheDisplay.textContent = `${roboCache.length}/${maxCache}`;
+    roboPowerDisplay.textContent = `${roboChargePercent}%`;
+    cacheDisplay.textContent = `${roboCachePercent}%`;
     statusDisplay.textContent = roboState;
   }
 
@@ -326,15 +331,25 @@ function initScript() {
   }
 
   function updateRoboMood(cacheVal, chargeVal) {
-    if (chargeVal >= 80) {
+    let totalHappyVal = (cacheVal + chargeVal) / 2;
+
+    if (totalHappyVal >= 80) {
       setRoboStatus("😃");
-    } else if (chargeVal >= 50) {
+    } else if (totalHappyVal >= 70) {
       setRoboStatus("🌝");
-    } else if (chargeVal >= 30) {
+    } else if (totalHappyVal >= 60) {
       setRoboStatus("😥");
-    } else if (chargeVal >= 1) {
+    } else if (totalHappyVal >= 51) {
       setRoboStatus("😡");
-    } else if (chargeVal === 0) {
+    } else if (roboChargePercent <= 0 || roboCachePercent <= 0) {
+      roboSendResponse(
+        `${
+          roboName !== "" ? roboName : "Virtual Pet"
+        } Died☠️, refresh to get a new pet.`
+      );
+      setRoboStatus("☠️☠️☠️☠️");
+      isDead = true;
+      roboErrorDisplay.classList.add("hide");
       roboBody.classList.remove(roboSkinclass);
       roboCPUText.classList.remove("cpu-text");
       for (let eye of roboEyes) {
@@ -349,20 +364,9 @@ function initScript() {
       roboShadow.classList.add("shadow-gone");
       roboBody.classList.add("robo-full-die");
 
+      clearInterval(batteryInterval);
       clearInterval(timeLivedInterval);
-      roboSendResponse(
-        `${
-          roboName !== "" ? roboName : "Virtual Pet"
-        } Died☠️, refresh to get a new pet.`
-      );
-      setRoboStatus("☠️☠️☠️☠️");
-      isDead = true;
-      // bodyParts roboCPUText  roboEyes roboBody roboShadow
     }
-  }
-
-  function clamp01(val) {
-    return (maxCache - val) * 100;
   }
 
   function getRandomIntInclusive(min, max) {
@@ -375,21 +379,13 @@ function initScript() {
     return rawUserInput.toLowerCase().replaceAll(/\s/g, "");
   }
 
-  function calcCache(userInput) {
-    if (roboCache.length >= maxCache) return;
-    roboCache.push(userInput);
-    const newCache = roboCache.length;
-    cacheDisplay.textContent = `${newCache}/${maxCache}`;
-    updateRoboMood(newCache, roboChargePercent);
-  }
-
   function sleep() {
     if (isDead) return;
 
     if (isSleeping) {
       isSleeping = false;
       batteryInterval = setInterval(takeCharge, 9000, 0.5);
-      updateRoboMood(roboCache.length, roboChargePercent);
+      updateRoboMood(roboCachePercent, roboChargePercent);
       sleepButton.textContent = "Sleep 😴";
       roboBody.setAttribute("id", "robo-full");
       roboShadow.setAttribute("id", "idle-shadow");
@@ -501,7 +497,7 @@ function initScript() {
         isGameStarted = false;
         roboGuessVal = 0;
         batteryInterval = setInterval(takeCharge, 9000, 0.5);
-        updateRoboMood(roboCache.length, roboChargePercent);
+        updateRoboMood(roboCachePercent, roboChargePercent);
         break;
       default:
         roboSendResponse(
@@ -517,17 +513,17 @@ function initScript() {
   function cleanCache() {
     if (isSleeping || isDead) return;
     roboCache = [];
-    roboCacheCount = 0;
-    cacheDisplay.textContent = `${roboCacheCount}/${maxCache}`;
-    roboOutput.textContent = "";
+    cacheDisplay.textContent = `${0}%`;
+    roboOutput.textContent = "Cache cleared";
     userInput.value = "";
-    updateRoboMood(roboCache.length, roboChargePercent);
+    updateRoboMood(roboCachePercent, roboChargePercent);
+    clearError();
   }
 
   function updateOSManual() {
+    takeCharge(0.5);
     if (isSleeping || isDead) return;
     upgradeRoboVersion();
-    takeCharge(0.5);
     updateOS();
   }
 
@@ -538,11 +534,42 @@ function initScript() {
     roboBody.classList.add(roboSkinclass);
   }
 
+  function showError(msg) {
+    isError = true;
+    roboErrorDisplay.textContent = msg;
+    roboErrorDisplay.classList.remove("hide");
+  }
+
+  function clearError() {
+    isError = false;
+    roboErrorDisplay.textContent = "";
+    roboErrorDisplay.classList.add("hide");
+  }
+
+  function calcCache(userInput = null) {
+    if (roboChargePercent <= 0 || isDead) return;
+
+    if (userInput) {
+      roboCache.push(userInput);
+    }
+    let roboDisplayCachePercent = (roboCache.length / maxCache) * 100;
+    let sudoCachePercent = (maxCache - roboCache.length) / maxCache;
+    roboCachePercent = sudoCachePercent * 100;
+    cacheDisplay.textContent = `${roboDisplayCachePercent}%`;
+    if (roboCachePercent <= 30) {
+      showError("Cache almost full, please clean cache");
+    }
+    updateRoboMood(roboCachePercent, roboChargePercent);
+  }
+
   function takeCharge(num) {
-    if (roboChargePercent === 0) return;
+    if (roboChargePercent === 0 || isDead) return;
     roboChargePercent = roboChargePercent - (num / 5) * 100;
-    roboPowerDisplay.textContent = `${roboChargePercent} %`;
-    updateRoboMood(roboCache.length, roboChargePercent);
+    roboPowerDisplay.textContent = `${roboChargePercent}%`;
+    if (roboChargePercent <= 30) {
+      showError("Battery running low, please charge");
+    }
+    updateRoboMood(roboCachePercent, roboChargePercent);
   }
 
   function setRoboName(name) {
@@ -558,6 +585,7 @@ function initScript() {
     }
     roboChargePercent = roboChargePercent + (num / 5) * 100;
     roboPowerDisplay.textContent = `${roboChargePercent}%`;
-    updateRoboMood(roboCache.length, roboChargePercent);
+    updateRoboMood(roboCachePercent, roboChargePercent);
+    clearError();
   }
 }
