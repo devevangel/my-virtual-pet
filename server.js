@@ -1,19 +1,20 @@
 const express = require("express");
+const {
+  getPetStats,
+  setPetStats,
+  createPet,
+} = require("./controllers/pet-controller.js");
 
 const app = express();
-const PORT = 4000;
 
-app.listen(PORT, () => {
-  console.log(`API listening on PORT ${PORT} `);
-});
+app.use(express.static("client"));
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hey this is my API running 🥳");
-});
+// routes
+app.get("/pet/:petId", getPetStats);
+app.patch("/pet/:petId", setPetStats);
+app.post("/pet", createPet);
 
-app.get("/about", (req, res) => {
-  res.send("This is my about route..... ");
-});
+const port = process.env.PORT || 8080;
 
-// Export the Express API
-module.exports = app;
+app.listen(port);
