@@ -55,6 +55,8 @@ function initScript() {
     "To win try guessing my number",
     "Input your guess and I'll tell you my number",
     "To quit game enter keyword: 'end'",
+    "For help enter keyword 'help'",
+    "Enter your guess to start",
     "Goodluck!",
   ];
 
@@ -103,7 +105,7 @@ function initScript() {
   // intervals
   let batteryInterval = setInterval(takeCharge, 9000, 0.5);
   const timeStarted = new Date();
-  let timeLivedInterval = setInterval(setTimeLived, 1500, timeStarted);
+  let timeLivedInterval = setInterval(setTimeLived, 1000, timeStarted);
 
   // switch
   function talkToBot(e) {
@@ -513,6 +515,8 @@ function initScript() {
   function cleanCache() {
     if (isSleeping || isDead) return;
     roboCache = [];
+    let sudoCachePercent = (maxCache - roboCache.length) / maxCache;
+    roboCachePercent = sudoCachePercent * 100;
     cacheDisplay.textContent = `${0}%`;
     roboOutput.textContent = "Cache cleared";
     userInput.value = "";

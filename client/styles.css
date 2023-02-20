@@ -163,11 +163,11 @@ body {
 
 /* Animantions */
 #robo-full {
-  animation: idle 1.2s linear infinite;
+  animation: idle 1.5s linear infinite;
 }
 
 #idle-shadow {
-  animation: shadow 1.2s linear infinite;
+  animation: shadow 1.5s linear infinite;
   transform-origin: center;
 }
 

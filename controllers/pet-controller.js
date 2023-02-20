@@ -1,5 +1,5 @@
-const fs = require("fs/promises");
-const uuid = require("uuid-random");
+import fs from "fs/promises";
+import uuid from "uuid-random";
 
 // let roboDB = JSON.parse(await fs.readFile("data/robos.json", "utf-8"));
 
