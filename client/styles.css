@@ -35,6 +35,11 @@ body {
   text-align: center;
 }
 
+#title {
+  text-align: center;
+  text-decoration: underline;
+}
+
 #user-input {
   margin: 0;
   border: 1px solid #00ff00;
