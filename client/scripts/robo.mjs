@@ -2,6 +2,13 @@ import { getRandomIntInclusive } from "./utils.mjs";
 import { roboState, roboUI, hodDisplay, userData } from "./variables.mjs";
 import { sleepButton } from "./index.mjs";
 
+let textOut = "";
+let typingDelay = 50;
+let charIndex = 0;
+// let isTag = null;
+let isTyping = false;
+let typingTimeout = null;
+
 let batteryInterval = setInterval(takeCharge, 9000, 0.5);
 let timeLivedInterval = setInterval(setTimeLived, 1000, roboState.timeLived);
 
@@ -43,6 +50,34 @@ export function roboSendResponse(
     titleParaElem.style = "text-align: center; text-decoration: underline";
     hodDisplay.roboDisplay.append(titleParaElem, nodeObj.node);
   }
+}
+
+export function resetWriter() {
+  textOut = "";
+  typingDelay = 50;
+  charIndex = 0;
+  isTyping = false;
+  typingTimeout = null;
+  if (typingTimeout) {
+    clearTimeout(typingTimeout);
+  }
+}
+
+export function typeWriter() {
+  isTyping = true;
+  if (charIndex < textOut.length) {
+    hodDisplay.roboDisplay.innerHTML += textOut.charAt(charIndex);
+    charIndex++;
+    typingTimeout = setTimeout(typeWriter, typingDelay);
+  } else {
+    resetWriter();
+  }
+}
+
+export function writeResponse(msg, delay) {
+  textOut = msg;
+  typingDelay = delay;
+  typeWriter();
 }
 
 export function getRoboVersion() {

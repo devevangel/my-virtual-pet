@@ -16,6 +16,7 @@ import {
   calcCache,
   feedMe,
   setInitRoboStats,
+  writeResponse,
 } from "./robo.mjs";
 
 // robo speech text output engine
@@ -35,4 +36,10 @@ function initScript() {
   updateOS();
   setInitRoboStats();
   calcCache();
+  writeResponse(
+    `Hello!, I am a simple Virtual Pet interface created by evangel Inc 👨‍💻,
+  here to provide assistance. Enter keyword 'how to' to learn more about
+  me. cheers`,
+    100
+  );
 }

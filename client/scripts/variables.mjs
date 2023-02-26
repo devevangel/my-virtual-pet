@@ -41,16 +41,16 @@ const directionList = {
     "Play a game: ['game']",
     "Sleep: ['sleep']",
   ],
-  gameIntructions: [
-    "I picked a number from the values below:",
-    "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
-    "To win try guessing my number",
-    "Input your guess and I'll tell you my number",
-    "To quit game enter keyword: 'end'",
-    "For help enter keyword 'help'",
-    "Enter your guess number input 👇🏼 box to start ",
-    "Goodluck!",
-  ],
+  gameIntructions: `<ul>
+    <li>I picked a number from the values below:</li>",
+    "<li>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</li>",
+    "<li>To win try guessing my number</li>",
+    "<li>Input your guess and I'll tell you my number</li>",
+    "<li>To quit game enter keyword: 'end'</li>",
+    "<li>For help enter keyword 'help'</li>",
+    "<li>Enter your guess number input 👇🏼 box to start </li>
+    </ul>Goodluck!`,
+
   gameHelp: [
     "To quit game enter keyword: 'end'",
     "To play on enter a guess value",

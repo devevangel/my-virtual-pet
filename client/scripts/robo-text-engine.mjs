@@ -9,6 +9,8 @@ import {
   setRoboName,
   sleep,
   getRoboVersion,
+  writeResponse,
+  resetWriter,
 } from "./robo.mjs";
 import { handleGameInit, playGame } from "./game.mjs";
 
@@ -19,6 +21,7 @@ export function talkToBot(e) {
     // clear last user input
     hodDisplay.roboDisplay.textContent = "";
     hodDisplay.listOrderDisplay.innerHTML = "";
+    resetWriter();
 
     //parse user input to requried text format
     let parsedUserInput = parseUserInput(userData.currentUserInput);
@@ -62,44 +65,45 @@ export function talkToBot(e) {
 
     switch (parsedUserInput) {
       case "hi":
-        roboSendResponse("Hello! How can I help you today?", "text");
+        writeResponse("Hello! How can I help you today?", 50);
         break;
       case "hello":
-        roboSendResponse(
-          `Hi! Is there anything you would like to ask or talk about? I'm here to assist you.`,
-          "text"
+        writeResponse(
+          "Hi! Is there anything you would like to ask or talk about? I'm here to assist you.",
+          50
         );
         break;
       case "hey":
-        roboSendResponse("Hello! How can I assist you today?", "text");
+        writeResponse("Hello! How can I assist you today?", 50);
+
         break;
       case "name":
         if (roboState.name !== "") {
-          roboSendResponse(`My name is ${roboState.name}`, "text");
+          writeResponse("`My name is ${roboState.name}`", 50);
         } else {
-          roboSendResponse(
-            `I don't have a name at the moment but I would love one. Check my how to manual to give me a name.`,
-            "text"
+          writeResponse(
+            "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
+            50
           );
         }
         break;
       case "whatisyourname?":
         if (roboState.name !== "") {
-          roboSendResponse(`My name is ${roboState.name}`, "text");
+          writeResponse("`My name is ${roboState.name}`", 50);
         } else {
-          roboSendResponse(
-            `I don't have a name at the moment but I would love one. Check my how to manual to give me a name.`,
-            "text"
+          writeResponse(
+            "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
+            50
           );
         }
         break;
       case "whatisyourname":
         if (roboState.name !== "") {
-          roboSendResponse(`My name is ${roboState.name}`, "text");
+          writeResponse("`My name is ${roboState.name}`", 50);
         } else {
-          roboSendResponse(
-            `I don't have a name at the moment but I would love one. Check my how to manual to give me a name.`,
-            "text"
+          writeResponse(
+            "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
+            50
           );
         }
         break;
@@ -187,9 +191,9 @@ export function talkToBot(e) {
         getRoboVersion();
         break;
       default:
-        roboSendResponse(
+        writeResponse(
           "I'm sorry I don't quite understand want you meant there, trying entering key word 'help' to learn about me.",
-          "text"
+          50
         );
         updateRoboMood(roboState.cachePercent, roboState.chargePercent);
     }
