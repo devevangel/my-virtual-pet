@@ -4,6 +4,7 @@ import {
   setRoboMood,
   clearBatteryInterval,
   setBatteryInterval,
+  writeResponse,
 } from "./robo.mjs";
 import { directionList, hodDisplay, roboState } from "./variables.mjs";
 import { getRandomIntInclusive } from "./utils.mjs";
@@ -58,15 +59,17 @@ export function handleGameInit(userInput) {
 
 export function showGameRules() {
   roboState.guessVal = getRandomIntInclusive(1, 10);
-  for (let instruction of directionList.gameIntructions) {
-    const li = document.createElement("li");
-    li.textContent = instruction;
-    hodDisplay.listOrderDisplay.append(li);
-  }
-  roboSendResponse(null, "node", {
-    title: "Game rules",
-    node: hodDisplay.listOrderDisplay,
-  });
+  // for (let instruction of directionList.gameIntructions) {
+  //   const li = document.createElement("li");
+  //   li.textContent = instruction;
+  //   hodDisplay.listOrderDisplay.append(li);
+  // }
+  // roboSendResponse(null, "node", {
+  //   title: "Game rules",
+  //   node: hodDisplay.listOrderDisplay,
+  // });
+
+  writeResponse(directionList.gameIntructions, 60);
 
   clearBatteryInterval();
   setRoboMood("🎮");

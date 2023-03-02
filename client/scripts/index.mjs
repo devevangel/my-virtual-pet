@@ -1,8 +1,8 @@
 // buttons
-export const cleanCacheButton = document.querySelector("#clean-cache");
-export const updateOSButton = document.querySelector("#update-os");
-export const chargeButton = document.querySelector("#feed-me");
-export const sleepButton = document.querySelector("#sleep");
+const cleanCacheButton = document.querySelector("#clean-cache");
+const updateOSButton = document.querySelector("#update-os");
+const chargeButton = document.querySelector("#feed-me");
+const sleepButton = document.querySelector("#sleep");
 
 // user
 import { handleUserInput } from "./user.mjs";
@@ -24,6 +24,10 @@ import { talkToBot } from "./robo-text-engine.mjs";
 
 window.addEventListener("load", initScript);
 
+export function setSleepButtonText(text) {
+  sleepButton.textContent = text;
+}
+
 function initScript() {
   // event handlers
   document.addEventListener("input", handleUserInput);
@@ -40,6 +44,6 @@ function initScript() {
     `Hello!, I am a simple Virtual Pet interface created by evangel Inc 👨‍💻,
   here to provide assistance. Enter keyword 'how to' to learn more about
   me. cheers`,
-    100
+    60
   );
 }

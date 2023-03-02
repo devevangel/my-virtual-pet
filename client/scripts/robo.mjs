@@ -1,6 +1,6 @@
 import { getRandomIntInclusive } from "./utils.mjs";
 import { roboState, roboUI, hodDisplay, userData } from "./variables.mjs";
-import { sleepButton } from "./index.mjs";
+import { setSleepButtonText } from "./index.mjs";
 
 let textOut = "";
 let typingDelay = 50;
@@ -14,25 +14,28 @@ let timeLivedInterval = setInterval(setTimeLived, 1000, roboState.timeLived);
 
 export function sleep() {
   if (roboState.isDead) return;
+  resetWriter();
 
   if (roboState.isSleeping) {
     roboState.isSleeping = false;
     setBatteryInterval();
     updateRoboMood(roboState.cachePercent, roboState.chargePercent);
-    sleepButton.textContent = "Sleep 😴";
+    setSleepButtonText("Sleep 😴");
     roboUI.body.setAttribute("id", "robo-full");
     roboUI.shadow.setAttribute("id", "idle-shadow");
-    roboSendResponse("Hello!🖐, good to see you again");
+    writeResponse("Hello!🖐, good to see you again", 60);
+    console.log(roboState);
     return;
   }
 
   roboState.isSleeping = true;
   clearBatteryInterval();
   setRoboMood("😴");
-  sleepButton.textContent = "Awaken ☀️";
+  setSleepButtonText("Awaken ☀️");
   roboUI.body.setAttribute("id", "robo-sleep");
   roboUI.shadow.setAttribute("id", "sleep-shadow");
   roboSendResponse("Sleeping😴....");
+  console.log(roboState);
 }
 
 export function roboSendResponse(

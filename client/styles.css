@@ -81,6 +81,18 @@ body {
   overflow-wrap: break-word;
 }
 
+#robo-output-main::after {
+  width: 5px;
+  height: 18px;
+  display: block;
+  background-color: #00ff00;
+  animation: blinker 0.6s infinite;
+}
+
+#output-container {
+  display: flex;
+}
+
 .buttons-container {
   width: 100%;
   display: flex;
@@ -195,6 +207,16 @@ body {
   }
   100% {
     transform: translateY(0px);
+  }
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 
