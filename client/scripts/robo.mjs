@@ -5,16 +5,16 @@ import { setSleepButtonText } from "./index.mjs";
 let textOut = "";
 let typingDelay = 50;
 let charIndex = 0;
-// let isTag = null;
-let isTyping = false;
+let isTag = null;
 let typingTimeout = null;
 
 let batteryInterval = setInterval(takeCharge, 9000, 0.5);
 let timeLivedInterval = setInterval(setTimeLived, 1000, roboState.timeLived);
 
 export function sleep() {
-  if (roboState.isDead) return;
+  if (roboState.isDead || roboState.isGameStarted) return;
   resetWriter();
+  resetRoboDisplayOutput();
 
   if (roboState.isSleeping) {
     roboState.isSleeping = false;
@@ -24,7 +24,6 @@ export function sleep() {
     roboUI.body.setAttribute("id", "robo-full");
     roboUI.shadow.setAttribute("id", "idle-shadow");
     writeResponse("Hello!🖐, good to see you again", 60);
-    console.log(roboState);
     return;
   }
 
@@ -35,7 +34,20 @@ export function sleep() {
   roboUI.body.setAttribute("id", "robo-sleep");
   roboUI.shadow.setAttribute("id", "sleep-shadow");
   roboSendResponse("Sleeping😴....");
-  console.log(roboState);
+}
+
+export function resetWriter() {
+  textOut = "";
+  typingDelay = 50;
+  charIndex = 0;
+  roboState.isTyping = false;
+  typingTimeout = null;
+  clearTimeout(typingTimeout);
+}
+
+export function resetRoboDisplayOutput() {
+  hodDisplay.roboDisplay.innerHTML = null;
+  hodDisplay.roboDisplay.textContent = null;
 }
 
 export function roboSendResponse(
@@ -43,8 +55,8 @@ export function roboSendResponse(
   type = "text",
   nodeObj = null
 ) {
-  hodDisplay.roboDisplay.textContent = "";
-
+  resetRoboDisplayOutput();
+  resetWriter();
   if (type === "text" && message) {
     hodDisplay.roboDisplay.textContent = message;
   } else if (type === "node" && nodeObj) {
@@ -55,32 +67,26 @@ export function roboSendResponse(
   }
 }
 
-export function resetWriter() {
-  textOut = "";
-  typingDelay = 50;
-  charIndex = 0;
-  isTyping = false;
-  typingTimeout = null;
-  if (typingTimeout) {
-    clearTimeout(typingTimeout);
-  }
-}
-
-export function typeWriter() {
-  isTyping = true;
-  if (charIndex < textOut.length) {
-    hodDisplay.roboDisplay.innerHTML += textOut.charAt(charIndex);
-    charIndex++;
-    typingTimeout = setTimeout(typeWriter, typingDelay);
-  } else {
-    resetWriter();
-  }
-}
-
 export function writeResponse(msg, delay) {
+  resetRoboDisplayOutput();
+  resetWriter();
   textOut = msg;
   typingDelay = delay;
   typeWriter();
+}
+
+export function typeWriter() {
+  roboState.isTyping = true;
+  let text = textOut.slice(0, ++charIndex);
+  hodDisplay.roboDisplay.innerHTML = text;
+  if (text === textOut) {
+    return resetWriter();
+  }
+  const char = text.slice(-1);
+  if (char === "<") isTag = true;
+  if (char === ">") isTag = false;
+  if (isTag) return typeWriter();
+  typingTimeout = setTimeout(typeWriter, typingDelay);
 }
 
 export function getRoboVersion() {
@@ -92,7 +98,8 @@ export function upgradeRoboVersion() {
 }
 
 export function cleanCache() {
-  if (roboState.isSleeping || roboState.isDead) return;
+  if (roboState.isSleeping || roboState.isDead || roboState.isGameStarted)
+    return;
   roboState.cacheList = [];
   let sudoCachePercent =
     (roboState.maxCache - roboState.cacheList.length) / roboState.maxCache;
@@ -105,6 +112,7 @@ export function cleanCache() {
 }
 
 export function updateOSManual() {
+  if (roboState.isGameStarted) return;
   takeCharge(0.5);
   if (roboState.isSleeping || roboState.isDead) return;
   upgradeRoboVersion();
@@ -134,7 +142,12 @@ export function clearError() {
 }
 
 export function calcCache(userInput = null) {
-  if (roboState.chargePercent <= 0 || roboState.isDead) return;
+  if (
+    roboState.chargePercent <= 0 ||
+    roboState.isDead ||
+    roboState.cachePercent <= 0
+  )
+    return;
 
   if (userInput) {
     roboState.cacheList.push(userInput);
@@ -149,6 +162,8 @@ export function calcCache(userInput = null) {
 
   if (roboState.cachePercent <= 30) {
     showError("Cache almost full, please clean cache");
+  } else if (roboState.cachePercent <= 0) {
+    return showError("Cache almost full, please clean cache");
   }
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
 }
@@ -169,7 +184,8 @@ export function setRoboName(name) {
 }
 
 export function feedMe(num) {
-  if (roboState.isSleeping || roboState.isDead) return;
+  if (roboState.isSleeping || roboState.isDead || roboState.isGameStarted)
+    return;
   if (roboState.chargePercent >= 100) {
     roboSendResponse("Battery sufficiently charged", "text");
     return;
@@ -223,7 +239,7 @@ export function updateRoboMood(cacheVal, chargeVal) {
     setRoboMood("😥");
   } else if (totalHappyVal >= 51) {
     setRoboMood("😡");
-  } else if (roboState.chargePercent <= 0 || roboState) {
+  } else if (roboState.chargePercent <= 0) {
     roboSendResponse(
       `${
         roboState.name !== "" ? roboState.name : "Virtual Pet"

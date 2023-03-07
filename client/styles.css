@@ -3,7 +3,8 @@ body {
   padding: 0px;
   font-family: "Silkscreen";
   color: #00ff00;
-  background-color: #213131;
+  background-color: black;
+  overflow: hidden;
 }
 
 .format-font {
@@ -24,10 +25,15 @@ body {
 .welcome-section {
   width: 100vw;
   height: 100vh;
-  background-color: black;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
+}
+
+.welcome-text {
+  text-align: center;
+  font-size: large;
 }
 
 .welcome-form-container {
@@ -142,15 +148,33 @@ button:hover {
   color: white;
 }
 
-/* Utility classes */
-.hide {
-  display: none;
+.info-display {
+  position: absolute;
+  color: #ff2400;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
 
 .display {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+/* Utility classes */
+.hide {
+  display: none;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  z-index: -1;
+  animation: blink 1s infinite;
 }
 
 /* Robot Skins */
@@ -194,15 +218,6 @@ button:hover {
   fill: #4b0082;
 }
 
-.info-display {
-  position: absolute;
-  color: #ff2400;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
 /* Animantions */
 #robo-full {
   animation: idle 1.5s linear infinite;
@@ -222,6 +237,7 @@ button:hover {
   transform-origin: center;
 }
 
+/* Animation Keyframes */
 @keyframes idle {
   0% {
     transform: translateY(0px);
@@ -236,11 +252,11 @@ button:hover {
 
 @keyframes blinker {
   0% {
-    opacity: 0;
+    opacity: 1;
   }
 
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
@@ -259,8 +275,13 @@ button:hover {
   }
 }
 
-/* Die classes */
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
 
+/* Die classes */
 .robo-eyes-die {
   fill: none;
   stroke: white;

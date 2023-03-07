@@ -5,7 +5,7 @@ export function parseUserInput(rawUserInput) {
 }
 
 export function handleUserInput(e) {
-  if (roboState.isSleeping || roboState.isDead) {
+  if (roboState.isSleeping || roboState.isDead || roboState.isTyping) {
     e.target.value = "";
     return;
   }
