@@ -1,13 +1,13 @@
-// buttons
+// UI buttons
 const cleanCacheButton = document.querySelector("#clean-cache");
 const updateOSButton = document.querySelector("#update-os");
 const chargeButton = document.querySelector("#feed-me");
 const sleepButton = document.querySelector("#sleep");
 
-// user input handler
+// User input handler
 import { handleUserInput } from "./user.mjs";
 
-// robo
+// Robot functions
 import {
   sleep,
   cleanCache,
@@ -19,7 +19,7 @@ import {
   writeResponse,
 } from "./robo.mjs";
 
-// robo speech text output engine
+// Robot user input processor
 import { talkToBot } from "./robo-text-engine.mjs";
 import { setBatteryInterval, setTimeLivedInterval } from "./robo.mjs";
 
@@ -27,6 +27,7 @@ export function setSleepButtonText(text) {
   sleepButton.textContent = text;
 }
 
+// Runs on page load
 function initScript() {
   // event handlers
   document.addEventListener("input", handleUserInput);

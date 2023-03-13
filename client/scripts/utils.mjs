@@ -1,15 +1,16 @@
+// sudo generates random int within given range
 export function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// sudo generate random float number within range
+// sudo generate random float number within given range
 export function randomFloatInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Creates a new particle using the div tag
+// Creates a particle using the div tag
 export function createParticle(lifeTime, screen, containerElem) {
   // Create a new div element for the particle
   const particle = document.createElement("div");

@@ -1,4 +1,4 @@
-import { hodDisplay, roboState, directionList, userData } from "./globals.mjs";
+import { hudDisplay, roboState, directionList, userData } from "./globals.mjs";
 import { parseUserInput } from "./user.mjs";
 import {
   roboSendResponse,
@@ -13,13 +13,14 @@ import {
 } from "./robo.mjs";
 import { handleGameInit, playGame } from "./game.mjs";
 
+// Handles collecting and processign of user input to give desired output
 export function talkToBot(e) {
   if (e.keyCode === 13) {
     if (roboState.isSleeping || roboState.isDead) return;
 
     // clear last user input
-    hodDisplay.roboDisplay.textContent = "";
-    hodDisplay.listOrderDisplay.innerHTML = "";
+    hudDisplay.roboDisplay.textContent = "";
+    hudDisplay.listOrderDisplay.innerHTML = "";
     resetWriter();
 
     //parse user input to requried text format
@@ -49,11 +50,11 @@ export function talkToBot(e) {
         for (let helpText of directionList.gameHelp) {
           const li = document.createElement("li");
           li.textContent = helpText;
-          hodDisplay.listOrderDisplay.append(li);
+          hudDisplay.listOrderDisplay.append(li);
         }
         roboSendResponse(null, "node", {
           title: "Game Help",
-          node: hodDisplay.listOrderDisplay,
+          node: hudDisplay.listOrderDisplay,
         });
         return;
       }
@@ -134,33 +135,33 @@ export function talkToBot(e) {
         for (let action of directionList.manual) {
           const li = document.createElement("li");
           li.textContent = action;
-          hodDisplay.listOrderDisplay.append(li);
+          hudDisplay.listOrderDisplay.append(li);
         }
         roboSendResponse(null, "node", {
           title: "Usage Manual",
-          node: hodDisplay.listOrderDisplay,
+          node: hudDisplay.listOrderDisplay,
         });
         break;
       case "help":
         for (let action of directionList.manual) {
           const li = document.createElement("li");
           li.textContent = action;
-          hodDisplay.listOrderDisplay.append(li);
+          hudDisplay.listOrderDisplay.append(li);
         }
         roboSendResponse(null, "node", {
           title: "Usage Manual",
-          node: hodDisplay.listOrderDisplay,
+          node: hudDisplay.listOrderDisplay,
         });
         break;
       case "history":
         for (let cacheItem of roboState.cacheList) {
           const li = document.createElement("li");
           li.textContent = cacheItem;
-          hodDisplay.listOrderDisplay.append(li);
+          hudDisplay.listOrderDisplay.append(li);
         }
         roboSendResponse(null, "node", {
           title: "Commands History",
-          node: hodDisplay.listOrderDisplay,
+          node: hudDisplay.listOrderDisplay,
         });
         break;
       case "time":

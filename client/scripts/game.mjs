@@ -6,7 +6,7 @@ import {
   setBatteryInterval,
   writeResponse,
 } from "./robo.mjs";
-import { directionList, hodDisplay, roboState } from "./globals.mjs";
+import { directionList, hudDisplay, roboState } from "./globals.mjs";
 import { getRandomIntInclusive } from "./utils.mjs";
 
 export function handleGameInit(userInput) {
@@ -62,11 +62,11 @@ export function showGameRules() {
   // for (let instruction of directionList.gameIntructions) {
   //   const li = document.createElement("li");
   //   li.textContent = instruction;
-  //   hodDisplay.listOrderDisplay.append(li);
+  //   hudDisplay.listOrderDisplay.append(li);
   // }
   // roboSendResponse(null, "node", {
   //   title: "Game rules",
-  //   node: hodDisplay.listOrderDisplay,
+  //   node: hudDisplay.listOrderDisplay,
   // });
 
   writeResponse(directionList.gameIntructions, 60);

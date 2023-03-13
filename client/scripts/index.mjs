@@ -1,5 +1,4 @@
 import { createParticle } from "./utils.mjs";
-import { roboState } from "./globals.mjs";
 
 window.addEventListener("load", welcome);
 
@@ -66,9 +65,8 @@ function welcome() {
 
 function createRobot(e) {
   e.preventDefault();
-  console.log("create robot...");
-  window.location.href = "robot.html";
-  roboState.name = "Javis";
+  // window.location.href = "robot.html";
+  console.log(e.target);
 }
 
 function getRobot(e) {

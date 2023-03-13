@@ -1,4 +1,4 @@
-// robo state
+// Global variable state for robot
 let roboState = {
   maxCache: 10,
   timeLived: new Date(),
@@ -30,6 +30,7 @@ let roboState = {
   ],
 };
 
+// Robot list object state
 const directionList = {
   manual: [
     "To see manual: ['help' or 'how to']",
@@ -58,7 +59,7 @@ const directionList = {
   ],
 };
 
-// robo body ui
+// Robot UI state
 let roboUI = {
   body: document.querySelector("#robo-full"),
   shadow: document.querySelector("#idle-shadow"),
@@ -67,8 +68,8 @@ let roboUI = {
   eyes: document.querySelectorAll(".robo-eyes"),
 };
 
-// HOD
-let hodDisplay = {
+// Robot Heads Up Display (HUD) state
+let hudDisplay = {
   nameDisplay: document.querySelector("#name"),
   errorDisplay: document.querySelector(".info-display"),
   roboDisplay: document.querySelector("#robo-output-main"),
@@ -79,11 +80,11 @@ let hodDisplay = {
   listOrderDisplay: document.createElement("ul"),
 };
 
-// user
+// User input data state
 let userData = {
   userInput: document.querySelector("#user-input"),
   currentUserInput: "",
   phone: "",
 };
 
-export { roboState, directionList, roboUI, hodDisplay, userData };
+export { roboState, directionList, roboUI, hudDisplay, userData };

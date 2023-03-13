@@ -1,5 +1,5 @@
 import { getRandomIntInclusive } from "./utils.mjs";
-import { roboState, roboUI, hodDisplay, userData } from "./globals.mjs";
+import { roboState, roboUI, hudDisplay, userData } from "./globals.mjs";
 import { setSleepButtonText } from "./main.mjs";
 
 let textOut = "";
@@ -46,8 +46,8 @@ export function resetWriter() {
 }
 
 export function resetRoboDisplayOutput() {
-  hodDisplay.roboDisplay.innerHTML = null;
-  hodDisplay.roboDisplay.textContent = null;
+  hudDisplay.roboDisplay.innerHTML = null;
+  hudDisplay.roboDisplay.textContent = null;
 }
 
 export function roboSendResponse(
@@ -58,12 +58,12 @@ export function roboSendResponse(
   resetRoboDisplayOutput();
   resetWriter();
   if (type === "text" && message) {
-    hodDisplay.roboDisplay.textContent = message;
+    hudDisplay.roboDisplay.textContent = message;
   } else if (type === "node" && nodeObj) {
     const titleParaElem = document.createElement("p");
     titleParaElem.textContent = nodeObj.title;
     titleParaElem.style = "text-align: center; text-decoration: underline";
-    hodDisplay.roboDisplay.append(titleParaElem, nodeObj.node);
+    hudDisplay.roboDisplay.append(titleParaElem, nodeObj.node);
   }
 }
 
@@ -78,7 +78,7 @@ export function writeResponse(msg, delay) {
 export function typeWriter() {
   roboState.isTyping = true;
   let text = textOut.slice(0, ++charIndex);
-  hodDisplay.roboDisplay.innerHTML = text;
+  hudDisplay.roboDisplay.innerHTML = text;
   if (text === textOut) {
     return resetWriter();
   }
@@ -104,8 +104,8 @@ export function cleanCache() {
   let sudoCachePercent =
     (roboState.maxCache - roboState.cacheList.length) / roboState.maxCache;
   roboState.cachePercent = sudoCachePercent * 100;
-  hodDisplay.cacheDisplay.textContent = `${0}%`;
-  hodDisplay.roboDisplay.textContent = "Cache cleared";
+  hudDisplay.cacheDisplay.textContent = `${0}%`;
+  hudDisplay.roboDisplay.textContent = "Cache cleared";
   userData.userInput.value = "";
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
   clearError();
@@ -131,14 +131,14 @@ export function updateOS() {
 
 export function showError(msg) {
   roboState.isError = true;
-  hodDisplay.errorDisplay.textContent = msg;
-  hodDisplay.errorDisplay.classList.remove("hide");
+  hudDisplay.errorDisplay.textContent = msg;
+  hudDisplay.errorDisplay.classList.remove("hide");
 }
 
 export function clearError() {
   roboState.isError = false;
-  hodDisplay.errorDisplay.textContent = "";
-  hodDisplay.errorDisplay.classList.add("hide");
+  hudDisplay.errorDisplay.textContent = "";
+  hudDisplay.errorDisplay.classList.add("hide");
 }
 
 export function calcCache(userInput = null) {
@@ -158,7 +158,7 @@ export function calcCache(userInput = null) {
     (roboState.maxCache - roboState.cacheList.length) / roboState.maxCache;
 
   roboState.cachePercent = sudoCachePercent * 100;
-  hodDisplay.cacheDisplay.textContent = `${roboDisplayCachePercent}%`;
+  hudDisplay.cacheDisplay.textContent = `${roboDisplayCachePercent}%`;
 
   if (roboState.cachePercent <= 30) {
     showError("Cache almost full, please clean cache");
@@ -171,16 +171,16 @@ export function calcCache(userInput = null) {
 export function takeCharge(num) {
   if (roboState.chargePercent === 0 || roboState.isDead) return;
   roboState.chargePercent = roboState.chargePercent - (num / 5) * 100;
-  hodDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
+  hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
   if (roboState.chargePercent <= 30) {
     showError("Battery running low, please charge");
   }
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
 }
 
-export function setRoboName(name) {
+export function setRoboName(name = localStorage.getItem("roboName")) {
   roboState.name = name;
-  hodDisplay.nameDisplay.textContent = name;
+  hudDisplay.nameDisplay.textContent = name;
 }
 
 export function feedMe(num) {
@@ -191,7 +191,7 @@ export function feedMe(num) {
     return;
   }
   roboState.chargePercent = roboState.chargePercent + (num / 5) * 100;
-  hodDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
+  hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
   clearError();
 }
@@ -204,28 +204,28 @@ export function setTimeLived(startTime) {
   const hours = Math.floor(minutes / 60);
 
   if (hours >= 1) {
-    hodDisplay.timeLivedDisplay.textContent = `${hours} ${
+    hudDisplay.timeLivedDisplay.textContent = `${hours} ${
       hours > 1 ? "hrs" : "hr"
     }`;
   } else if (minutes >= 1) {
-    hodDisplay.timeLivedDisplay.textContent = `${minutes} ${
+    hudDisplay.timeLivedDisplay.textContent = `${minutes} ${
       minutes > 1 ? "mins" : "min"
     }`;
   } else {
-    hodDisplay.timeLivedDisplay.textContent = `${seconds} sec`;
+    hudDisplay.timeLivedDisplay.textContent = `${seconds} sec`;
   }
 }
 
 export function setInitRoboStats() {
-  hodDisplay.nameDisplay.textContent = roboState.name;
-  hodDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
-  hodDisplay.cacheDisplay.textContent = `${roboState.cachePercent}%`;
+  hudDisplay.nameDisplay.textContent = roboState.name;
+  hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
+  hudDisplay.cacheDisplay.textContent = `${roboState.cachePercent}%`;
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
 }
 
 // 😡😴😃🌝☠️🎮
 export function setRoboMood(emoji) {
-  hodDisplay.moodDisplay.textContent = emoji;
+  hudDisplay.moodDisplay.textContent = emoji;
 }
 
 export function updateRoboMood(cacheVal, chargeVal) {
@@ -247,7 +247,7 @@ export function updateRoboMood(cacheVal, chargeVal) {
     );
     setRoboMood("☠️☠️☠️☠️");
     roboState.isDead = true;
-    hodDisplay.errorDisplay.classList.add("hide");
+    hudDisplay.errorDisplay.classList.add("hide");
     roboUI.body.classList.remove(roboState.skinclass);
     roboUI.cpuText.classList.remove("cpu-text");
     for (let eye of roboUI.eyes) {
