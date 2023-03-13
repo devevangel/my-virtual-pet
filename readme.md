@@ -12,22 +12,22 @@ This is my implementation of the virtual pet course work. In my project I went w
 
 - Robot has the ability to play a simple guess game
 
--Robot has the ability to display emotions based certain variables it possesses
+- Robot has the ability to display emotions based certain variables it possesses
 
--Robot the ability to store user commands given to it in it's cache
+- Robot the ability to store user commands given to it in it's cache
 
--Robot requires cache cleaning as it only has a limited storage unit to hold all user commands
+- Robot requires cache cleaning as it only has a limited storage unit to hold all user commands
 
--Robot requires charging as it's battery runs down as time goes by
+- Robot requires charging as it's battery runs down as time goes by
 
--Robot has the ability to change it's name based on it's user command
+- Robot has the ability to change it's name based on it's user command
 
--Robot OS can be updated as the user sees fit
+- Robot OS can be updated as the user sees fit
 
--Robot comes with an in-built operations manual
+- Robot comes with an in-built operations manual
 
--Robot to use manual enter keyword 'Help' or 'help' in the input box
+- Robot to use manual enter keyword 'Help' or 'help' in the input box
 
--Robot makes use of text based output via it's terminal to communicate with user
+- Robot makes use of text based output via it's terminal to communicate with user
 
 _author up2150727_
