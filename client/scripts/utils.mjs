@@ -4,12 +4,12 @@ export function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// sudo generate random number within range
+// sudo generate random float number within range
 export function randomFloatInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Create a function to create a new particle
+// Creates a new particle using the div tag
 export function createParticle(lifeTime, screen, containerElem) {
   // Create a new div element for the particle
   const particle = document.createElement("div");

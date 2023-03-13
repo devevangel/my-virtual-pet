@@ -1,6 +1,6 @@
 import { getRandomIntInclusive } from "./utils.mjs";
-import { roboState, roboUI, hodDisplay, userData } from "./variables.mjs";
-import { setSleepButtonText } from "./index.mjs";
+import { roboState, roboUI, hodDisplay, userData } from "./globals.mjs";
+import { setSleepButtonText } from "./main.mjs";
 
 let textOut = "";
 let typingDelay = 50;
@@ -8,8 +8,8 @@ let charIndex = 0;
 let isTag = null;
 let typingTimeout = null;
 
-let batteryInterval = setInterval(takeCharge, 9000, 0.5);
-let timeLivedInterval = setInterval(setTimeLived, 1000, roboState.timeLived);
+let batteryInterval;
+let timeLivedInterval;
 
 export function sleep() {
   if (roboState.isDead || roboState.isGameStarted) return;
@@ -275,9 +275,9 @@ export function clearTimeLivedInterval() {
 }
 
 export function setBatteryInterval() {
-  setInterval(takeCharge, 9000, 0.5);
+  batteryInterval = setInterval(takeCharge, 9000, 0.5);
 }
 
 export function setTimeLivedInterval() {
-  setInterval(setTimeLived, 1000, roboState.timeLived);
+  timeLivedInterval = setInterval(setTimeLived, 1000, roboState.timeLived);
 }

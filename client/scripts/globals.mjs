@@ -83,6 +83,7 @@ let hodDisplay = {
 let userData = {
   userInput: document.querySelector("#user-input"),
   currentUserInput: "",
+  phone: "",
 };
 
 export { roboState, directionList, roboUI, hodDisplay, userData };

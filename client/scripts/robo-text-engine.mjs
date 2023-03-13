@@ -1,6 +1,5 @@
-import { hodDisplay, roboState, directionList } from "./variables.mjs";
+import { hodDisplay, roboState, directionList, userData } from "./globals.mjs";
 import { parseUserInput } from "./user.mjs";
-import { userData } from "./variables.mjs";
 import {
   roboSendResponse,
   calcCache,

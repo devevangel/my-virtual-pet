@@ -6,7 +6,7 @@ import {
   setBatteryInterval,
   writeResponse,
 } from "./robo.mjs";
-import { directionList, hodDisplay, roboState } from "./variables.mjs";
+import { directionList, hodDisplay, roboState } from "./globals.mjs";
 import { getRandomIntInclusive } from "./utils.mjs";
 
 export function handleGameInit(userInput) {

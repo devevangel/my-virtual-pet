@@ -1,4 +1,4 @@
-import { roboState, userData } from "./variables.mjs";
+import { roboState, userData } from "./globals.mjs";
 
 export function parseUserInput(rawUserInput) {
   return rawUserInput.toLowerCase().replaceAll(/\s/g, "");

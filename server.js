@@ -16,4 +16,4 @@ app.get("/pet/:petId", handleGeneralGetPet);
 
 const port = process.env.PORT || 8080;
 
-app.listen(port);
+app.listen(port, () => console.log(`listening on port ${port}`));
