@@ -12,7 +12,7 @@ let roboState = {
   chargePercent: 100,
   cachePercent: 100,
   cacheList: [],
-  name: "",
+  name: localStorage.getItem("roboName"),
   mood: "",
   version: 1,
   skinclass: "",
@@ -47,10 +47,9 @@ const directionList = {
     <li>I picked a number from the values below:</li>
     <li>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</li>
     <li>To win try guessing my number</li>
-    <li>Input your guess and I'll tell you my number</li>
     <li>To quit game enter keyword: 'end'</li>
     <li>For help enter keyword 'help'</li>
-    <li>Enter your guess number input 👇🏼 box to start </li>
+    <li>Enter you guess in the input 👆 box to start </li>
     </ul>Goodluck!`,
 
   gameHelp: [

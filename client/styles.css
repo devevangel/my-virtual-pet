@@ -28,7 +28,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
+  row-gap: 8em;
 }
 
 .welcome-text {
@@ -85,7 +86,7 @@ body {
 input {
   margin: 0;
   border: 1px solid #00ff00;
-  background-color: black;
+  background-color: transparent;
   color: #00ff00;
   height: 30px;
   width: 98%;
@@ -107,6 +108,7 @@ input:focus {
   flex-direction: column;
   row-gap: 10px;
   width: 370px;
+  background: transparent;
 }
 
 #robo-output {
@@ -115,7 +117,7 @@ input:focus {
   width: 96%;
   height: 250px;
   overflow-y: auto;
-  background-color: black;
+  background-color: transparent;
   padding: 5px 5px;
   font-size: 13px;
   font-weight: 100;
@@ -151,9 +153,7 @@ button:hover {
 .info-display {
   position: absolute;
   color: #ff2400;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 80%;
   text-align: center;
 }
 
@@ -177,7 +177,7 @@ button:hover {
   animation: blink 1s infinite;
 }
 
-/* Robot Skins */
+/* Robot skin color class list */
 .robo-violet {
   fill: #c71585;
 }
@@ -309,4 +309,42 @@ button:hover {
   stroke-width: 4;
   stroke: white;
   stroke-opacity: 0.3;
+}
+
+/* Media queries */
+
+/* Mobile screens only */
+@media only screen and (max-width: 767px) {
+  .buttons-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .info-display {
+    font-size: 11px;
+  }
+
+  .buttons-container > button {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .pet-home {
+    flex-direction: column-reverse;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  #robo-output {
+    width: 75%;
+  }
+
+  svg {
+    position: absolute;
+    top: 40%;
+    left: 66%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    scale: 0.6;
+  }
 }

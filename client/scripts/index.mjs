@@ -5,12 +5,13 @@ window.addEventListener("load", welcome);
 function welcome() {
   // gets screen height and width
   const screen = {
-    x: window.innerWidth,
-    y: window.innerHeight,
+    x: window.innerWidth - 12,
+    y: window.innerHeight - 10,
   };
 
   // UI elements
   const welcomeTextArea = document.querySelector(".welcome-text");
+  const typingSound = document.querySelector("#typing-sound");
   const welcomeSection = document.querySelector("#welcome-section");
   const createRobotForm = document.querySelector("#create-robot-form");
   const getRobotForm = document.querySelector("#get-robot-form");
@@ -19,7 +20,7 @@ function welcome() {
 
   // Local state
   const welcomeText =
-    "Hello! and  welcome to Roblox Inc. <p>Let's help you get a virtual robot today!</p>";
+    "Hello! and  welcome to Robo Dojo Inc, <br/> Let's help you get a virtual robot pet today!";
   let typingDelay = 120;
   let charIndex = 0;
   let switchState = "create";
@@ -34,7 +35,7 @@ function welcome() {
   write();
 
   // Create a new particle every n milliseconds
-  setInterval(createParticle, 50, 1500, screen, welcomeSection);
+  setInterval(createParticle, 80, 1500, screen, welcomeSection);
 
   // Handles hiding and showing of create and get pet form
   function switchForm() {
@@ -53,6 +54,7 @@ function welcome() {
   function write() {
     let text = welcomeText.slice(0, ++charIndex);
     welcomeTextArea.innerHTML = text;
+
     if (text.length === welcomeText.length) return;
     const char = text.slice(-1);
     if (char === "<") isTag = true;
@@ -65,8 +67,9 @@ function welcome() {
 
 function createRobot(e) {
   e.preventDefault();
-  // window.location.href = "robot.html";
-  console.log(e.target);
+  console.log(e.target.value);
+  window.location.href = "robot.html";
+  localStorage.setItem("roboName", "Them");
 }
 
 function getRobot(e) {
