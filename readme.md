@@ -4,7 +4,7 @@ This is my implementation of the virtual pet course work. In my project I went w
 
 **Features**
 
-- Global variable state [This was done to better optimize codebase as certain files and fucntion required and made use of certain data objects frequently ]
+- Global variable state [This was done to better optimize codebase as certain files and functions required and made use of certain data objects frequently ]
 
 - Robo has ability to tell time
 
