@@ -1,4 +1,4 @@
-import { writeToDB, readFromDB } from "./loader.js";
+import { writeToDB, readFromDB } from "./db-read-write.js";
 import { nanoid } from "nanoid";
 
 class RobotDataBaseAPI {
