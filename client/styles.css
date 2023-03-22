@@ -3,7 +3,50 @@ body {
   padding: 0px;
   font-family: "Silkscreen";
   color: #00ff00;
-  background-color: #213131;
+  background-color: black;
+  overflow: hidden;
+}
+
+.format-font {
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+.action-text {
+  color: #00ff00;
+}
+
+.action-text:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #228b22;
+}
+
+.welcome-section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 8em;
+}
+
+.welcome-text {
+  text-align: center;
+  font-size: large;
+}
+
+.welcome-form-container {
+  border: 2px solid #00ff00;
+  width: 300px;
+  height: 250px;
+  border-radius: 10px;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .pet-home {
@@ -35,22 +78,27 @@ body {
   text-align: center;
 }
 
-#user-input {
+#title {
+  text-align: center;
+  text-decoration: underline;
+}
+
+input {
   margin: 0;
   border: 1px solid #00ff00;
-  background-color: black;
+  background-color: transparent;
   color: #00ff00;
   height: 30px;
   width: 98%;
   border-radius: 5px;
 }
 
-#user-input::placeholder {
+input::placeholder {
   opacity: 0.8;
   color: #00ff00;
 }
 
-#user-input:focus {
+input:focus {
   outline: none;
   border: 2px solid #00ff00;
 }
@@ -60,6 +108,7 @@ body {
   flex-direction: column;
   row-gap: 10px;
   width: 370px;
+  background: transparent;
 }
 
 #robo-output {
@@ -68,11 +117,12 @@ body {
   width: 96%;
   height: 250px;
   overflow-y: auto;
-  background-color: black;
+  background-color: transparent;
   padding: 5px 5px;
   font-size: 13px;
   font-weight: 100;
   position: relative;
+  overflow-wrap: break-word;
 }
 
 .buttons-container {
@@ -84,7 +134,7 @@ body {
   justify-content: center;
 }
 
-.buttons-container > button {
+button {
   width: 49%;
   padding: 10px;
   border-radius: 5px;
@@ -94,15 +144,17 @@ body {
   font-size: 15px;
 }
 
-.buttons-container > button:hover {
+button:hover {
   cursor: pointer;
   background-color: #00ff00;
   color: white;
 }
 
-/* Utility classes */
-.hide {
-  display: none;
+.info-display {
+  position: absolute;
+  color: #ff2400;
+  top: 80%;
+  text-align: center;
 }
 
 .display {
@@ -111,7 +163,21 @@ body {
   justify-content: space-between;
 }
 
-/* Robot Skins */
+/* Utility classes */
+.hide {
+  display: none;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  z-index: -1;
+  animation: blink 1s infinite;
+}
+
+/* Robot skin color class list */
 .robo-violet {
   fill: #c71585;
 }
@@ -152,15 +218,6 @@ body {
   fill: #4b0082;
 }
 
-.info-display {
-  position: absolute;
-  color: #ff2400;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
 /* Animantions */
 #robo-full {
   animation: idle 1.5s linear infinite;
@@ -180,6 +237,7 @@ body {
   transform-origin: center;
 }
 
+/* Animation Keyframes */
 @keyframes idle {
   0% {
     transform: translateY(0px);
@@ -189,6 +247,16 @@ body {
   }
   100% {
     transform: translateY(0px);
+  }
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 
@@ -207,8 +275,13 @@ body {
   }
 }
 
-/* Die classes */
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
 
+/* Die classes */
 .robo-eyes-die {
   fill: none;
   stroke: white;
@@ -236,4 +309,42 @@ body {
   stroke-width: 4;
   stroke: white;
   stroke-opacity: 0.3;
+}
+
+/* Media queries */
+
+/* Mobile screens only */
+@media only screen and (max-width: 767px) {
+  .buttons-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .info-display {
+    font-size: 11px;
+  }
+
+  .buttons-container > button {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .pet-home {
+    flex-direction: column-reverse;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  #robo-output {
+    width: 75%;
+  }
+
+  svg {
+    position: absolute;
+    top: 40%;
+    left: 66%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    scale: 0.6;
+  }
 }
