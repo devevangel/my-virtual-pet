@@ -11,7 +11,6 @@ function welcome() {
 
   // UI elements
   const welcomeTextArea = document.querySelector(".welcome-text");
-  const typingSound = document.querySelector("#typing-sound");
   const welcomeSection = document.querySelector("#welcome-section");
   const createRobotForm = document.querySelector("#create-robot-form");
   const getRobotForm = document.querySelector("#get-robot-form");
