@@ -12,7 +12,7 @@ import { getRandomIntInclusive } from "./utils.mjs";
 export function handleGameInit(userInput) {
   switch (userInput) {
     case "game":
-      roboSendResponse("Would you like to play a game. Y/N");
+      writeResponse("Would you like to play a game. Y/N", 60);
       roboState.isGameInit = true;
       roboState.isGameStarted = false;
       break;
@@ -29,12 +29,12 @@ export function handleGameInit(userInput) {
       setTimeout(showGameRules, 1500);
       break;
     case "no":
-      roboSendResponse("Alright we could play some other time");
+      roboSendResponse("Alright we could play some other time.");
       roboState.isGameInit = false;
       roboState.isGameStarted = false;
       break;
     case "n":
-      roboSendResponse("Alright we could play some other time");
+      roboSendResponse("Alright we could play some other time.");
       roboState.isGameInit = false;
       roboState.isGameStarted = false;
       break;
@@ -59,36 +59,29 @@ export function handleGameInit(userInput) {
 
 export function showGameRules() {
   roboState.guessVal = getRandomIntInclusive(1, 10);
-  // for (let instruction of directionList.gameIntructions) {
-  //   const li = document.createElement("li");
-  //   li.textContent = instruction;
-  //   hudDisplay.listOrderDisplay.append(li);
-  // }
-  // roboSendResponse(null, "node", {
-  //   title: "Game rules",
-  //   node: hudDisplay.listOrderDisplay,
-  // });
-
   writeResponse(directionList.gameIntructions, 60);
-
   clearBatteryInterval();
   setRoboMood("🎮");
 }
 
+// Handles the entire game play process
 export function playGame(userInput) {
   let userInputNum = parseInt(userInput);
 
+  // Checks if user input in not a number
   if (isNaN(userInputNum)) {
     roboSendResponse(
       `Invalid input, please ensure to enter a number. Try again`
     );
   }
 
+  // Checks if user didn't guess rights
   if (userInputNum !== roboState.guessVal) {
     roboSendResponse(`Oops! ${userInputNum} isn't correct. Guess again!`);
     return;
   }
 
+  // Generates a new random guess when user gets guess right
   roboState.guessVal = getRandomIntInclusive(1, 10);
   roboSendResponse(
     `Hurray! ${userInputNum} is correct. Guess my new number or end game`,

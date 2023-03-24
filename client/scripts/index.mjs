@@ -1,99 +1,94 @@
-import { createParticle, getRobotSkin } from "./utils.mjs";
-import { handleCreatePet } from "./api.mjs";
-import { roboState } from "./globals.mjs";
+import { createParticle } from "./utils.mjs";
+import { feedMe, cleanCache, sleep, updateOS } from "./robo.mjs";
+import { talkToBot } from "./robo-text-engine.mjs";
 
-window.addEventListener("load", welcome);
+// UI elements
+const welcomeTextArea = document.querySelector(".welcome-text");
+const welcomeSection = document.querySelector("#welcome-section");
+const createRobotForm = document.querySelector("#create-robot-form");
+const getRobotForm = document.querySelector("#get-robot-form");
+const actionTextCreate = document.querySelector("#create-robot");
+const actionTextGet = document.querySelector("#get-robot");
+const createRobotButton = document.querySelector("#create-robot-button");
+const getRobotButton = document.querySelector("#get-robot-button");
 
-function welcome() {
-  // gets screen height and width
-  const screen = {
-    x: window.innerWidth - 12,
-    y: window.innerHeight - 10,
-  };
+// UI buttons
+const cleanCacheButton = document.querySelector("#clean-cache");
+const updateOSButton = document.querySelector("#update-os");
+const chargeButton = document.querySelector("#feed-me");
+const sleepButton = document.querySelector("#sleep");
 
-  // UI elements
-  const welcomeTextArea = document.querySelector(".welcome-text");
-  const welcomeSection = document.querySelector("#welcome-section");
-  const createRobotForm = document.querySelector("#create-robot-form");
-  const getRobotForm = document.querySelector("#get-robot-form");
-  const actionTextCreate = document.querySelector("#create-robot");
-  const actionTextGet = document.querySelector("#get-robot");
-  const createRobotButton = document.querySelector("#create-robot-button");
-  const getRobotButton = document.querySelector("#get-robot-button");
+// gets screen height and width
+const screen = {
+  x: window.innerWidth - 12,
+  y: window.innerHeight - 10,
+};
 
-  // Local state
-  const welcomeText =
-    "Hello! and  welcome to Robo Dojo Inc, <br/> Let's help you get a virtual robot pet today!";
-  let typingDelay = 120;
-  let charIndex = 0;
-  let switchState = "create";
-  let isTag;
+// State variables
+const welcomeText =
+  "Hello! and  welcome to Robo Dojo, <br/> Let's help you get a virtual robot pet today!";
+let typingDelay = 120;
+let charIndex = 0;
+let switchState = "create";
+let isTag;
 
-  // event listeners
+window.addEventListener("load", startApp);
+
+function startApp() {
+  // Event listeners
   actionTextCreate.addEventListener("click", switchForm);
   actionTextGet.addEventListener("click", switchForm);
   getRobotButton.addEventListener("click", getRobot);
   createRobotButton.addEventListener("click", createRobot);
+  cleanCacheButton.addEventListener("click", cleanCache);
+  updateOSButton.addEventListener("click", updateOS);
+  chargeButton.addEventListener("click", () => feedMe(0.5));
+  sleepButton.addEventListener("click", sleep);
+  document.addEventListener("input", handleUserInput);
+  document.addEventListener("keyup", talkToBot);
 
   write();
 
   // Create a new particle every n milliseconds
-  setInterval(createParticle, 80, 1500, screen, welcomeSection);
+  // setInterval(createParticle, 80, 1500, screen, welcomeSection);
+}
 
-  // Handles hiding and showing of create and get pet form
-  function switchForm() {
-    if (switchState === "create") {
-      createRobotForm.classList.add("hide");
-      getRobotForm.classList.remove("hide");
-      switchState = "get";
-    } else if (switchState === "get") {
-      createRobotForm.classList.remove("hide");
-      getRobotForm.classList.add("hide");
-      switchState = "create";
-    }
-  }
-
-  // writes greeting message to the DOM
-  function write() {
-    let text = welcomeText.slice(0, ++charIndex);
-    welcomeTextArea.innerHTML = text;
-
-    if (text.length === welcomeText.length) return;
-    const char = text.slice(-1);
-    if (char === "<") isTag = true;
-    if (char === ">") isTag = false;
-    if (isTag) return write();
-
-    setTimeout(write, typingDelay);
+// Handles hiding and showing of create and get pet form
+function switchForm() {
+  if (switchState === "create") {
+    createRobotForm.classList.add("hide");
+    getRobotForm.classList.remove("hide");
+    switchState = "get";
+  } else if (switchState === "get") {
+    createRobotForm.classList.remove("hide");
+    getRobotForm.classList.add("hide");
+    switchState = "create";
   }
 }
 
-async function createRobot() {
-  const robotName = document.querySelector("#robot-name");
-  const ownerPhone = document.querySelector("#owner-line");
+// Writes greeting message
+function write() {
+  let text = welcomeText.slice(0, ++charIndex);
+  welcomeTextArea.innerHTML = text;
 
-  if (robotName.value === "" || ownerPhone.value === "")
-    return alert("Please fill or form fields");
+  if (text.length === welcomeText.length) return;
+  const char = text.slice(-1);
+  if (char === "<") isTag = true;
+  if (char === ">") isTag = false;
+  if (isTag) return write();
 
-  const reqBody = {
-    name: robotName.value,
-    owner: ownerPhone.value,
-    timeLived: new Date(),
-    skinclass: getRobotSkin(),
-  };
+  setTimeout(write, typingDelay);
+}
 
-  let { robot } = await handleCreatePet(reqBody);
-  if (robot) {
-    for (let key in robot) {
-      if (roboState.hasOwnProperty(key) && roboState[key] !== robot[key]) {
-        roboState[key] = robot[key];
-      }
-    }
-    window.location.href = "robot.html";
-  }
+// Handle changing the text of the sleep button
+export function setSleepButtonText(text) {
+  sleepButton.textContent = text;
+}
+
+function createRobot() {
+  console.log("Create new robot");
 }
 
 function getRobot(e) {
   console.log("Get robot....");
-  e.preventDefault();
 }

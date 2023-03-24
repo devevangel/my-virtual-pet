@@ -13,20 +13,21 @@ import {
 } from "./robo.mjs";
 import { handleGameInit, playGame } from "./game.mjs";
 
-// Handles collecting and processign of user input to give desired output
+// Robot user I/O processor
 export function talkToBot(e) {
   if (e.keyCode === 13) {
     if (roboState.isSleeping || roboState.isDead) return;
 
-    // clear last user input
+    // Clear last user input
     hudDisplay.roboDisplay.textContent = "";
     hudDisplay.listOrderDisplay.innerHTML = "";
     resetWriter();
 
-    //parse user input to requried text format
+    // Parse user input
     let parsedUserInput = parseUserInput(userData.currentUserInput);
     userData.userInput.value = "";
 
+    // Search for specific user input keywords
     if (parsedUserInput.includes("name=")) {
       const rawName = parsedUserInput.split("=")[1];
       let parsedName = rawName.replaceAll('"', "").replaceAll("'", "");
@@ -37,6 +38,7 @@ export function talkToBot(e) {
       return;
     }
 
+    // Check various robot states
     if (roboState.isGameInit) {
       handleGameInit(parsedUserInput);
       return;
@@ -61,6 +63,7 @@ export function talkToBot(e) {
       return playGame(parsedUserInput);
     }
 
+    // Recalculate cache value
     calcCache(parsedUserInput);
 
     switch (parsedUserInput) {

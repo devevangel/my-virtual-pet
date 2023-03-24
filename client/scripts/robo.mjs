@@ -1,21 +1,22 @@
-import { getRobotSkin } from "./utils.mjs";
 import { roboState, roboUI, hudDisplay, userData } from "./globals.mjs";
-import { setSleepButtonText } from "./main.mjs";
+import { setSleepButtonText } from "./index.mjs";
 
+// Local robot state values
 let textOut = "";
 let typingDelay = 50;
 let charIndex = 0;
 let isTag = null;
 let typingTimeout = null;
-
 let batteryInterval;
 let timeLivedInterval;
 
+// Handles robot sleep function
 export function sleep() {
   if (roboState.isDead || roboState.isGameStarted) return;
   resetWriter();
   resetRoboDisplayOutput();
 
+  // Wake robot if asleep
   if (roboState.isSleeping) {
     roboState.isSleeping = false;
     setBatteryInterval();
@@ -27,6 +28,7 @@ export function sleep() {
     return;
   }
 
+  // Put robot to sleep if awake
   roboState.isSleeping = true;
   clearBatteryInterval();
   setRoboMood("😴");
@@ -36,6 +38,7 @@ export function sleep() {
   roboSendResponse("Sleeping😴....");
 }
 
+// Resets robot type writing state
 export function resetWriter() {
   textOut = "";
   typingDelay = 50;
@@ -45,11 +48,13 @@ export function resetWriter() {
   clearTimeout(typingTimeout);
 }
 
+// Clears robot output text/html
 export function resetRoboDisplayOutput() {
   hudDisplay.roboDisplay.innerHTML = null;
   hudDisplay.roboDisplay.textContent = null;
 }
 
+// Handles diret robot text/html output
 export function roboSendResponse(
   message = null,
   type = "text",
@@ -67,16 +72,18 @@ export function roboSendResponse(
   }
 }
 
+// Calls type writing function and passes the necessary values
 export function writeResponse(msg, delay) {
   resetRoboDisplayOutput();
   resetWriter();
   textOut = msg;
   typingDelay = delay;
+  roboState.isTyping = true;
   typeWriter();
 }
 
+// Handles robot type writing process
 export function typeWriter() {
-  roboState.isTyping = true;
   let text = textOut.slice(0, ++charIndex);
   hudDisplay.roboDisplay.innerHTML = text;
   if (text === textOut) {
@@ -89,53 +96,65 @@ export function typeWriter() {
   typingTimeout = setTimeout(typeWriter, typingDelay);
 }
 
-export function getRoboVersion() {
-  roboSendResponse(`version: ${roboState.version}.0.0`, "text");
-}
-
-export function upgradeRoboVersion() {
-  roboState.version = roboState.version + 1;
-}
-
+// Cleans robot cache(memory)
 export function cleanCache() {
   if (roboState.isSleeping || roboState.isDead || roboState.isGameStarted)
     return;
+
+  // Reset cache list value
   roboState.cacheList = [];
   let sudoCachePercent =
     (roboState.maxCache - roboState.cacheList.length) / roboState.maxCache;
   roboState.cachePercent = sudoCachePercent * 100;
   hudDisplay.cacheDisplay.textContent = `${0}%`;
-  hudDisplay.roboDisplay.textContent = "Cache cleared";
+
+  // Reset user input and inform the user
   userData.userInput.value = "";
-  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
   clearError();
+  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+  hudDisplay.roboDisplay.textContent = "Cache cleared";
 }
 
-export function updateOSManual() {
-  if (roboState.isGameStarted) return;
-  takeCharge(0.5);
-  if (roboState.isSleeping || roboState.isDead) return;
-  upgradeRoboVersion();
-  updateOS();
-}
-
+// Handles updating robot OS and version
 export function updateOS() {
+  if (roboState.isSleeping || roboState.isDead || roboState.isGameStarted)
+    return;
   roboUI.body.removeAttribute("class");
-  roboUI.body.classList.add(getRobotSkin());
+  roboUI.body.classList.add(getNewRobotSkin());
+  upgradeRoboVersion();
+  takeCharge(0.5);
 }
 
+// Gets current robot version
+export function getRoboVersion() {
+  roboSendResponse(`version: ${roboState.version}.0.0`, "text");
+}
+
+// Upates robot OS version
+export function upgradeRoboVersion() {
+  roboState.version = roboState.version + 1;
+}
+
+// Get a new skin class for robot
+function getNewRobotSkin() {
+  return roboState.skins[getRandomIntInclusive(0, roboState.skins.length - 1)];
+}
+
+// Shows error message
 export function showError(msg) {
   roboState.isError = true;
   hudDisplay.errorDisplay.textContent = msg;
   hudDisplay.errorDisplay.classList.remove("hide");
 }
 
+// Clears error message
 export function clearError() {
   roboState.isError = false;
   hudDisplay.errorDisplay.textContent = "";
   hudDisplay.errorDisplay.classList.add("hide");
 }
 
+// Handles calculating and displaying of robot cache
 export function calcCache(userInput = null) {
   if (
     roboState.chargePercent <= 0 ||
@@ -144,25 +163,30 @@ export function calcCache(userInput = null) {
   )
     return;
 
+  // Add user input to cache(memory)
   if (userInput) {
     roboState.cacheList.push(userInput);
   }
-  let roboDisplayCachePercent =
-    (roboState.cacheList.length / roboState.maxCache) * 100;
-  let sudoCachePercent =
+
+  // Calculate and display new cache value
+  const cacheDisplay = (roboState.cacheList.length / roboState.maxCache) * 100;
+  const realCacheVal =
     (roboState.maxCache - roboState.cacheList.length) / roboState.maxCache;
+  roboState.cachePercent = realCacheVal * 100;
+  hudDisplay.cacheDisplay.textContent = `${cacheDisplay}%`;
 
-  roboState.cachePercent = sudoCachePercent * 100;
-  hudDisplay.cacheDisplay.textContent = `${roboDisplayCachePercent}%`;
-
+  // Show error message based on cache value
   if (roboState.cachePercent <= 30) {
     showError("Cache almost full, please clean cache");
   } else if (roboState.cachePercent <= 0) {
     return showError("Cache almost full, please clean cache");
   }
+
+  // Updates the robot mood
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
 }
 
+// Handles robot battery life degeneration
 export function takeCharge(num) {
   if (roboState.chargePercent === 0 || roboState.isDead) return;
   roboState.chargePercent = roboState.chargePercent - (num / 5) * 100;
@@ -173,27 +197,35 @@ export function takeCharge(num) {
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
 }
 
+// Handles setting and updating robot name
 export function setRoboName(name = localStorage.getItem("roboName")) {
   roboState.name = name;
   hudDisplay.nameDisplay.textContent = name;
 }
 
+// Handles feeding(charging) the robot
 export function feedMe(num) {
+  // Prevent charging based on certain conditions
   if (roboState.isSleeping || roboState.isDead || roboState.isGameStarted)
     return;
+
+  // Prevents over charging(feeding)
   if (roboState.chargePercent >= 100) {
     roboSendResponse("Battery sufficiently charged", "text");
     return;
   }
+
+  // Updates UI with new charge %
   roboState.chargePercent = roboState.chargePercent + (num / 5) * 100;
   hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
   clearError();
 }
 
-export function setTimeLived(startTime) {
+// Handles calculating and displaying of the how long the robot has lived
+export function setTimeLived(currTimeLived) {
   const now = new Date();
-  const timeDiff = now.getTime() - startTime.getTime();
+  const timeDiff = now.getTime() - currTimeLived.getTime();
   const seconds = Math.floor(timeDiff / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -212,15 +244,12 @@ export function setTimeLived(startTime) {
 }
 
 export function bootRobot() {
-  console.log(roboState);
   setInitRoboStats();
   calcCache();
   setBatteryInterval();
   setTimeLivedInterval();
   writeResponse(
-    `Hello!, I am a simple Virtual Pet interface created by evangel Inc 👨‍💻,
-    here to provide assistance. Enter keyword 'how to' to learn more about
-    me. cheers`,
+    `Hello!, owner great to see you again. If you stuck and need some just enter the keyword 'HOW TO'`,
     60
   );
 }
@@ -233,11 +262,12 @@ export function setInitRoboStats() {
   updateRoboMood(roboState.cachePercent, roboState.chargePercent);
 }
 
-// 😡😴😃🌝☠️🎮
+// Updates the robot UI mood emoji (Happy, Smile, Angry, Sleep, Dead, Sleep)
 export function setRoboMood(emoji) {
   hudDisplay.moodDisplay.textContent = emoji;
 }
 
+// Handles calcualting and updating the current mood of the robot
 export function updateRoboMood(cacheVal, chargeVal) {
   let totalHappyVal = (cacheVal + chargeVal) / 2;
 
@@ -250,32 +280,49 @@ export function updateRoboMood(cacheVal, chargeVal) {
   } else if (totalHappyVal >= 51) {
     setRoboMood("😡");
   } else if (roboState.chargePercent <= 0) {
-    roboSendResponse(
-      `${
-        roboState.name !== "" ? roboState.name : "Virtual Pet"
-      } Died☠️, refresh to get a new pet.`
-    );
     setRoboMood("☠️☠️☠️☠️");
-    roboState.isDead = true;
-    hudDisplay.errorDisplay.classList.add("hide");
-    roboUI.body.classList.remove(roboState.skinclass);
-    roboUI.cpuText.classList.remove("cpu-text");
-    for (let eye of roboUI.eyes) {
-      eye.classList.remove("robo-eyes");
-      eye.classList.add("robo-eyes-die");
-    }
-    for (let part of roboUI.bodyParts) {
-      part.classList.remove("robo-color");
-      part.classList.add("robo-color-die");
-    }
-    roboUI.cpuText.classList.add("cpu-text-die");
-    roboUI.shadow.classList.add("shadow-gone");
-    roboUI.body.classList.add("robo-full-die");
-    clearBatteryInterval();
-    clearTimeLivedInterval();
+    die();
   }
 }
 
+// Handles robot death
+function die() {
+  // Updates robot state to dead and removes the robot alive skin color
+  roboState.isDead = true;
+  hudDisplay.errorDisplay.classList.add("hide");
+  roboUI.body.classList.remove(roboState.skinclass);
+  roboUI.cpuText.classList.remove("cpu-text");
+
+  // Removes the alive robot eye class
+  for (let eye of roboUI.eyes) {
+    eye.classList.remove("robo-eyes");
+    eye.classList.add("robo-eyes-die");
+  }
+
+  // Adds the dead robot eye class
+  for (let part of roboUI.bodyParts) {
+    part.classList.remove("robo-color");
+    part.classList.add("robo-color-die");
+  }
+
+  // Removes robot cpu core UI
+  roboUI.cpuText.classList.add("cpu-text-die");
+  roboUI.shadow.classList.add("shadow-gone");
+  roboUI.body.classList.add("robo-full-die");
+
+  // Clears all necessary robot intervals
+  clearBatteryInterval();
+  clearTimeLivedInterval();
+
+  // Inform user of robot death
+  roboSendResponse(
+    `${
+      roboState.name !== "" ? roboState.name : "Virtual Pet"
+    } Died☠️, refresh to get a new pet.`
+  );
+}
+
+// Robot intervals handler funtions
 export function clearBatteryInterval() {
   clearInterval(batteryInterval);
 }

@@ -1,8 +1,5 @@
 // Global variable state for robot
 let roboState = {
-  id: "",
-  maxCache: 10,
-  timeLived: new Date(),
   guessVal: 0,
   isGameInit: false,
   isGameStarted: false,
@@ -10,26 +7,20 @@ let roboState = {
   isDead: false,
   isError: false,
   isTyping: false,
-  chargePercent: 100,
-  cachePercent: 100,
-  cacheList: [],
-  name: "",
-  mood: "",
-  version: 1,
-  skinclass: "",
-  skins: [
-    "robo-violet",
-    "robo-green",
-    "robo-brown",
-    "robo-orange",
-    "robo-magenta",
-    "robo-indigo",
-    "robo-red",
-    "robo-blue",
-    "robo-jet",
-    "robo-light-orange",
-  ],
 };
+
+const robotSkins = [
+  "robo-violet",
+  "robo-green",
+  "robo-brown",
+  "robo-orange",
+  "robo-magenta",
+  "robo-indigo",
+  "robo-red",
+  "robo-blue",
+  "robo-jet",
+  "robo-light-orange",
+];
 
 // Robot list object state
 const directionList = {
@@ -59,7 +50,7 @@ const directionList = {
   ],
 };
 
-// Robot UI state
+// Robot svg components
 let roboUI = {
   body: document.querySelector("#robo-full"),
   shadow: document.querySelector("#idle-shadow"),
@@ -68,7 +59,7 @@ let roboUI = {
   eyes: document.querySelectorAll(".robo-eyes"),
 };
 
-// Robot Heads Up Display (HUD) state
+// Robot Heads Up Display (HUD)
 let hudDisplay = {
   nameDisplay: document.querySelector("#name"),
   errorDisplay: document.querySelector(".info-display"),
@@ -84,7 +75,6 @@ let hudDisplay = {
 let userData = {
   userInput: document.querySelector("#user-input"),
   currentUserInput: "",
-  phone: "",
 };
 
-export { roboState, directionList, roboUI, hudDisplay, userData };
+export { roboState, robotSkins, directionList, roboUI, hudDisplay, userData };
