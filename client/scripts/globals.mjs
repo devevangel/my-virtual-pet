@@ -1,5 +1,6 @@
 // Global variable state for robot
 let roboState = {
+  id: "",
   maxCache: 10,
   timeLived: new Date(),
   guessVal: 0,
@@ -12,7 +13,7 @@ let roboState = {
   chargePercent: 100,
   cachePercent: 100,
   cacheList: [],
-  name: localStorage.getItem("roboName"),
+  name: "",
   mood: "",
   version: 1,
   skinclass: "",

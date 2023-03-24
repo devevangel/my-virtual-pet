@@ -1,4 +1,4 @@
-import { getRandomIntInclusive } from "./utils.mjs";
+import { getRobotSkin } from "./utils.mjs";
 import { roboState, roboUI, hudDisplay, userData } from "./globals.mjs";
 import { setSleepButtonText } from "./main.mjs";
 
@@ -121,12 +121,7 @@ export function updateOSManual() {
 
 export function updateOS() {
   roboUI.body.removeAttribute("class");
-  const selectRoboColorIndex = getRandomIntInclusive(
-    0,
-    roboState.skins.length - 1
-  );
-  roboState.skinclass = roboState.skins[selectRoboColorIndex];
-  roboUI.body.classList.add(roboState.skinclass);
+  roboUI.body.classList.add(getRobotSkin());
 }
 
 export function showError(msg) {
@@ -216,7 +211,22 @@ export function setTimeLived(startTime) {
   }
 }
 
+export function bootRobot() {
+  console.log(roboState);
+  setInitRoboStats();
+  calcCache();
+  setBatteryInterval();
+  setTimeLivedInterval();
+  writeResponse(
+    `Hello!, I am a simple Virtual Pet interface created by evangel Inc 👨‍💻,
+    here to provide assistance. Enter keyword 'how to' to learn more about
+    me. cheers`,
+    60
+  );
+}
+
 export function setInitRoboStats() {
+  roboUI.body.classList.add(roboState.skinclass);
   hudDisplay.nameDisplay.textContent = roboState.name;
   hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
   hudDisplay.cacheDisplay.textContent = `${roboState.cachePercent}%`;

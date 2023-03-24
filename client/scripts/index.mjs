@@ -1,4 +1,6 @@
-import { createParticle } from "./utils.mjs";
+import { createParticle, getRobotSkin } from "./utils.mjs";
+import { handleCreatePet } from "./api.mjs";
+import { roboState } from "./globals.mjs";
 
 window.addEventListener("load", welcome);
 
@@ -16,6 +18,8 @@ function welcome() {
   const getRobotForm = document.querySelector("#get-robot-form");
   const actionTextCreate = document.querySelector("#create-robot");
   const actionTextGet = document.querySelector("#get-robot");
+  const createRobotButton = document.querySelector("#create-robot-button");
+  const getRobotButton = document.querySelector("#get-robot-button");
 
   // Local state
   const welcomeText =
@@ -28,8 +32,8 @@ function welcome() {
   // event listeners
   actionTextCreate.addEventListener("click", switchForm);
   actionTextGet.addEventListener("click", switchForm);
-  getRobotForm.addEventListener("submit", getRobot);
-  createRobotForm.addEventListener("submit", createRobot);
+  getRobotButton.addEventListener("click", getRobot);
+  createRobotButton.addEventListener("click", createRobot);
 
   write();
 
@@ -64,11 +68,29 @@ function welcome() {
   }
 }
 
-function createRobot(e) {
-  e.preventDefault();
-  console.log(e.target.value);
-  window.location.href = "robot.html";
-  localStorage.setItem("roboName", "Them");
+async function createRobot() {
+  const robotName = document.querySelector("#robot-name");
+  const ownerPhone = document.querySelector("#owner-line");
+
+  if (robotName.value === "" || ownerPhone.value === "")
+    return alert("Please fill or form fields");
+
+  const reqBody = {
+    name: robotName.value,
+    owner: ownerPhone.value,
+    timeLived: new Date(),
+    skinclass: getRobotSkin(),
+  };
+
+  let { robot } = await handleCreatePet(reqBody);
+  if (robot) {
+    for (let key in robot) {
+      if (roboState.hasOwnProperty(key) && roboState[key] !== robot[key]) {
+        roboState[key] = robot[key];
+      }
+    }
+    window.location.href = "robot.html";
+  }
 }
 
 function getRobot(e) {

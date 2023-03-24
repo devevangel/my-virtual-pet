@@ -1,3 +1,5 @@
+import { roboState } from "./globals.mjs";
+
 // sudo generates random int within given range
 export function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -6,8 +8,13 @@ export function getRandomIntInclusive(min, max) {
 }
 
 // sudo generate random float number within given range
-export function randomFloatInRange(min, max) {
+function randomFloatInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Get a skin class for a robot
+export function getRobotSkin() {
+  return roboState.skins[getRandomIntInclusive(0, roboState.skins.length - 1)];
 }
 
 // Creates a particle using the div tag

@@ -14,7 +14,7 @@
 <section class="welcome-section" id="welcome-section">
   <div class="welcome-text"></div>
 
-  <form class="welcome-form-container" id="create-robot-form">
+  <div class="welcome-form-container" id="create-robot-form">
     <h4>Create A Robot</h4>
 
     <input
@@ -30,21 +30,27 @@
       placeholder="owner phone line..."
       required
     />
-    <button id="create-robot-button" type="submit">Create 🟢</button>
+    <button id="create-robot-button">Create 🟢</button>
 
     <div class="format-font">
       already have a robot pet?
       <span class="action-text" id="get-robot">get robot</span>
     </div>
-  </form>
+  </div>
 
-  <form class="welcome-form-container hide" id="get-robot-form">
+  <div class="welcome-form-container hide" id="get-robot-form">
     <h4>Get Your Robot</h4>
-    <input type="tel" placeholder="owner phone line..." autofocus required />
-    <button id="get-robot-button" type="submit">Get 📥</button>
+    <input
+      id="get-owner-line"
+      type="tel"
+      placeholder="owner phone line..."
+      autofocus
+      required
+    />
+    <button id="get-robot-button">Get 📥</button>
     <div class="format-font">
       Dont have a robot?
       <span class="action-text" id="create-robot">create robot</span>
     </div>
-  </form>
+  </div>
 </section>
