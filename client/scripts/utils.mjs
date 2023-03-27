@@ -1,5 +1,3 @@
-import { roboState } from "./globals.mjs";
-
 // Sudo generates random int within given range
 export function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -15,8 +13,8 @@ function randomFloatInRange(min, max) {
 // Creates a moving particle using the div tag
 export function createParticle(lifeTime, screen, containerElem) {
   // Create a new div element for the particle
-  const particle = document.createElement("div");
-  particle.className = "particle";
+  const particle = document.createElement('div');
+  particle.className = 'particle';
 
   // Set particle postision within screen x and y value
   particle.style.left = `${randomFloatInRange(0, screen.x)}px`;
@@ -43,7 +41,7 @@ export function createParticle(lifeTime, screen, containerElem) {
     if (newX < 0) {
       particle.style.left = `${screen.x}px`;
     } else if (newX > screen.x) {
-      particle.style.left = "0px";
+      particle.style.left = '0px';
     } else {
       particle.style.left = `${newX}px`;
     }
@@ -51,7 +49,7 @@ export function createParticle(lifeTime, screen, containerElem) {
     if (newY < 0) {
       particle.style.top = `${screen.y}px`;
     } else if (newY > screen.y) {
-      particle.style.top = "0px";
+      particle.style.top = '0px';
     } else {
       particle.style.top = `${newY}px`;
     }

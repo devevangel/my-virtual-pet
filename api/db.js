@@ -8,6 +8,11 @@ class RobotDataBaseAPI {
   }
 
   // Creates a new robot in the database
+  /**
+   *
+   * @param { name, timeLived, skinclass, owner} - Takes in new robot object
+   * @returns {}  Newly created robot object
+   */
   create(robotObj) {
     const { name, skinclass, timeLived, owner } = robotObj;
 
@@ -23,7 +28,7 @@ class RobotDataBaseAPI {
       skinclass,
       version: "1.0.0",
       chargePercent: 100,
-      cachePercent: 0,
+      cachePercent: 100,
       cacheList: [],
     };
     this.database[owner] = newRobot;
@@ -32,12 +37,23 @@ class RobotDataBaseAPI {
   }
 
   // Finds a robot in the database by its owner
+  /**
+   *
+   * @param {*} query Query object to be executed
+   * @returns Robot object matching query
+   */
   findOne(query) {
     const result = this.database[query.owner];
     return result ?? {};
   }
 
   // Updates a robot stats by its owner in the database
+  /**
+   *
+   * @param {*} query Query object to be executed
+   * @param {*} data New data value to update existing robot document with
+   * @returns Returns updated robot document
+   */
   updateOne(query, data) {
     let robot = this.database[query.owner];
 
@@ -52,6 +68,11 @@ class RobotDataBaseAPI {
   }
 
   // Returns n number of robots from the database
+  /**
+   *
+   * @param {*} length Total length of required robots
+   * @returns Returns a total of 'lenght' robots specified
+   */
   find(length = 5) {
     const keys = Object.keys(this.database).slice(0, length);
     const result = [];
@@ -62,6 +83,11 @@ class RobotDataBaseAPI {
   }
 
   // Remove a robot from the database by its owner
+  /**
+   *
+   * @param {*} query Query object to be executed
+   * @returns Returns delete robot from dbs
+   */
   deleteOne(query) {
     const snapshot = this.database;
 

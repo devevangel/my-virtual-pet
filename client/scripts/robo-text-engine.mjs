@@ -1,6 +1,6 @@
-import { hudDisplay, roboState, directionList, userData } from "./globals.mjs";
-import { parseUserInput } from "./user.mjs";
+import { hudDisplay, roboState, directionList, userData } from './globals.mjs';
 import {
+  parseUserInput,
   roboSendResponse,
   calcCache,
   cleanCache,
@@ -10,8 +10,9 @@ import {
   getRoboVersion,
   writeResponse,
   resetWriter,
-} from "./robo.mjs";
-import { handleGameInit, playGame } from "./game.mjs";
+} from './robo.mjs';
+
+import { handleGameInit, playGame } from './game.mjs';
 
 // Robot user I/O processor
 export function talkToBot(e) {
@@ -19,22 +20,22 @@ export function talkToBot(e) {
     if (roboState.isSleeping || roboState.isDead) return;
 
     // Clear last user input
-    hudDisplay.roboDisplay.textContent = "";
-    hudDisplay.listOrderDisplay.innerHTML = "";
+    hudDisplay.roboDisplay.textContent = '';
+    hudDisplay.listOrderDisplay.innerHTML = '';
     resetWriter();
 
     // Parse user input
-    let parsedUserInput = parseUserInput(userData.currentUserInput);
-    userData.userInput.value = "";
+    const parsedUserInput = parseUserInput(userData.currentUserInput);
+    userData.userInput.value = '';
 
     // Search for specific user input keywords
-    if (parsedUserInput.includes("name=")) {
-      const rawName = parsedUserInput.split("=")[1];
-      let parsedName = rawName.replaceAll('"', "").replaceAll("'", "");
+    if (parsedUserInput.includes('name=')) {
+      const rawName = parsedUserInput.split('=')[1];
+      const parsedName = rawName.replaceAll('"', '').replaceAll("'", '');
       if (parsedName.length > 0) {
         setRoboName(parsedName);
       }
-      roboSendResponse("Name updated successfully.", "text");
+      roboSendResponse('Name updated successfully.', 'text');
       return;
     }
 
@@ -45,17 +46,17 @@ export function talkToBot(e) {
     }
 
     if (roboState.isGameStarted) {
-      if (parsedUserInput === "end") {
+      if (parsedUserInput === 'end') {
         handleGameInit(parsedUserInput);
         return;
-      } else if (parsedUserInput === "help") {
-        for (let helpText of directionList.gameHelp) {
-          const li = document.createElement("li");
+      } else if (parsedUserInput === 'help') {
+        for (const helpText of directionList.gameHelp) {
+          const li = document.createElement('li');
           li.textContent = helpText;
           hudDisplay.listOrderDisplay.append(li);
         }
-        roboSendResponse(null, "node", {
-          title: "Game Help",
+        roboSendResponse(null, 'node', {
+          title: 'Game Help',
           node: hudDisplay.listOrderDisplay,
         });
         return;
@@ -66,137 +67,135 @@ export function talkToBot(e) {
     // Recalculate cache value
     calcCache(parsedUserInput);
 
+    const date = new Date(Date.now());
+    const timeStamp = new Date(Date.now());
+
     switch (parsedUserInput) {
-      case "hi":
-        writeResponse("Hello! How can I help you today?", 50);
+      case 'hi':
+        writeResponse('Hello! How can I help you today?', 50);
         break;
-      case "hello":
+      case 'hello':
         writeResponse(
           "Hi! Is there anything you would like to ask or talk about? I'm here to assist you.",
-          50
+          50,
         );
         break;
-      case "hey":
-        writeResponse("Hello! How can I assist you today?", 50);
+      case 'hey':
+        writeResponse('Hello! How can I assist you today?', 50);
 
         break;
-      case "name":
-        if (roboState.name !== "") {
-          writeResponse("`My name is ${roboState.name}`", 50);
+      case 'name':
+        if (roboState.name !== '') {
+          writeResponse(`My name is ${roboState.name}`, 50);
         } else {
           writeResponse(
             "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
-            50
+            50,
           );
         }
         break;
-      case "whatisyourname?":
-        if (roboState.name !== "") {
-          writeResponse("`My name is ${roboState.name}`", 50);
+      case 'whatisyourname?':
+        if (roboState.name !== '') {
+          writeResponse(`My name is ${roboState.name}`, 50);
         } else {
           writeResponse(
             "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
-            50
+            50,
           );
         }
         break;
-      case "whatisyourname":
-        if (roboState.name !== "") {
-          writeResponse("`My name is ${roboState.name}`", 50);
+      case 'whatisyourname':
+        if (roboState.name !== '') {
+          writeResponse(`My name is ${roboState.name}`, 50);
         } else {
           writeResponse(
             "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
-            50
+            50,
           );
         }
         break;
-      case "whoareyou?":
+      case 'whoareyou?':
         roboSendResponse(
-          `Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword 'manual' to learn more about me.`,
-          "text"
+          'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
+          'text',
         );
         break;
-      case "whoareyou":
+      case 'whoareyou':
         roboSendResponse(
-          `Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword 'manual' to learn more about me.`,
-          "text"
+          'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
+          'text',
         );
         break;
-      case "whatareyou?":
+      case 'whatareyou?':
         roboSendResponse(
-          `Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword 'manual' to learn more about me.`,
-          "text"
+          'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
+          'text',
         );
         break;
-      case "whatareyou":
+      case 'whatareyou':
         roboSendResponse(
-          `Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword 'manual' to learn more about me.`,
-          "text"
+          'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
+          'text',
         );
         break;
-      case "howto":
-        for (let action of directionList.manual) {
-          const li = document.createElement("li");
+      case 'howto':
+        for (const action of directionList.manual) {
+          const li = document.createElement('li');
           li.textContent = action;
           hudDisplay.listOrderDisplay.append(li);
         }
-        roboSendResponse(null, "node", {
-          title: "Usage Manual",
+        roboSendResponse(null, 'node', {
+          title: 'Usage Manual',
           node: hudDisplay.listOrderDisplay,
         });
         break;
-      case "help":
-        for (let action of directionList.manual) {
-          const li = document.createElement("li");
+      case 'help':
+        for (const action of directionList.manual) {
+          const li = document.createElement('li');
           li.textContent = action;
           hudDisplay.listOrderDisplay.append(li);
         }
-        roboSendResponse(null, "node", {
-          title: "Usage Manual",
+        roboSendResponse(null, 'node', {
+          title: 'Usage Manual',
           node: hudDisplay.listOrderDisplay,
         });
         break;
-      case "history":
-        for (let cacheItem of roboState.cacheList) {
-          const li = document.createElement("li");
+      case 'history':
+        for (const cacheItem of roboState.cacheList) {
+          const li = document.createElement('li');
           li.textContent = cacheItem;
           hudDisplay.listOrderDisplay.append(li);
         }
-        roboSendResponse(null, "node", {
-          title: "Commands History",
+        roboSendResponse(null, 'node', {
+          title: 'Commands History',
           node: hudDisplay.listOrderDisplay,
         });
         break;
-      case "time":
-        const timestamp = new Date(Date.now());
+      case 'time':
         roboSendResponse(
-          `The time is ${timestamp.toLocaleTimeString()}.`,
-          "text"
+          `The time is ${timeStamp.toLocaleTimeString()}.`,
+          'text',
         );
         break;
-      case "date":
-        const date = new Date(Date.now());
-        roboSendResponse(`Today is ${date.toDateString()}.`, "text");
+      case 'date':
+        roboSendResponse(`Today is ${date.toDateString()}.`, 'text');
         break;
-      case "cls":
+      case 'cls':
         cleanCache();
         break;
-      case "sleep":
+      case 'sleep':
         sleep();
         break;
-      case "game":
+      case 'game':
         handleGameInit(parsedUserInput);
         break;
-      case "version":
-        getRoboVersion();
-        break;
-      case "about":
+      case 'version':
         getRoboVersion();
         break;
       default:
         writeResponse(
           "I'm sorry I don't quite understand want you meant there, trying entering key word 'help' to learn about me.",
-          50
+          50,
         );
         updateRoboMood(roboState.cachePercent, roboState.chargePercent);
     }

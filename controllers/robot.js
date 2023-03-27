@@ -1,4 +1,4 @@
-import { Robot } from "../api/db.js";
+import { Robot } from '../api/db.js';
 
 export function getRobot(req, res) {
   const { owner } = req.params;
@@ -6,7 +6,7 @@ export function getRobot(req, res) {
   const robot = Robot.findOne({ owner });
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     robot,
   });
 }
@@ -17,7 +17,7 @@ export function createRobot(req, res) {
   const robot = Robot.create({ name, timeLived, skinclass, owner });
 
   res.status(201).json({
-    status: "success",
+    status: 'success',
     robot,
   });
 }
@@ -28,7 +28,7 @@ export function updateRobot(req, res) {
   const robot = Robot.updateOne({ owner }, req.body);
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     robot,
   });
 }
@@ -39,7 +39,7 @@ export function getRobots(req, res) {
   const robots = Robot.find(length);
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     robots,
   });
 }
@@ -50,7 +50,7 @@ export function deleteRobot(req, res) {
   const robot = Robot.deleteOne({ owner });
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     robot,
   });
 }

@@ -1,5 +1,5 @@
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import cors from 'cors';
 
 // Resource controllers
 import {
@@ -8,23 +8,23 @@ import {
   updateRobot,
   deleteRobot,
   getRobots,
-} from "./controllers/robot.js";
+} from './controllers/robot.js';
 
 const app = express();
 
 // middlewares
 app.use(cors());
-app.use(express.static("client"));
+app.use(express.static('client'));
 app.use(express.json());
 
 // routes
 
-app.post("/robots", createRobot);
-app.get("/robots", getRobots);
+app.post('/robots', createRobot);
+app.get('/robots', getRobots);
 
-app.get("/robots/:owner", getRobot);
-app.patch("/robots/:owner", updateRobot);
-app.delete("/robots/:owner", deleteRobot);
+app.get('/robots/:owner', getRobot);
+app.patch('/robots/:owner', updateRobot);
+app.delete('/robots/:owner', deleteRobot);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`listening on port ${port}`));

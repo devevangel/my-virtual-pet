@@ -11,7 +11,7 @@
 <script type="module" src="scripts/index.mjs"></script>
 <title>Robot Dojo Inc</title>
 
-<section class="welcome-section" id="welcome-section">
+<section class="welcome-section hide" id="welcome-section">
   <div class="welcome-text"></div>
 
   <div class="welcome-form-container" id="create-robot-form">
@@ -55,7 +55,7 @@
   </div>
 </section>
 
-<section class="pet-home hide">
+<section class="pet-home hide" id="main-section">
   <svg
     version="1.1"
     width="360"
@@ -145,11 +145,12 @@
 
     <div id="robo-output">
       robo:\
+      <div class="loading-spinner"></div>
       <div id="robo-output-main"></div>
       <p class="info-display hide">cache almost full, please clean cache</p>
     </div>
 
-    <div class="buttons-container">
+    <div class="buttons-container hide">
       <button id="feed-me">Feed Me 🔋</button>
       <button id="sleep">Sleep😴</button>
       <button id="clean-cache">Clean Cache🧹</button>

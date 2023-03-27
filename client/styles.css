@@ -177,6 +177,19 @@ button:hover {
   animation: blink 1s infinite;
 }
 
+.loading-spinner {
+  border: 4px solid rgba(0, 128, 0, 0.2);
+  border-top: 4px solid #00ff00;
+  border-radius: 50%; /* Make it circular */
+  width: 20px;
+  height: 20px;
+  animation: spin 1s ease-in-out infinite;
+  position: absolute;
+  top: 40%;
+  left: 45%;
+  transform: translate(-45%, -40%);
+}
+
 /* Robot skin color class list */
 .robo-violet {
   fill: #c71585;
@@ -278,6 +291,15 @@ button:hover {
 @keyframes blink {
   50% {
     opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); /* Rotate starting from 0 degrees */
+  }
+  100% {
+    transform: rotate(360deg); /* Rotate ending at 360 degrees */
   }
 }
 
