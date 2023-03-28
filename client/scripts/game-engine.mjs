@@ -5,10 +5,11 @@ import {
   clearBatteryInterval,
   setBatteryInterval,
   writeResponse,
-} from './robo.mjs';
+} from './robot-os.mjs';
 import { directionList, roboState } from './globals.mjs';
 import { getRandomIntInclusive } from './utils.mjs';
 
+// Handles user input to initial game play state
 export function handleGameInit(userInput) {
   switch (userInput) {
     case 'game':
@@ -57,6 +58,7 @@ export function handleGameInit(userInput) {
   }
 }
 
+// Handles showing game rules while game is in session
 export function showGameRules() {
   roboState.guessVal = getRandomIntInclusive(1, 10);
   writeResponse(directionList.gameIntructions, 60);
@@ -64,7 +66,7 @@ export function showGameRules() {
   setRoboMood('🎮');
 }
 
-// Handles the entire game play process
+// Handles game lofic to determine a win or loss and display the appropriate messages to user
 export function playGame(userInput) {
   const userInputNum = parseInt(userInput);
 

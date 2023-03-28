@@ -7,8 +7,8 @@ import {
   handleUserInput,
   powerRobot,
   getNewRobotSkin,
-} from './robo.mjs';
-import { talkToBot } from './robo-text-engine.mjs';
+} from './robot-os.mjs';
+import { talkToBot } from './robot-text-engine.mjs';
 import { handleCreateRobot } from './api.mjs';
 
 // UI elements
@@ -43,7 +43,7 @@ const screen = {
   y: window.innerHeight - 10,
 };
 const welcomeText =
-  "Hello! and  welcome to Robo Dojo, <br/> Let's help you get a virtual robot pet today!";
+  "Hello! and  welcome to Robo Dojo, <br/> Let's help you get a virtual robot today!";
 
 window.addEventListener('load', startApp);
 
@@ -81,7 +81,7 @@ function startApp() {
   }
 }
 
-// Handles hiding and showing of create and get pet form
+// Handles hiding and showing of create and get robot form
 function switchForm() {
   if (switchState === 'create') {
     createRobotForm.classList.add('hide');
@@ -113,6 +113,7 @@ export function setSleepButtonText(text) {
   sleepButton.textContent = text;
 }
 
+// Create and setup new user robot
 async function createRobot() {
   const name = roboNameInput.value;
   const phone = phoneInput.value;

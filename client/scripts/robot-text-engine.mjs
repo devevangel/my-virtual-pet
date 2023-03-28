@@ -10,14 +10,24 @@ import {
   getRoboVersion,
   writeResponse,
   resetWriter,
-} from './robo.mjs';
+  showError,
+} from './robot-os.mjs';
 
-import { handleGameInit, playGame } from './game.mjs';
+import { handleGameInit, playGame } from './game-engine.mjs';
 
 // Robot user I/O processor
+
+const date = new Date(Date.now());
+const timeStamp = new Date(Date.now());
+
 export function talkToBot(e) {
   if (e.keyCode === 13) {
     if (roboState.isSleeping || roboState.isDead) return;
+
+    // Check if cache is full
+    if (roboState.cachePercent <= 0) {
+      return showError('Cache full, please clean cache immediately');
+    }
 
     // Clear last user input
     hudDisplay.roboDisplay.textContent = '';
@@ -66,9 +76,6 @@ export function talkToBot(e) {
 
     // Recalculate cache value
     calcCache(parsedUserInput);
-
-    const date = new Date(Date.now());
-    const timeStamp = new Date(Date.now());
 
     switch (parsedUserInput) {
       case 'hi':

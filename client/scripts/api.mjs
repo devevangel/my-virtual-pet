@@ -1,5 +1,6 @@
 const URL = 'http://localhost:8080/robots/';
 
+// API request fucntion to create a new owner and assign them a robot
 export async function handleCreateRobot(requestBody) {
   try {
     const response = await fetch(URL, {
@@ -16,6 +17,7 @@ export async function handleCreateRobot(requestBody) {
   }
 }
 
+// API request fucntion to fetch robot beloging to passed owner param
 export async function handleGetRobot(owner) {
   try {
     const response = await fetch(`${URL}/${owner}`);
@@ -25,6 +27,7 @@ export async function handleGetRobot(owner) {
   }
 }
 
+// API request function to handle updating server stored robot state data
 export async function handleUpdateRobot(owner, robotData) {
   try {
     const response = await fetch(`${URL}/${owner}`, {
@@ -41,6 +44,7 @@ export async function handleUpdateRobot(owner, robotData) {
   }
 }
 
+// API request function to handle clearing data about dead  robot
 export async function handleDeleteRobot(owner) {
   try {
     const response = await fetch(`${URL}/${owner}`, {
