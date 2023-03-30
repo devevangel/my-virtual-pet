@@ -11,6 +11,7 @@ export function getRobot(req, res) {
   });
 }
 
+
 export function createRobot(req, res) {
   const { name, timeLived, skinclass, owner } = req.body;
 

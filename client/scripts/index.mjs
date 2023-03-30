@@ -2,14 +2,14 @@ import { createParticle } from './utils.mjs';
 import {
   feedMe,
   cleanCache,
-  sleep,
+  handleSleepAwakeState,
   updateOS,
   handleUserInput,
   powerRobot,
   getNewRobotSkin,
 } from './robot-os.mjs';
 import { talkToBot } from './robot-text-engine.mjs';
-import { handleCreateRobot } from './api.mjs';
+import { handleCreateRobot, handleGetRobot } from './api.mjs';
 
 // UI elements
 const welcomeTextArea = document.querySelector('.welcome-text');
@@ -21,16 +21,16 @@ const actionTextCreate = document.querySelector('#create-robot');
 const actionTextGet = document.querySelector('#get-robot');
 const createRobotButton = document.querySelector('#create-robot-button');
 const getRobotButton = document.querySelector('#get-robot-button');
-
-// UI text inputs
-const roboNameInput = document.querySelector('#robot-name');
-const phoneInput = document.querySelector('#owner-line');
-
-// UI buttons
+// UI robot buttons
 const cleanCacheButton = document.querySelector('#clean-cache');
 const updateOSButton = document.querySelector('#update-os');
 const chargeButton = document.querySelector('#feed-me');
 const sleepButton = document.querySelector('#sleep');
+// UI text inputs
+const roboNameInput = document.querySelector('#robot-name');
+const phoneInput = document.querySelector('#owner-line');
+const getOwnerRobotInput = document.querySelector('#get-owner-line');
+
 
 // App state variables
 const typingDelay = 120;
@@ -57,7 +57,7 @@ function startApp() {
   cleanCacheButton.addEventListener('click', cleanCache);
   updateOSButton.addEventListener('click', updateOS);
   chargeButton.addEventListener('click', () => feedMe(0.5));
-  sleepButton.addEventListener('click', sleep);
+  sleepButton.addEventListener('click', handleSleepAwakeState);
   document.addEventListener('input', handleUserInput);
   document.addEventListener('keyup', talkToBot);
 
@@ -117,28 +117,46 @@ export function setSleepButtonText(text) {
 async function createRobot() {
   const name = roboNameInput.value;
   const phone = phoneInput.value;
-
   if (!name || !phone) return alert('Please fill out all fields');
+
   const reqBody = {
     name,
     timeLived: new Date(),
     skinclass: getNewRobotSkin(),
     owner: phone,
   };
-
   const result = await handleCreateRobot(reqBody);
   const { robot } = result;
-  if (robot) {
-    localStorage.setItem('owner', robot.owner);
-    localStorage.setItem('robot', JSON.stringify(robot));
-    welcomeSection.classList.add('hide');
-    mainSection.classList.remove('hide');
-    clearInterval(particleInterval);
-    clearTimeout(writingTimeout);
-    powerRobot();
+
+  if (!robot.owner) {
+    alert('Authentication failed');
+  } else {
+    saveRobot(robot);
   }
 }
 
-function getRobot() {
-  console.log('Get robot....');
+async function getRobot() {
+  const phone = getOwnerRobotInput.value;
+  if (!phone) {
+    return alert('Please enter a valid phone number');
+  }
+
+  const result = await handleGetRobot(phone);
+  const { robot } = result;
+
+  if (!robot.owner) {
+    alert('Authentication failed');
+  } else {
+    saveRobot(robot);
+  }
+}
+
+function saveRobot(robot) {
+  localStorage.setItem('owner', robot.owner);
+  localStorage.setItem('robot', JSON.stringify(robot));
+  welcomeSection.classList.add('hide');
+  mainSection.classList.remove('hide');
+  clearInterval(particleInterval);
+  clearTimeout(writingTimeout);
+  powerRobot();
 }

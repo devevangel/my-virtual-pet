@@ -6,11 +6,11 @@ import {
   cleanCache,
   updateRoboMood,
   setRoboName,
-  sleep,
   getRoboVersion,
   writeResponse,
   resetWriter,
   showError,
+  handleSleepAwakeState,
 } from './robot-os.mjs';
 
 import { handleGameInit, playGame } from './game-engine.mjs';
@@ -191,7 +191,7 @@ export function talkToBot(e) {
         cleanCache();
         break;
       case 'sleep':
-        sleep();
+        handleSleepAwakeState();
         break;
       case 'game':
         handleGameInit(parsedUserInput);
