@@ -15,11 +15,21 @@ import {
 
 import { handleGameInit, playGame } from './game-engine.mjs';
 
-// Robot user I/O processor
-
 const date = new Date(Date.now());
 const timeStamp = new Date(Date.now());
 
+/**
+* talkToBot function is responsible for parsing the user's input, and calling the appropriate function based on the parsed user input.
+* The function handles different cases of user input, including updating the robot's name,
+* playing a game, and responding to questions about its name, and its identity.
+* The function receives an event e as a parameter,
+* which is the keydown event that is triggered when the user presses a key on the keyboard.
+* If the keycode of the key pressed is 13 (enter), the function is executed.
+
+* @param {Event} e - the keydown event that is triggered when the user presses a key on the keyboard
+
+* @returns {void} This function does not return anything.
+*/
 export function talkToBot(e) {
   if (e.keyCode === 13) {
     if (roboState.isSleeping || roboState.isDead) return;
@@ -89,19 +99,8 @@ export function talkToBot(e) {
         break;
       case 'hey':
         writeResponse('Hello! How can I assist you today?', 50);
-
         break;
       case 'name':
-        if (roboState.name !== '') {
-          writeResponse(`My name is ${roboState.name}`, 50);
-        } else {
-          writeResponse(
-            "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
-            50,
-          );
-        }
-        break;
-      case 'whatisyourname?':
         if (roboState.name !== '') {
           writeResponse(`My name is ${roboState.name}`, 50);
         } else {
@@ -121,19 +120,7 @@ export function talkToBot(e) {
           );
         }
         break;
-      case 'whoareyou?':
-        roboSendResponse(
-          'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
-          'text',
-        );
-        break;
       case 'whoareyou':
-        roboSendResponse(
-          'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
-          'text',
-        );
-        break;
-      case 'whatareyou?':
         roboSendResponse(
           'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
           'text',
@@ -144,17 +131,6 @@ export function talkToBot(e) {
           'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
           'text',
         );
-        break;
-      case 'howto':
-        for (const action of directionList.manual) {
-          const li = document.createElement('li');
-          li.textContent = action;
-          hudDisplay.listOrderDisplay.append(li);
-        }
-        roboSendResponse(null, 'node', {
-          title: 'Usage Manual',
-          node: hudDisplay.listOrderDisplay,
-        });
         break;
       case 'help':
         for (const action of directionList.manual) {

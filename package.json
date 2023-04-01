@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/devevangel/my-virtual-pet#readme",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.18.2",
     "nanoid": "^4.0.1"
   },

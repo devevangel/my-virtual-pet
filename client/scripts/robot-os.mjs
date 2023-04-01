@@ -83,7 +83,7 @@ export function resetWriter() {
 }
 
 // Clears robot output text/html
-export function resetRoboDisplayOutput() {
+function resetRoboDisplayOutput() {
   hudDisplay.roboDisplay.innerHTML = null;
   hudDisplay.roboDisplay.textContent = null;
 }
@@ -121,7 +121,7 @@ export function writeResponse(msg, delay) {
 }
 
 // Handles robot type writing process
-export function typeWriter() {
+function typeWriter() {
   const text = textOut.slice(0, ++charIndex);
   hudDisplay.roboDisplay.innerHTML = text;
   if (text === textOut) {
@@ -183,7 +183,7 @@ export function getRoboVersion() {
 }
 
 // Upates robot OS version
-export function upgradeRoboVersion() {
+function upgradeRoboVersion() {
   roboState.version = roboState.version + 1;
 }
 
@@ -200,7 +200,7 @@ export function showError(msg) {
 }
 
 // Clears error message
-export function clearError() {
+function clearError() {
   roboState.isError = false;
   hudDisplay.errorDisplay.textContent = '';
   hudDisplay.errorDisplay.classList.add('hide');
@@ -240,7 +240,7 @@ export function calcCache(userInput = null) {
 }
 
 // Handles robot battery life degeneration
-export function takeCharge(num) {
+function takeCharge(num) {
   if (roboState.chargePercent === 0 || roboState.isDead) return;
   roboState.chargePercent = roboState.chargePercent - (num / 5) * 100;
   hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
@@ -287,7 +287,7 @@ export function feedMe(num) {
 }
 
 // Handles calculating and displaying of the how long the robot has lived
-export function setTimeLived(currTimeLived) {
+function setTimeLived(currTimeLived) {
   const now = new Date();
   const timeDiff = now.getTime() - new Date(currTimeLived).getTime();
   const seconds = Math.floor(timeDiff / 1000);
@@ -332,7 +332,7 @@ function bootRobot() {
 }
 
 // Set initial robot state and UI values
-export function setInitRoboStats() {
+function setInitRoboStats() {
   // Set the UI elements of the robot
   roboUI.body.classList.add(roboState.skinclass);
   hudDisplay.nameDisplay.textContent = roboState.name;
@@ -416,7 +416,7 @@ export function clearBatteryInterval() {
   clearInterval(batteryInterval);
 }
 
-export function clearTimeLivedInterval() {
+function clearTimeLivedInterval() {
   clearInterval(timeLivedInterval);
 }
 
@@ -424,6 +424,6 @@ export function setBatteryInterval() {
   batteryInterval = setInterval(takeCharge, 12000, 0.5);
 }
 
-export function setTimeLivedInterval() {
+function setTimeLivedInterval() {
   timeLivedInterval = setInterval(setTimeLived, 1000, roboState.timeLived);
 }
