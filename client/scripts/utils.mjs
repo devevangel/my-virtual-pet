@@ -5,12 +5,17 @@ export function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// Sudo generate random float number within given range
+// Returns a random float value between the given minimum and maximum values.
 function randomFloatInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Creates a moving particle using the div tag
+/**
+* Creates a moving particle using the div tag.
+* @param {number} lifeTime - The lifespan of the particle in milliseconds.
+* @param {{x: number, y: number}} screen - An object containing the screen dimensions.
+* @param {HTMLElement} containerElem - The HTML element that will contain the particle.
+*/
 export function createParticle(lifeTime, screen, containerElem) {
   // Create a new div element for the particle
   const particle = document.createElement('div');
