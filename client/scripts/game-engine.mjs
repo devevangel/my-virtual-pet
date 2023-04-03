@@ -6,7 +6,7 @@ import {
   setBatteryInterval,
   writeResponse,
 } from './robot-os.mjs';
-import { directionList, roboState } from './globals.mjs';
+import { directionList, roboState, robotStats } from './globals.mjs';
 import { getRandomIntInclusive } from './utils.mjs';
 
 /**
@@ -55,7 +55,7 @@ export function handleGameInit(userInput) {
       roboState.isGameStarted = false;
       roboState.guessVal = 0;
       setBatteryInterval();
-      updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+      updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
       break;
     default:
       // Informs the user that they didn't enter a valid input and resets roboState.
@@ -67,7 +67,6 @@ export function handleGameInit(userInput) {
 }
 
 /**
-
 Handles showing game rules when the game is initiated. It generates the initial robot guess value using the getRandomIntInclusive function, writes or outputs the game directions for the user, removes the robot battery interval to prevent the robot from discharging while playing, and sets the robot mood state to gaming mood.
 @return {void}
 */

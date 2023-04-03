@@ -1,4 +1,4 @@
-import { hudDisplay, roboState, directionList, userData } from './globals.mjs';
+import { hudDisplay, roboState, directionList, userData, robotStats } from './globals.mjs';
 import {
   parseUserInput,
   roboSendResponse,
@@ -25,9 +25,7 @@ const timeStamp = new Date(Date.now());
 * The function receives an event e as a parameter,
 * which is the keydown event that is triggered when the user presses a key on the keyboard.
 * If the keycode of the key pressed is 13 (enter), the function is executed.
-
 * @param {Event} e - the keydown event that is triggered when the user presses a key on the keyboard
-
 * @returns {void} This function does not return anything.
 */
 export function talkToBot(e) {
@@ -35,11 +33,11 @@ export function talkToBot(e) {
     if (roboState.isSleeping || roboState.isDead) return;
 
     // Check if cache is full
-    if (roboState.cachePercent <= 0) {
+    if (robotStats.cachePercent <= 0) {
       return showError('Cache full, please clean cache immediately');
     }
 
-    // Clear last user input
+    // Clear previous user input
     hudDisplay.roboDisplay.textContent = '';
     hudDisplay.listOrderDisplay.innerHTML = '';
     resetWriter();
@@ -48,7 +46,7 @@ export function talkToBot(e) {
     const parsedUserInput = parseUserInput(userData.currentUserInput);
     userData.userInput.value = '';
 
-    // Search for specific user input keywords
+    // Handles changing robot name
     if (parsedUserInput.includes('name=')) {
       const rawName = parsedUserInput.split('=')[1];
       const parsedName = rawName.replaceAll('"', '').replaceAll("'", '');
@@ -59,17 +57,19 @@ export function talkToBot(e) {
       return;
     }
 
-    // Check various robot states
+    // Check if robot is in game start state
     if (roboState.isGameInit) {
       handleGameInit(parsedUserInput);
       return;
     }
 
+    // Check if robot is in a current game session
     if (roboState.isGameStarted) {
       if (parsedUserInput === 'end') {
         handleGameInit(parsedUserInput);
         return;
       } else if (parsedUserInput === 'help') {
+        // Show game help directions
         for (const helpText of directionList.gameHelp) {
           const li = document.createElement('li');
           li.textContent = helpText;
@@ -84,7 +84,7 @@ export function talkToBot(e) {
       return playGame(parsedUserInput);
     }
 
-    // Recalculate cache value
+    // Calculates cache
     calcCache(parsedUserInput);
 
     switch (parsedUserInput) {
@@ -101,8 +101,8 @@ export function talkToBot(e) {
         writeResponse('Hello! How can I assist you today?', 50);
         break;
       case 'name':
-        if (roboState.name !== '') {
-          writeResponse(`My name is ${roboState.name}`, 50);
+        if (robotStats.name !== '') {
+          writeResponse(`My name is ${robotStats.name}`, 50);
         } else {
           writeResponse(
             "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
@@ -111,8 +111,8 @@ export function talkToBot(e) {
         }
         break;
       case 'whatisyourname':
-        if (roboState.name !== '') {
-          writeResponse(`My name is ${roboState.name}`, 50);
+        if (robotStats.name !== '') {
+          writeResponse(`My name is ${robotStats.name}`, 50);
         } else {
           writeResponse(
             "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
@@ -144,7 +144,7 @@ export function talkToBot(e) {
         });
         break;
       case 'history':
-        for (const cacheItem of roboState.cacheList) {
+        for (const cacheItem of robotStats.cacheList) {
           const li = document.createElement('li');
           li.textContent = cacheItem;
           hudDisplay.listOrderDisplay.append(li);
@@ -180,7 +180,7 @@ export function talkToBot(e) {
           "I'm sorry I don't quite understand want you meant there, trying entering key word 'help' to learn about me.",
           50,
         );
-        updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+        updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
     }
   }
 }

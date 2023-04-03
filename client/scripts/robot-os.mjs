@@ -1,5 +1,6 @@
 import {
   roboState,
+  robotStats,
   roboUI,
   hudDisplay,
   userData,
@@ -141,8 +142,8 @@ export function cleanCache() {
   }
 
   // Reset the cache list value and percentage display
-  roboState.cacheList = [];
-  roboState.cachePercent = 100;
+  robotStats.cacheList = [];
+  robotStats.cachePercent = 100;
   hudDisplay.cacheDisplay.textContent = `${0}%`;
 
   // Reset the user input and clear any errors
@@ -150,7 +151,7 @@ export function cleanCache() {
   clearError();
 
   // Update the robot's mood and inform the user that the cache has been cleared
-  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+  updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
   hudDisplay.roboDisplay.textContent = 'Cache cleared';
 }
 
@@ -174,8 +175,10 @@ export function updateOS() {
   ) {
     return;
   }
+  const newRobotSkin = getNewRobotSkin();
   roboUI.body.removeAttribute('class');
-  roboUI.body.classList.add(getNewRobotSkin());
+  robotStats.skinclass = newRobotSkin;
+  roboUI.body.classList.add(newRobotSkin);
   upgradeRoboVersion();
   takeCharge(0.5);
 }
@@ -186,7 +189,7 @@ export function updateOS() {
 * @returns {void} this function does not return anything
 */
 export function getRoboVersion() {
-  roboSendResponse(`version: ${roboState.version}.0.0`, 'text');
+  roboSendResponse(`version: ${robotStats.version}.0.0`, 'text');
 }
 
 /**
@@ -220,44 +223,44 @@ export function calcCache(userInput = null) {
   if (
     roboState.chargePercent <= 0 ||
     roboState.isDead ||
-    roboState.cachePercent <= 0
+    robotStats.cachePercent <= 0
   ) {
     return;
   }
 
   // Add user input to cache(memory)
   if (userInput) {
-    roboState.cacheList.push(userInput);
+    robotStats.cacheList.push(userInput);
   }
 
   // Calculate and display new cache value
-  const cacheDisplay = (roboState.cacheList.length / roboState.maxCache) * 100;
+  const cacheDisplay = (robotStats.cacheList.length / roboState.maxCache) * 100;
   const actualCache =
-    (roboState.maxCache - roboState.cacheList.length) / roboState.maxCache;
-  roboState.cachePercent = actualCache * 100;
+    (roboState.maxCache - robotStats.cacheList.length) / roboState.maxCache;
+  robotStats.cachePercent = actualCache * 100;
   hudDisplay.cacheDisplay.textContent = `${cacheDisplay}%`;
 
   // Show error message based on cache value
-  if (roboState.cachePercent <= 30) {
+  if (robotStats.cachePercent <= 30) {
     showError('Cache almost full, please clean cache');
-  } else if (roboState.cachePercent <= 0) {
+  } else if (robotStats.cachePercent <= 0) {
     return showError('Cache almost full, please clean cache');
   }
 
   // Updates the robot mood
-  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+  updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
 }
 
 
 /**
 * Sets the robot name and updates the display and mood of the robot.
-* @param {string} [name=roboState.name] - The new name for the robot. Defaults to the current robot name.
+* @param {string} [name=robotStats.name] - The new name for the robot. Defaults to the current robot name.
 * @returns {void} This function does not return anything
 */
-export function setRoboName(name = roboState.name) {
-  roboState.name = name;
+export function setRoboName(name = robotStats.name) {
+  robotStats.name = name;
   hudDisplay.nameDisplay.textContent = name;
-  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+  updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
 }
 
 /**
@@ -281,16 +284,16 @@ export function feedMe(num) {
   }
 
   // Prevents over charging(feeding)
-  if (roboState.chargePercent >= 100) {
+  if (robotStats.chargePercent >= 100) {
     if (roboState.isTyping) return;
     roboSendResponse('Battery sufficiently charged', 'text');
     return;
   }
 
   // Updates UI with new charge %
-  roboState.chargePercent = roboState.chargePercent + (num / 5) * 100;
-  hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
-  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+  robotStats.chargePercent = robotStats.chargePercent + (num / 5) * 100;
+  hudDisplay.powerDisplay.textContent = `${robotStats.chargePercent}%`;
+  updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
   clearError();
 }
 
@@ -335,19 +338,19 @@ export function updateRoboMood(cacheVal, chargeVal) {
     setRoboMood('😥');
   } else if (totalHappyVal >= 51) {
     setRoboMood('😡');
-  } else if (roboState.chargePercent <= 0) {
+  } else if (robotStats.chargePercent <= 0) {
     setRoboMood('☠️');
     die();
   }
 
   // Saves current state of robot
   const newRobotState = {
-    name: roboState.name,
-    skinclass: roboState.skinclass,
-    version: roboState.version,
-    chargePercent: roboState.chargePercent,
-    cachePercent: roboState.cachePercent,
-    cacheList: roboState.cacheList,
+    name: robotStats.name,
+    skinclass: robotStats.skinclass,
+    version: robotStats.version,
+    chargePercent: robotStats.chargePercent,
+    cachePercent: robotStats.cachePercent,
+    cacheList: robotStats.cacheList,
   };
   saveRobotState(newRobotState);
 }
@@ -374,7 +377,7 @@ function die() {
   // Updates robot state to dead and removes the robot alive skin color
   roboState.isDead = true;
   hudDisplay.errorDisplay.classList.add('hide');
-  roboUI.body.classList.remove(roboState.skinclass);
+  roboUI.body.classList.remove(robotStats.skinclass);
   roboUI.cpuText.classList.remove('cpu-text');
 
   // Removes the alive robot eye class
@@ -400,7 +403,7 @@ function die() {
 
   // Inform user of robot death
   roboSendResponse(
-    `${roboState.name} Died☠️, because you neglected to charge it`,
+    `${robotStats.name} Died☠️, because you neglected to charge it`,
   );
 }
 
@@ -415,7 +418,7 @@ function bootRobot() {
   setTimeLivedInterval();
   writeResponse(
     'Hello!, owner great to see you. If you stuck and need' +
-    "some help just enter the keyword 'HOW TO' to access my many features 😊",
+    "some help just enter the keyword 'HELP' to access my many features 😊",
     60,
   );
 }
@@ -423,12 +426,12 @@ function bootRobot() {
 // Set initial robot state and UI values
 function setInitRoboStats() {
   // Set the UI elements of the robot
-  roboUI.body.classList.add(roboState.skinclass);
-  hudDisplay.nameDisplay.textContent = roboState.name;
-  hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
-  hudDisplay.cacheDisplay.textContent = `${roboState.cachePercent}%`;
+  roboUI.body.classList.add(robotStats.skinclass);
+  hudDisplay.nameDisplay.textContent = robotStats.name;
+  hudDisplay.powerDisplay.textContent = `${robotStats.chargePercent}%`;
+  hudDisplay.cacheDisplay.textContent = `${robotStats.cachePercent}%`;
   calcCache();
-  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+  updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
 }
 
 // Handles calculating and displaying of the how long the robot has lived
@@ -455,17 +458,17 @@ function setTimeLived(currTimeLived) {
 
 // Handles robot battery life degeneration
 function takeCharge(num) {
-  if (roboState.chargePercent === 0 || roboState.isDead) return;
-  roboState.chargePercent = roboState.chargePercent - (num / 5) * 100;
-  hudDisplay.powerDisplay.textContent = `${roboState.chargePercent}%`;
+  if (robotStats.chargePercent === 0 || roboState.isDead) return;
+  robotStats.chargePercent = robotStats.chargePercent - (num / 5) * 100;
+  hudDisplay.powerDisplay.textContent = `${robotStats.chargePercent}%`;
 
   // Show error if battery is runnin below 30%
-  if (roboState.chargePercent <= 30) {
+  if (robotStats.chargePercent <= 30) {
     showError('Battery running low, please charge');
   }
 
   // Update the robot mood
-  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+  updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
 }
 
 // Clears the robot time lived interval
@@ -475,7 +478,7 @@ function clearTimeLivedInterval() {
 
 // Sets the robot time lived interval responsible for calculating and displaying how long the robot has lived for
 function setTimeLivedInterval() {
-  timeLivedInterval = setInterval(setTimeLived, 1000, roboState.timeLived);
+  timeLivedInterval = setInterval(setTimeLived, 1000, robotStats.timeLived);
 }
 
 // Clears error message
@@ -525,7 +528,7 @@ function sleep() {
 function awaken() {
   roboState.isSleeping = false;
   setBatteryInterval();
-  updateRoboMood(roboState.cachePercent, roboState.chargePercent);
+  updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
   setSleepButtonText('Sleep 😴');
   roboUI.body.setAttribute('id', 'robo-full');
   roboUI.shadow.setAttribute('id', 'idle-shadow');
@@ -534,5 +537,5 @@ function awaken() {
 
 // Upgrades current robot version
 export function upgradeRoboVersion() {
-  roboState.version = roboState.version + 1;
+  robotStats.version = (robotStats.version * 1) + 1;
 }

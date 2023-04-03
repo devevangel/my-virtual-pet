@@ -70,7 +70,12 @@ class RobotDataBaseAPI {
 
     robot = {
       ...robot,
-      ...data,
+      name: data.name,
+      skinclass: data.skinclass,
+      version: data.version,
+      chargePercent: data.chargePercent,
+      cachePercent: data.cachePercent,
+      cacheList: data.cacheList,
     };
 
     this.database[query.owner] = robot;

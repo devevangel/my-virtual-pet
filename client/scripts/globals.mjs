@@ -1,5 +1,8 @@
+import { handleUpdateRobot } from './api.mjs';
+import { showWelcomeView } from './index.mjs';
+
 // Global variable state for robot
-let roboState = {
+const roboState = {
   maxCache: 10,
   guessVal: 0,
   isGameInit: false,
@@ -8,30 +11,12 @@ let roboState = {
   isError: false,
   isTyping: false,
   isDead: false,
-  id: '',
-  name: '',
-  owner: '',
-  timeLived: new Date(),
-  skinclass: '',
-  version: '',
-  chargePercent: 100,
-  cachePercent: 100,
-  cacheList: [],
 };
 
-export function loadRobotMemory() {
-  const robotInStorage = JSON.parse(localStorage.getItem('robot'));
+// Robot global stats
+let robotStats = {};
 
-  roboState = {
-    ...roboState,
-    ...robotInStorage,
-  };
-}
-
-export function saveRobotState(robotObj) {
-  localStorage.setItem('robot', JSON.stringify(robotObj));
-}
-
+// Robot list colors
 const robotSkins = [
   'robo-violet',
   'robo-green',
@@ -100,4 +85,33 @@ const userData = {
   currentUserInput: '',
 };
 
-export { roboState, robotSkins, directionList, roboUI, hudDisplay, userData };
+/**
+Loads the robot's memory from the browser's local storage. If the data is a valid JSON string under the key 'robot',
+the parsed object is assigned to the global variable 'robotStats'.
+*/
+export function loadRobotMemory() {
+  const robotInStorage = JSON.parse(localStorage.getItem('robot'));
+  robotStats = robotInStorage;
+}
+
+/**
+Handles the auto-saving of robot data both locally and on the server using the 'handleUpdateRobot' function.
+This function receives a robot state object as an argument, retrieves the owner's ID from the local storage, and
+calls the 'handleUpdateRobot' function to update the robot's state on the server.Otherwise, the
+'showWelcomeView' function is called to handle the case where the user is not authorized to update the robot.
+*/
+export async function saveRobotState(robotObj) {
+  const owner = localStorage.getItem('owner');
+
+  const { robot } = await handleUpdateRobot(owner, robotObj);
+
+  if (robot.owner) {
+    localStorage.setItem('robot', JSON.stringify(robotObj));
+  } else {
+    localStorage.removeItem('owner');
+    localStorage.removeItem('robot');
+    showWelcomeView();
+  }
+}
+
+export { roboState, robotStats, robotSkins, directionList, roboUI, hudDisplay, userData };
