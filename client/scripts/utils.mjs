@@ -1,20 +1,25 @@
-// sudo generates random int within given range
+// Sudo generates random int within given range
 export function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// sudo generate random float number within given range
-export function randomFloatInRange(min, max) {
+// Returns a random float value between the given minimum and maximum values.
+function randomFloatInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Creates a particle using the div tag
+/**
+* Creates a moving particle using the div tag.
+* @param {number} lifeTime - The lifespan of the particle in milliseconds.
+* @param {{x: number, y: number}} screen - An object containing the screen dimensions.
+* @param {HTMLElement} containerElem - The HTML element that will contain the particle.
+*/
 export function createParticle(lifeTime, screen, containerElem) {
   // Create a new div element for the particle
-  const particle = document.createElement("div");
-  particle.className = "particle";
+  const particle = document.createElement('div');
+  particle.className = 'particle';
 
   // Set particle postision within screen x and y value
   particle.style.left = `${randomFloatInRange(0, screen.x)}px`;
@@ -41,7 +46,7 @@ export function createParticle(lifeTime, screen, containerElem) {
     if (newX < 0) {
       particle.style.left = `${screen.x}px`;
     } else if (newX > screen.x) {
-      particle.style.left = "0px";
+      particle.style.left = '0px';
     } else {
       particle.style.left = `${newX}px`;
     }
@@ -49,7 +54,7 @@ export function createParticle(lifeTime, screen, containerElem) {
     if (newY < 0) {
       particle.style.top = `${screen.y}px`;
     } else if (newY > screen.y) {
-      particle.style.top = "0px";
+      particle.style.top = '0px';
     } else {
       particle.style.top = `${newY}px`;
     }
