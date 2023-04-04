@@ -1,3 +1,4 @@
+import { handleDeleteRobot } from './api.mjs';
 import {
   roboState,
   robotStats,
@@ -341,6 +342,7 @@ export function updateRoboMood(cacheVal, chargeVal) {
   } else if (robotStats.chargePercent <= 0) {
     setRoboMood('☠️');
     die();
+    return;
   }
 
   // Saves current state of robot
@@ -397,14 +399,24 @@ function die() {
   roboUI.shadow.classList.add('shadow-gone');
   roboUI.body.classList.add('robo-full-die');
 
+  handleDeathActions();
+}
+
+// This function handles showing user reason for robot data
+// and clearing the dead robot data from ther server and local storage
+async function handleDeathActions() {
   // Clears all necessary robot intervals
   clearBatteryInterval();
   clearTimeLivedInterval();
 
   // Inform user of robot death
   roboSendResponse(
-    `${robotStats.name} Died☠️, because you neglected to charge it`,
+    `${robotStats.name} has died as a result of insufficient charging. To obtain a new pet, kindly refresh the page.`, 'text',
   );
+
+  const owner = localStorage.getItem('owner');
+  await handleDeleteRobot(owner);
+  localStorage.clear();
 }
 
 // Boots up and loads robo OS
@@ -417,8 +429,7 @@ function bootRobot() {
   setBatteryInterval();
   setTimeLivedInterval();
   writeResponse(
-    'Hello!, owner great to see you. If you stuck and need' +
-    "some help just enter the keyword 'HELP' to access my many features 😊",
+    "Greetings owner, system is online. Assistance is available. Input keyword 'HELP' to access my features.",
     60,
   );
 }
@@ -464,7 +475,7 @@ function takeCharge(num) {
 
   // Show error if battery is runnin below 30%
   if (robotStats.chargePercent <= 30) {
-    showError('Battery running low, please charge');
+    showError('Energy levels critically low. Immediate charging required.');
   }
 
   // Update the robot mood
@@ -532,7 +543,7 @@ function awaken() {
   setSleepButtonText('Sleep 😴');
   roboUI.body.setAttribute('id', 'robo-full');
   roboUI.shadow.setAttribute('id', 'idle-shadow');
-  writeResponse('Hello!🖐, good to see you again', 60);
+  writeResponse('Welcome back!👋 Processing user recognition. Greetings.', 60);
 }
 
 // Upgrades current robot version

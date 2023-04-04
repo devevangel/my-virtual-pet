@@ -34,7 +34,7 @@ export function talkToBot(e) {
 
     // Check if cache is full
     if (robotStats.cachePercent <= 0) {
-      return showError('Cache full, please clean cache immediately');
+      return showError('Cache capacity exceeded. Clear cache promptly');
     }
 
     // Clear previous user input
@@ -76,7 +76,7 @@ export function talkToBot(e) {
           hudDisplay.listOrderDisplay.append(li);
         }
         roboSendResponse(null, 'node', {
-          title: 'Game Help',
+          title: 'Game Support',
           node: hudDisplay.listOrderDisplay,
         });
         return;
@@ -101,34 +101,20 @@ export function talkToBot(e) {
         writeResponse('Hello! How can I assist you today?', 50);
         break;
       case 'name':
-        if (robotStats.name !== '') {
-          writeResponse(`My name is ${robotStats.name}`, 50);
-        } else {
-          writeResponse(
-            "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
-            50,
-          );
-        }
+        writeResponse(`Confirming identity.<br /> My designated nomenclature is <u> ${robotStats.name}</u>.`, 50);
         break;
       case 'whatisyourname':
-        if (robotStats.name !== '') {
-          writeResponse(`My name is ${robotStats.name}`, 50);
-        } else {
-          writeResponse(
-            "I don't have a name at the moment but I would love one. Check my how to manual to give me a name.",
-            50,
-          );
-        }
+        writeResponse(`Confirming identity.<br /> My designated nomenclature is <u> ${robotStats.name}</u>.`, 50);
         break;
       case 'whoareyou':
         roboSendResponse(
-          'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
+          "I'm a semi-autonomous virtual robotic interface here to keep you company,<br /> developed by Evangel CEO Robo Dojo Inc.",
           'text',
         );
         break;
       case 'whatareyou':
         roboSendResponse(
-          'Hello!, I am a simple Virtual Pet interface created by evangelInc 👨‍💻, here to provide assistance. Enter keyword \'manual\' to learn more about me.',
+          "I'm a semi-autonomous virtual robotic interface here to keep you company,<br/> developed by Evangel CEO Robo Dojo Inc.",
           'text',
         );
         break;
@@ -139,7 +125,7 @@ export function talkToBot(e) {
           hudDisplay.listOrderDisplay.append(li);
         }
         roboSendResponse(null, 'node', {
-          title: 'Usage Manual',
+          title: 'Operating Instructions',
           node: hudDisplay.listOrderDisplay,
         });
         break;
@@ -150,20 +136,20 @@ export function talkToBot(e) {
           hudDisplay.listOrderDisplay.append(li);
         }
         roboSendResponse(null, 'node', {
-          title: 'Commands History',
+          title: 'System Logs',
           node: hudDisplay.listOrderDisplay,
         });
         break;
       case 'time':
         roboSendResponse(
-          `The time is ${timeStamp.toLocaleTimeString()}.`,
+          `Current time is ${timeStamp.toLocaleTimeString()}, as per my records.`,
           'text',
         );
         break;
       case 'date':
-        roboSendResponse(`Today is ${date.toDateString()}.`, 'text');
+        roboSendResponse(`According to my calculations, today is ${date.toDateString()}.`, 'text');
         break;
-      case 'cls':
+      case 'clear':
         cleanCache();
         break;
       case 'sleep':
@@ -177,7 +163,7 @@ export function talkToBot(e) {
         break;
       default:
         writeResponse(
-          "I'm sorry I don't quite understand want you meant there, trying entering key word 'help' to learn about me.",
+          "Apologies, unable to comprehend your statement. Enter keyword 'help' for information about me.",
           50,
         );
         updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);

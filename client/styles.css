@@ -1,7 +1,7 @@
 body {
   margin: 0px;
   padding: 0px;
-  font-family: "Silkscreen";
+  font-family: "Silkscreen", monospace;
   color: #00ff00;
   background-color: black;
   overflow: hidden;

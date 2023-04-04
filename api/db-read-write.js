@@ -1,11 +1,11 @@
 import fs from 'fs/promises';
 
 const FILE_PATH = './database/robots.json';
+
 /**
 * Reads data from a JSON file located in the specified file path asynchronously.
 * @async
 * @returns {Promise<Object>} - A Promise that resolves with the parsed data object from the file.
-* @throws {Error} - If there is an error reading the data from the file.
 */
 export async function readFromDB() {
   const data = await fs.readFile(FILE_PATH, 'utf-8');
@@ -17,7 +17,6 @@ export async function readFromDB() {
 * @async
 * @param {Object} snapshot - The data to be written to the file.
 * @returns {Promise<void>} - A Promise that resolves when the data has been successfully written to the file.
-* @throws {Error} - If there is an error writing the data to the file.
 */
 export async function writeToDB(snapshot) {
   const dataStr = JSON.stringify(snapshot);

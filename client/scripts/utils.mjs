@@ -59,7 +59,6 @@ export function createParticle(lifeTime, screen, containerElem) {
       particle.style.top = `${newY}px`;
     }
 
-    // Call this function again on the next frame
     requestAnimationFrame(update);
   }
 

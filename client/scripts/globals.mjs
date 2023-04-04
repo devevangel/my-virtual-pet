@@ -33,23 +33,22 @@ const robotSkins = [
 // Robot list object state
 const directionList = {
   manual: [
-    "To see manual: ['help' or 'how to']",
-    "To give me a name: ['name=<name>']",
-    "Get current time: ['time']",
-    "Get current date: ['date']",
-    "Check cache history: ['history']",
-    "Clean cache: ['cls']",
+    "To see manual: ['help']",
+    "To set name: ['name=<name>']",
+    "To get current time: ['time']",
+    "To get current date: ['date']",
+    "To check logs: ['logs']",
+    "To clean cache: ['clear']",
     "Check OS version: ['version']",
-    "Play a game: ['game']",
-    "Sleep: ['sleep']",
+    "To play a game: ['game']",
+    "To sleep: ['sleep']",
   ],
   gameIntructions: `<ul>
-    <li>I picked a number from the values below:</li>
-    <li>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</li>
-    <li>To win try guessing my number</li>
-    <li>To quit game enter keyword: 'end'</li>
-    <li>For help enter keyword 'help'</li>
-    <li>Enter you guess in the input 👆 box to start </li>
+    <li>I have picked a number from 1 to 10</li>
+    <li>Try to guess my number to win the game.</li>
+    <li>If you want to quit the game, type 'end'</li>
+    <li>If you need any help, type 'help'.</li>
+    <li>Enter your guess in the input box and click submit or hit enter to start the game </li>
     </ul>Goodluck!`,
 
   gameHelp: [

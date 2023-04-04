@@ -16,10 +16,8 @@ app.use(express.static('client'));
 app.use(express.json());
 
 // routes
-
 app.post('/robots', createRobot);
 app.get('/robots', getRobots);
-
 app.get('/robots/:owner', getRobot);
 app.patch('/robots/:owner', updateRobot);
 app.delete('/robots/:owner', deleteRobot);
