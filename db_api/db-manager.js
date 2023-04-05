@@ -36,7 +36,7 @@ class RobotDataBaseAPI {
       owner,
       timeLived,
       skinclass,
-      version: "1.0.0",
+      version: 16,
       chargePercent: 100,
       cachePercent: 100,
       cacheList: [],

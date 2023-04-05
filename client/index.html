@@ -55,6 +55,7 @@
   </div>
 </section>
 
+<!-- Main robot view section -->
 <section class="pet-home hide" id="main-section">
   <svg
     version="1.1"
@@ -63,6 +64,7 @@
     xmlns="http://www.w3.org/2000/svg"
     id="main-robo"
   >
+  <!-- Robot head -->
     <defs>
       <g id="robo-head" class="robo-color">
         <rect rx="15" ry="15" width="110" height="110" />
@@ -77,6 +79,7 @@
         <rect x="45" y="110" width="20" height="20" />
       </g>
     </defs>
+    <!-- Robot torso -->
     <defs>
       <g id="robo-torso" class="robo-color">
         <rect rx="15" ry="15" width="120" height="120" />
@@ -106,12 +109,14 @@
         <text class="cpu-text" x="45" y="70">CPU</text>
       </g>
     </defs>
+    <!-- Robot shadow -->
     <defs>
       <g id="robo-shadow">
         <ellipse cx="0" cy="0" rx="40" ry="10" fill="grey"></ellipse>
       </g>
     </defs>
 
+    <!-- Full robot structure (head + torso) + shadow-->
     <g id="robo-full">
       <use href="#robo-head" x="125" y="20" />
       <use href="#robo-torso" x="120" y="150" />
@@ -119,6 +124,7 @@
     <use id="idle-shadow" href="#robo-shadow" x="180" y="310" />
   </svg>
 
+  <!-- Robot Heads Up Display -->
   <div class="dialogue">
     <div class="display">
       Name🤖
@@ -141,8 +147,13 @@
       <div id="time-display"></div>
     </div>
 
-    <input placeholder="enter command" id="user-input" type="text" autofocus />
+    <!-- User input -->
+    <div class="user-input-holder">
+      <input placeholder="enter command" id="user-input" type="text" autofocus />
+      <button name="enter-button" id="enter-button">Enter</button>
+    </div>
 
+    <!-- Robot output terminal -->
     <div id="robo-output">
       robo\:
       <div class="loading-spinner"></div>
@@ -150,11 +161,13 @@
       <p class="info-display hide">cache almost full, please clean cache</p>
     </div>
 
+    <!-- Robot button controls -->
     <div class="buttons-container hide">
       <button id="feed-me">Feed Me 🔋</button>
       <button id="sleep">Sleep😴</button>
       <button id="clean-cache">Clean Cache🧹</button>
       <button id="update-os">Update OS💻</button>
+      <button id="power-off">Power Off ⛔</button>
     </div>
   </div>
 </section>

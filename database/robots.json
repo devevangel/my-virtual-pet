@@ -1,13 +1,1 @@
-{
-    "08036926247": {
-        "id": "SmGs7",
-        "name": "Me",
-        "owner": "08036926247",
-        "timeLived": "2023-04-04T06:20:56.951Z",
-        "skinclass": "robo-brown",
-        "version": "1.0.0",
-        "chargePercent": 90,
-        "cachePercent": 100,
-        "cacheList": []
-    }
-}
+{"08036926247":{"id":"KQxxN","name":"Javis","owner":"08036926247","timeLived":"2023-04-05T15:20:23.282Z","skinclass":"robo-magenta","version":20,"chargePercent":100,"cachePercent":90,"cacheList":["hi"]}}

@@ -1,4 +1,4 @@
-import { RobotAPI } from '../api/index.js';
+import { RobotAPI } from '../db_api/db-manager.js';
 
 /**
 * Retrieves a single robot from the database based on the provided owner parameter.

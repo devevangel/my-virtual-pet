@@ -21,11 +21,12 @@ const actionTextCreate = document.querySelector('#create-robot');
 const actionTextGet = document.querySelector('#get-robot');
 const createRobotButton = document.querySelector('#create-robot-button');
 const getRobotButton = document.querySelector('#get-robot-button');
-// UI robot buttons
+// UI robot control buttons
 const cleanCacheButton = document.querySelector('#clean-cache');
 const updateOSButton = document.querySelector('#update-os');
 const chargeButton = document.querySelector('#feed-me');
 const sleepButton = document.querySelector('#sleep');
+const enterButton = document.querySelector('#enter-button');
 // UI text inputs
 const roboNameInput = document.querySelector('#robot-name');
 const phoneInput = document.querySelector('#owner-line');
@@ -61,6 +62,7 @@ function startApp() {
   updateOSButton.addEventListener('click', updateOS);
   chargeButton.addEventListener('click', () => feedMe(0.5));
   sleepButton.addEventListener('click', handleSleepAwakeState);
+  enterButton.addEventListener('click', talkToBot);
   document.addEventListener('input', handleUserInput);
   document.addEventListener('keyup', talkToBot);
 

@@ -446,24 +446,30 @@ function setInitRoboStats() {
 }
 
 // Handles calculating and displaying of the how long the robot has lived
+
 function setTimeLived(currTimeLived) {
   const now = new Date();
   const timeDiff = now.getTime() - new Date(currTimeLived).getTime();
   const seconds = Math.floor(timeDiff / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
+  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  const months = Math.floor(days / 30);
+  const years = Math.floor(days / 365);
 
   // Formats time display
-  if (hours >= 1) {
-    hudDisplay.timeLivedDisplay.textContent = `${hours} ${
-      hours > 1 ? 'hrs' : 'hr'
-    }`;
+  if (years >= 1) {
+    hudDisplay.timeLivedDisplay.textContent = `${years} ${years > 1 ? 'years' : 'year'}`;
+  } else if (months >= 1) {
+    hudDisplay.timeLivedDisplay.textContent = `${months} ${months > 1 ? 'months' : 'month'}`;
+  } else if (days >= 1) {
+    hudDisplay.timeLivedDisplay.textContent = `${days} ${days > 1 ? 'days' : 'day'}`;
+  } else if (hours >= 1) {
+    hudDisplay.timeLivedDisplay.textContent = `${hours} ${hours > 1 ? 'hours' : 'hour'}`;
   } else if (minutes >= 1) {
-    hudDisplay.timeLivedDisplay.textContent = `${minutes} ${
-      minutes > 1 ? 'mins' : 'min'
-    }`;
+    hudDisplay.timeLivedDisplay.textContent = `${minutes} ${minutes > 1 ? 'minutes' : 'minute'}`;
   } else {
-    hudDisplay.timeLivedDisplay.textContent = `${seconds} sec`;
+    hudDisplay.timeLivedDisplay.textContent = `${seconds} second${seconds > 1 ? 's' : ''}`;
   }
 }
 
@@ -543,7 +549,7 @@ function awaken() {
   setSleepButtonText('Sleep 😴');
   roboUI.body.setAttribute('id', 'robo-full');
   roboUI.shadow.setAttribute('id', 'idle-shadow');
-  writeResponse('Welcome back!👋 Processing user recognition. Greetings.', 60);
+  writeResponse('Welcome back!👋<br />Processing user recognition.<br /> Greetings...', 60);
 }
 
 // Upgrades current robot version

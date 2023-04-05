@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 const FILE_PATH = './database/robots.json';
 
 /**
-* Reads data from a JSON file located in the specified file path asynchronously.
+* Reads data as an object from a JSON file located in the specified file path asynchronously.
 * @async
 * @returns {Promise<Object>} - A Promise that resolves with the parsed data object from the file.
 */

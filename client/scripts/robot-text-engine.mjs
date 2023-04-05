@@ -29,9 +29,8 @@ const timeStamp = new Date(Date.now());
 * @returns {void} This function does not return anything.
 */
 export function talkToBot(e) {
-  if (e.keyCode === 13) {
-    if (roboState.isSleeping || roboState.isDead) return;
-
+  if (roboState.isSleeping || roboState.isDead || roboState.isTyping) return;
+  if (e.keyCode === 13 || e.target.name === 'enter-button') {
     // Check if cache is full
     if (robotStats.cachePercent <= 0) {
       return showError('Cache capacity exceeded. Clear cache promptly');
@@ -85,7 +84,9 @@ export function talkToBot(e) {
     }
 
     // Calculates cache
-    calcCache(parsedUserInput);
+    if (parseUserInput.length > 0) {
+      calcCache(parsedUserInput);
+    }
 
     switch (parsedUserInput) {
       case 'hi':
@@ -147,7 +148,7 @@ export function talkToBot(e) {
         );
         break;
       case 'date':
-        roboSendResponse(`According to my calculations, today is ${date.toDateString()}.`, 'text');
+        roboSendResponse(`According to my calculations,<br /> today is ${date.toDateString()}.`, 'text');
         break;
       case 'clear':
         cleanCache();
