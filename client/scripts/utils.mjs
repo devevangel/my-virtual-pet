@@ -1,3 +1,5 @@
+import { addWelcomeSectionEventListeners, removeMainSectionEventListeners, removeWelcomeSectionEventLiseners, showWelcomeView } from './index.mjs';
+
 // Sudo generates random int within given range
 export function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -8,6 +10,30 @@ export function getRandomIntInclusive(min, max) {
 // Returns a random float value between the given minimum and maximum values.
 function randomFloatInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/**
+Displays an error message using an alert dialog box.
+@param {string} msg - The error message to be displayed.
+@returns {void}
+*/
+export function handleError(msg, code = 1) {
+  switch (code) {
+    case 1:
+      alert(`Something went wrong: ${msg}`);
+      localStorage.clear();
+      removeMainSectionEventListeners();
+      removeWelcomeSectionEventLiseners();
+      addWelcomeSectionEventListeners();
+      showWelcomeView();
+      break;
+
+    case 2:
+      alert(`Something went wrong: ${msg}`);
+      break;
+    default:
+      break;
+  }
 }
 
 /**

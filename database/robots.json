@@ -1,1 +1,13 @@
-{"08036926247":{"id":"KQxxN","name":"Javis","owner":"08036926247","timeLived":"2023-04-05T15:20:23.282Z","skinclass":"robo-magenta","version":20,"chargePercent":100,"cachePercent":90,"cacheList":["hi"]}}
+{
+    "08036926247": {
+        "id": "7fooF",
+        "name": "Javis",
+        "owner": "08036926247",
+        "timeLived": "2023-04-06T18:04:30.005Z",
+        "skinclass": "robo-orange",
+        "version": 1,
+        "chargePercent": 50,
+        "cachePercent": 100,
+        "cacheList": []
+    }
+}

@@ -68,6 +68,11 @@ class RobotDataBaseAPI {
   updateOne(query, data) {
     let robot = this.database[query.owner];
 
+    if(!robot) {
+      console.log('no robo')
+      return {}
+    }
+
     robot = {
       ...robot,
       name: data.name,

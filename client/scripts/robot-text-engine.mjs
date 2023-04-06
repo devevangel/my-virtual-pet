@@ -1,4 +1,10 @@
-import { hudDisplay, roboState, directionList, userData, robotStats } from './globals.mjs';
+import {
+  hudDisplay,
+  roboState,
+  directionList,
+  userData,
+  robotStats,
+} from './globals.mjs';
 import {
   parseUserInput,
   roboSendResponse,
@@ -19,24 +25,31 @@ const date = new Date(Date.now());
 const timeStamp = new Date(Date.now());
 
 /**
-* talkToBot function is responsible for parsing the user's input, and calling the appropriate function based on the parsed user input.
-* The function handles different cases of user input, including updating the robot's name,
-* playing a game, and responding to questions about its name, and its identity.
-* The function receives an event e as a parameter,
-* which is the keydown event that is triggered when the user presses a key on the keyboard.
-* If the keycode of the key pressed is 13 (enter), the function is executed.
-* @param {Event} e - the keydown event that is triggered when the user presses a key on the keyboard
-* @returns {void} This function does not return anything.
-*/
+ * talkToBot function is responsible for parsing the user's input, and calling the appropriate function based on the parsed user input.
+ * The function handles different cases of user input, including updating the robot's name,
+ * playing a game, and responding to questions about its name, and its identity.
+ * The function receives an event e as a parameter,
+ * which is the keydown event that is triggered when the user presses a key on the keyboard.
+ * If the keycode of the key pressed is 13 (enter), the function is executed.
+ * @param {Event} e - the keydown event that is triggered when the user presses a key on the keyboard
+ * @returns {void} This function does not return anything.
+ */
 export function talkToBot(e) {
-  if (roboState.isSleeping || roboState.isDead || roboState.isTyping) return;
+  if (
+    roboState.isSleeping ||
+    roboState.isDead ||
+    roboState.isTyping ||
+    userData.userInput.value === ''
+  ) {
+    return;
+  }
   if (e.keyCode === 13 || e.target.name === 'enter-button') {
     // Check if cache is full
     if (robotStats.cachePercent <= 0) {
       return showError('Cache capacity exceeded. Clear cache promptly');
     }
 
-    // Clear previous user input
+    // Clear previous robot display
     hudDisplay.roboDisplay.textContent = '';
     hudDisplay.listOrderDisplay.innerHTML = '';
     resetWriter();
@@ -102,10 +115,16 @@ export function talkToBot(e) {
         writeResponse('Hello! How can I assist you today?', 50);
         break;
       case 'name':
-        writeResponse(`Confirming identity.<br /> My designated nomenclature is <u> ${robotStats.name}</u>.`, 50);
+        writeResponse(
+          `Confirming identity.<br /> My designated nomenclature is <u> ${robotStats.name}</u>.`,
+          50,
+        );
         break;
       case 'whatisyourname':
-        writeResponse(`Confirming identity.<br /> My designated nomenclature is <u> ${robotStats.name}</u>.`, 50);
+        writeResponse(
+          `Confirming identity.<br /> My designated nomenclature is <u> ${robotStats.name}</u>.`,
+          50,
+        );
         break;
       case 'whoareyou':
         roboSendResponse(
@@ -148,7 +167,10 @@ export function talkToBot(e) {
         );
         break;
       case 'date':
-        roboSendResponse(`According to my calculations,<br /> today is ${date.toDateString()}.`, 'text');
+        roboSendResponse(
+          `According to my calculations,<br /> today is ${date.toDateString()}.`,
+          'text',
+        );
         break;
       case 'clear':
         cleanCache();

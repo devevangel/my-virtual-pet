@@ -1,6 +1,3 @@
-import { handleUpdateRobot } from './api.mjs';
-import { showWelcomeView } from './index.mjs';
-
 // Global variable state for robot
 const roboState = {
   maxCache: 10,
@@ -93,24 +90,13 @@ export function loadRobotMemory() {
   robotStats = robotInStorage;
 }
 
-/**
-Handles the auto-saving of robot data both locally and on the server using the 'handleUpdateRobot' function.
-This function receives a robot state object as an argument, retrieves the owner's ID from the local storage, and
-calls the 'handleUpdateRobot' function to update the robot's state on the server.Otherwise, the
-'showWelcomeView' function is called to handle the case where the user is not authorized to update the robot.
-*/
-export async function saveRobotState(robotObj) {
-  const owner = localStorage.getItem('owner');
 
-  const { robot } = await handleUpdateRobot(owner, robotObj);
-
-  if (robot.owner) {
-    localStorage.setItem('robot', JSON.stringify(robotObj));
-  } else {
-    localStorage.removeItem('owner');
-    localStorage.removeItem('robot');
-    showWelcomeView();
-  }
-}
-
-export { roboState, robotStats, robotSkins, directionList, roboUI, hudDisplay, userData };
+export {
+  roboState,
+  robotStats,
+  robotSkins,
+  directionList,
+  roboUI,
+  hudDisplay,
+  userData,
+};

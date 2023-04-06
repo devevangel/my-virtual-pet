@@ -372,9 +372,9 @@ button:hover {
 
   svg {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 66%;
-    transform: translate(-50%, -50%);
+    transform: translate(-45%, -50%);
     z-index: -1;
     scale: 0.6;
   }

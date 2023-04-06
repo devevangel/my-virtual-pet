@@ -1,4 +1,4 @@
-import { createParticle } from './utils.mjs';
+import { createParticle, handleError } from './utils.mjs';
 import {
   feedMe,
   cleanCache,
@@ -9,7 +9,7 @@ import {
   getNewRobotSkin,
 } from './robot-os.mjs';
 import { talkToBot } from './robot-text-engine.mjs';
-import { handleCreateRobot, handleGetRobot } from './api.mjs';
+import { handleCreateRobot, handleGetRobot } from './robot-api.mjs';
 
 // UI elements
 const welcomeTextArea = document.querySelector('.welcome-text');
@@ -51,20 +51,6 @@ window.addEventListener('load', startApp);
 // App entry point
 function startApp() {
   // Welcome section form Event Listeners
-  actionTextCreate.addEventListener('click', switchForm);
-  actionTextGet.addEventListener('click', switchForm);
-  getRobotButton.addEventListener('click', getRobotAuth);
-  createRobotButton.addEventListener('click', createRobotAuth);
-  mainSection.classList.remove('hide');
-
-  // Robot Event Listeners
-  cleanCacheButton.addEventListener('click', cleanCache);
-  updateOSButton.addEventListener('click', updateOS);
-  chargeButton.addEventListener('click', () => feedMe(0.5));
-  sleepButton.addEventListener('click', handleSleepAwakeState);
-  enterButton.addEventListener('click', talkToBot);
-  document.addEventListener('input', handleUserInput);
-  document.addEventListener('keyup', talkToBot);
 
 
   // Check to see if there's a current owner avaliable and gets the robot else shows welcome section
@@ -72,9 +58,14 @@ function startApp() {
   if (owner) {
     clearInterval(particleInterval);
     clearTimeout(writingTimeout);
+    mainSection.classList.remove('hide');
     getCurrentRobotServerData(owner);
+    addMainSectionEventListeners();
+    removeWelcomeSectionEventLiseners();
   } else {
     showWelcomeView();
+    addWelcomeSectionEventListeners();
+    removeMainSectionEventListeners();
   }
 }
 
@@ -89,6 +80,54 @@ export function showWelcomeView() {
     welcomeSection,
   );
   writeWelcomeMsg();
+}
+
+
+/**
+ * Removes event listeners from various elements in the welcome section of a web page.
+ */
+export function removeWelcomeSectionEventLiseners() {
+  actionTextCreate.removeEventListener('click', switchForm);
+  actionTextGet.removeEventListener('click', switchForm);
+  getRobotButton.removeEventListener('click', getRobotAuth);
+  createRobotButton.removeEventListener('click', createRobotAuth);
+}
+
+
+/**
+ * Removes event listeners from various elements in the main section of a web page.
+ */
+export function removeMainSectionEventListeners() {
+  cleanCacheButton.removeEventListener('click', cleanCache);
+  updateOSButton.removeEventListener('click', updateOS);
+  chargeButton.removeEventListener('click', () => feedMe(0.5));
+  sleepButton.removeEventListener('click', handleSleepAwakeState);
+  enterButton.removeEventListener('click', talkToBot);
+  document.removeEventListener('input', handleUserInput);
+  document.removeEventListener('keyup', talkToBot);
+}
+
+/**
+Adds event listeners to various elements in the welcome section of a web page.
+*/
+export function addWelcomeSectionEventListeners() {
+  actionTextCreate.addEventListener('click', switchForm);
+  actionTextGet.addEventListener('click', switchForm);
+  getRobotButton.addEventListener('click', getRobotAuth);
+  createRobotButton.addEventListener('click', createRobotAuth);
+}
+
+/**
+Adds event listeners to various elements in the main section of a web page.
+*/
+export function addMainSectionEventListeners() {
+  cleanCacheButton.addEventListener('click', cleanCache);
+  updateOSButton.addEventListener('click', updateOS);
+  chargeButton.addEventListener('click', () => feedMe(0.5));
+  sleepButton.addEventListener('click', handleSleepAwakeState);
+  enterButton.addEventListener('click', talkToBot);
+  document.addEventListener('input', handleUserInput);
+  document.addEventListener('keyup', talkToBot);
 }
 
 
@@ -139,7 +178,7 @@ async function createRobotAuth() {
 
   const { robot } = result;
   if (!robot.owner) {
-    alert('Authentication failed');
+    handleError(`Could not create robot, robot with this owner '${phone}' may already exist.`, 2);
   } else {
     saveRobot(robot);
   }
@@ -160,7 +199,7 @@ async function getRobotAuth() {
   const { robot } = result;
 
   if (!robot.owner) {
-    alert('Authentication failed');
+    handleError(`Could not get robot with owner line '${phone}.'`, 2);
   } else {
     saveRobot(robot);
   }
@@ -176,9 +215,7 @@ async function getCurrentRobotServerData(owner) {
   const { robot } = result;
 
   if (!robot.owner) {
-    localStorage.removeItem('owner');
-    localStorage.removeItem('robot');
-    showWelcomeView();
+    handleError(`Could not get robot with owner line '${owner}.'`, 1);
   } else {
     saveRobot(robot);
   }

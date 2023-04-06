@@ -1,3 +1,5 @@
+import { handleError } from './utils.mjs';
+
 const URL = 'http://localhost:8080/robots';
 
 /**
@@ -5,7 +7,7 @@ const URL = 'http://localhost:8080/robots';
  * @async
  * @param {Object} requestBody - The request body to send with the POST request.
  * @returns {Promise<Object>} A Promise that resolves to the JSON response from the server.
- * @throws {Error} If an error occurs while sending the POST request or parsing the JSON response.
+ * @throws {Error} If an error occurs while sending the POST request or parsing the JSON response its paased to the error handler.
  */
 export async function handleCreateRobot(requestBody) {
   try {
@@ -19,7 +21,7 @@ export async function handleCreateRobot(requestBody) {
 
     return await response.json();
   } catch (error) {
-    console.log(error);
+    handleError('An error occured creating your robot, please try again.', 2);
   }
 }
 
@@ -28,14 +30,14 @@ export async function handleCreateRobot(requestBody) {
  * @async
  * @param {string} owner - The owner phone line of the robot to retrieve.
  * @returns {Promise<Object>} A Promise that resolves to the JSON response from the server.
- * @throws {Error} If an error occurs while sending the GET request or parsing the JSON response.
+ * @throws {Error} If an error occurs while sending the GET request or parsing the JSON response its paased to the error handler.
  */
 export async function handleGetRobot(owner) {
   try {
     const response = await fetch(`${URL}/${owner}`);
     return await response.json();
   } catch (error) {
-    console.log(error);
+    handleError(`Could not get robot with owner line '${owner}'.`, 1);
   }
 }
 
@@ -45,7 +47,7 @@ export async function handleGetRobot(owner) {
  * @param {string} owner - The owner phone line of the robot to update.
  * @param {Object} robotData - The data to update the robot with.
  * @returns {Promise<Object>} A Promise that resolves to the JSON response from the server.
- * @throws {Error} If an error occurs while sending the PATCH request or parsing the JSON response.
+ * @throws {Error} If an error occurs while sending the PATCH request or parsing the JSON response its paased to the error handler.
  */
 export async function handleUpdateRobot(owner, robotData) {
   try {
@@ -59,7 +61,7 @@ export async function handleUpdateRobot(owner, robotData) {
 
     return await response.json();
   } catch (error) {
-    console.log(error);
+    handleError(`Could not make to a robot with owner line '${owner}'`, 1);
   }
 }
 
@@ -68,7 +70,7 @@ export async function handleUpdateRobot(owner, robotData) {
  * @async
  * @param {string} owner - The owner phone line of the robot to delete.
  * @returns {Promise<Object>} A Promise that resolves to the JSON response from the server.
- * @throws {Error} If an error occurs while sending the DELETE request or parsing the JSON response.
+ * @throws {Error} If an error occurs while sending the DELETE request or parsing the JSON response its paased to the error handler.
  */
 export async function handleDeleteRobot(owner) {
   try {
@@ -81,6 +83,6 @@ export async function handleDeleteRobot(owner) {
 
     return await response.json();
   } catch (error) {
-    console.log(error);
+    handleError(`Could clear robot data with owner line '${owner}'`, 1);
   }
 }

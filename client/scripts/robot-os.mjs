@@ -1,4 +1,4 @@
-import { handleDeleteRobot } from './api.mjs';
+import { handleDeleteRobot, handleUpdateRobot } from './robot-api.mjs';
 import {
   roboState,
   robotStats,
@@ -7,10 +7,9 @@ import {
   userData,
   robotSkins,
   loadRobotMemory,
-  saveRobotState,
 } from './globals.mjs';
 import { setSleepButtonText } from './index.mjs';
-import { getRandomIntInclusive } from './utils.mjs';
+import { getRandomIntInclusive, handleError } from './utils.mjs';
 
 // Local robot state values
 let textOut = '';
@@ -26,21 +25,26 @@ const roboBtnsContainer = document.querySelector('.buttons-container');
 const loadingSpinner = document.querySelector('.loading-spinner');
 
 /**
-* A function that takes in raw user input and returns it in lowercase with all whitespace removed.
-* @param {string} rawUserInput - The raw user input to be parsed.
-* @returns {string} - The parsed user input in lowercase with all whitespace removed.
-*/
+ * A function that takes in raw user input and returns it in lowercase with all whitespace removed.
+ * @param {string} rawUserInput - The raw user input to be parsed.
+ * @returns {string} - The parsed user input in lowercase with all whitespace removed.
+ */
 export function parseUserInput(rawUserInput) {
   return rawUserInput.toLowerCase().replace(/\s/g, '');
 }
 
 /**
-* A function that handles user input by either
-* clearing the input field or setting the user's input in the application state.
-* @param {Object} e - The event object that triggered the function call.
-*/
+ * A function that handles user input by either
+ * clearing the input field or setting the user's input in the application state.
+ * @param {Object} e - The event object that triggered the function call.
+ */
 export function handleUserInput(e) {
-  if (roboState.isSleeping || roboState.isDead || roboState.isTyping) {
+  if (
+    roboState.isSleeping ||
+    roboState.isDead ||
+    roboState.isTyping ||
+    e.target.value === ''
+  ) {
     e.target.value = '';
   } else {
     userData.currentUserInput = e.target.value;
@@ -48,10 +52,10 @@ export function handleUserInput(e) {
 }
 
 /**
-* A function that handles the state of the robot's sleep mode by either
-* waking it up or putting it to sleep based on its current state.
-* disables fucntion if the robot is dead, the game is started, or the robot is typing.
-*/
+ * A function that handles the state of the robot's sleep mode by either
+ * waking it up or putting it to sleep based on its current state.
+ * disables fucntion if the robot is dead, the game is started, or the robot is typing.
+ */
 export function handleSleepAwakeState() {
   if (roboState.isDead || roboState.isGameStarted || roboState.isTyping) return;
   resetWriter();
@@ -67,8 +71,8 @@ export function handleSleepAwakeState() {
 }
 
 /**
-* A function that resets the state of the robot's typing.
-*/
+ * A function that resets the state of the robot's typing.
+ */
 export function resetWriter() {
   // Reset the robot's typing state
   textOut = '';
@@ -80,24 +84,25 @@ export function resetWriter() {
 }
 
 /**
-* A function that handles direct robot text/html output.
-* @param {string|null} message - The message to be displayed. Default is null.
-* @param {string} type - The type of the message. Default is 'text'.
-* @param {Object|null} nodeObj - The node object to be displayed. Default is null.
-*/
+ * A function that handles direct robot text/html output.
+ * @param {string|null} message - The message to be displayed. Default is null.
+ * @param {string} type - The type of the message. Default is 'text'.
+ * @param {Object|null} nodeObj - The node object to be displayed. Default is null.
+ */
 export function roboSendResponse(
   message = null,
   type = 'text',
-  nodeObj = null) {
+  nodeObj = null,
+) {
   // Reset the display output and writer state
   resetRoboDisplayOutput();
   resetWriter();
   // Display the response based on the type
   if (type === 'text' && message) {
-  // Display a text message
+    // Display a text message
     hudDisplay.roboDisplay.textContent = message;
   } else if (type === 'node' && nodeObj) {
-  // Display a node object
+    // Display a node object
     const titleParaElem = document.createElement('p');
     titleParaElem.textContent = nodeObj.title;
     titleParaElem.style = 'text-align: center; text-decoration: underline';
@@ -106,10 +111,10 @@ export function roboSendResponse(
 }
 
 /**
-* A function that writes a response on the robot display with a typing animation.
-* @param {string} msg - The message to be displayed.
-* @param {number} delay - The delay between each character in milliseconds.
-*/
+ * A function that writes a response on the robot display with a typing animation.
+ * @param {string} msg - The message to be displayed.
+ * @param {number} delay - The delay between each character in milliseconds.
+ */
 export function writeResponse(msg, delay) {
   // Reset the display output and writer state
   resetRoboDisplayOutput();
@@ -125,19 +130,19 @@ export function writeResponse(msg, delay) {
 }
 
 /**
-* Clears the cache of the robot, resetting the cache list value and percentage display.
-* Also clears the user input and any errors present. Updates the robot's mood and displays a
-* message to inform the user that the cache has been cleared. This function does nothing
-* if the robot is sleeping, dead, in a game, or typing.
-* @returns {void} this funtion does not return anything.
-*/
+ * Clears the cache of the robot, resetting the cache list value and percentage display.
+ * Also clears the user input and any errors present. Updates the robot's mood and displays a
+ * message to inform the user that the cache has been cleared. This function does nothing
+ * if the robot is sleeping, dead, in a game, or typing.
+ * @returns {void} this funtion does not return anything.
+ */
 export function cleanCache() {
   // Checks if the robot is not in a valid state to clean the cache
   if (
     roboState.isSleeping ||
-  roboState.isDead ||
-  roboState.isGameStarted ||
-  roboState.isTyping
+    roboState.isDead ||
+    roboState.isGameStarted ||
+    roboState.isTyping
   ) {
     return;
   }
@@ -157,16 +162,16 @@ export function cleanCache() {
 }
 
 /**
-* Updates the robot's operating system and skin.
-* If the robot is sleeping, dead, in game mode, or currently typing a message,
-* the function returns without performing any action.
-* The function updates the robot's skin by setting the class attribute of the
-* HTML body element to the CSS class name returned by the getNewRobotSkin function.
-* The function then upgrades the robot's operating system by calling the upgradeRoboVersion function.
-* Finally, the function depletes the robot's  battery charge
-* by calling the takeCharge function with a parameter of -0.5.
-* @returns {void} This function does not return anything.
-*/
+ * Updates the robot's operating system and skin.
+ * If the robot is sleeping, dead, in game mode, or currently typing a message,
+ * the function returns without performing any action.
+ * The function updates the robot's skin by setting the class attribute of the
+ * HTML body element to the CSS class name returned by the getNewRobotSkin function.
+ * The function then upgrades the robot's operating system by calling the upgradeRoboVersion function.
+ * Finally, the function depletes the robot's  battery charge
+ * by calling the takeCharge function with a parameter of -0.5.
+ * @returns {void} This function does not return anything.
+ */
 export function updateOS() {
   if (
     roboState.isSleeping ||
@@ -185,27 +190,27 @@ export function updateOS() {
 }
 
 /**
-* Gets the current version of the robot and sends a response to the user containing the version number.
-* The version number is in the format of "version: x.0.0".
-* @returns {void} this function does not return anything
-*/
+ * Gets the current version of the robot and sends a response to the user containing the version number.
+ * The version number is in the format of "version: x.0.0".
+ * @returns {void} this function does not return anything
+ */
 export function getRoboVersion() {
   roboSendResponse(`version: ${robotStats.version}.0.0`, 'text');
 }
 
 /**
-* Returns a randomly selected robot skin from the available robotSkins array.
-* @return {string} - A string representing the name of a robot skin.
-*/
+ * Returns a randomly selected robot skin from the available robotSkins array.
+ * @return {string} - A string representing the name of a robot skin.
+ */
 export function getNewRobotSkin() {
   return robotSkins[getRandomIntInclusive(0, robotSkins.length - 1)];
 }
 
 /**
-* Shows an error message to the user.
-* @param {string} msg - The error message to display.
-* @returns {void} this function does not return anything
-*/
+ * Shows an error message to the user.
+ * @param {string} msg - The error message to display.
+ * @returns {void} this function does not return anything
+ */
 export function showError(msg) {
   roboState.isError = true;
   hudDisplay.errorDisplay.textContent = msg;
@@ -213,13 +218,13 @@ export function showError(msg) {
 }
 
 /**
-* Calculates the robot's cache percentage and updates the display.
-* If the robot is dead, the cache percentage is 0 and no updates are made.
-* If the robot's cache percentage is below or equal to 30, an error message is shown.
-* If the robot's cache percentage is below or equal to 0, the robot dies and an error message is shown.
-* @param {string} [userInput=null] - Optional user input to add to the cache.
-* @returns {void} This function does not return anything.
-*/
+ * Calculates the robot's cache percentage and updates the display.
+ * If the robot is dead, the cache percentage is 0 and no updates are made.
+ * If the robot's cache percentage is below or equal to 30, an error message is shown.
+ * If the robot's cache percentage is below or equal to 0, the robot dies and an error message is shown.
+ * @param {string} [userInput=null] - Optional user input to add to the cache.
+ * @returns {void} This function does not return anything.
+ */
 export function calcCache(userInput = null) {
   if (
     roboState.chargePercent <= 0 ||
@@ -248,16 +253,15 @@ export function calcCache(userInput = null) {
     return showError('Cache almost full, please clean cache');
   }
 
-  // Updates the robot mood
+  // Updates the robot mood and clear previous user input
   updateRoboMood(robotStats.cachePercent, robotStats.chargePercent);
 }
 
-
 /**
-* Sets the robot name and updates the display and mood of the robot.
-* @param {string} [name=robotStats.name] - The new name for the robot. Defaults to the current robot name.
-* @returns {void} This function does not return anything
-*/
+ * Sets the robot name and updates the display and mood of the robot.
+ * @param {string} [name=robotStats.name] - The new name for the robot. Defaults to the current robot name.
+ * @returns {void} This function does not return anything
+ */
 export function setRoboName(name = robotStats.name) {
   robotStats.name = name;
   hudDisplay.nameDisplay.textContent = name;
@@ -265,14 +269,14 @@ export function setRoboName(name = robotStats.name) {
 }
 
 /**
-* Increases the charge level of the robot by a given amount.
-* @param {number} num - The amount by which the robot will be charged.
-* @returns {void} - Returns nothing.
-* @description This function is responsible for increasing the charge level of the robot by the given amount.
-* It prevents charging based on certain conditions such as if the robot is sleeping, dead, game started or typing.
-* It also prevents overcharging (feeding) beyond 100% charge level. The UI is updated with the new charge % and
-* the robot's mood is updated accordingly. Finally, any error message is cleared.
-*/
+ * Increases the charge level of the robot by a given amount.
+ * @param {number} num - The amount by which the robot will be charged.
+ * @returns {void} - Returns nothing.
+ * @description This function is responsible for increasing the charge level of the robot by the given amount.
+ * It prevents charging based on certain conditions such as if the robot is sleeping, dead, game started or typing.
+ * It also prevents overcharging (feeding) beyond 100% charge level. The UI is updated with the new charge % and
+ * the robot's mood is updated accordingly. Finally, any error message is cleared.
+ */
 export function feedMe(num) {
   // Prevent charging based on certain conditions
   if (
@@ -298,11 +302,10 @@ export function feedMe(num) {
   clearError();
 }
 
-
 /**
-* Powers on the robot by loading the robot memory, setting initial robot stats,
-* and booting the robot after a delay of 4 seconds.
-*/
+ * Powers on the robot by loading the robot memory, setting initial robot stats,
+ * and booting the robot after a delay of 4 seconds.
+ */
 export function powerRobot() {
   loadRobotMemory();
   setInitRoboStats();
@@ -310,24 +313,23 @@ export function powerRobot() {
 }
 
 /**
-* Updates the robot's mood emoji displayed on the UI.
-* @param {string} emoji - The emoji representing the robot's mood.
-* Possible values: "😄" (Happy), "🙂" (Smile), "😡" (Angry), "😴" (Sleep), "☠️" (Dead) "🎮" (game).
-*/
+ * Updates the robot's mood emoji displayed on the UI.
+ * @param {string} emoji - The emoji representing the robot's mood.
+ * Possible values: "😄" (Happy), "🙂" (Smile), "😡" (Angry), "😴" (Sleep), "☠️" (Dead) "🎮" (game).
+ */
 export function setRoboMood(emoji) {
   hudDisplay.moodDisplay.textContent = emoji;
 }
 
-
 /**
-* Calculates the robot's mood based on the cache and charge percentage and updates the robot's UI mood emoji.
-* If the robot's charge percentage is less than or equal to 0,
-* the robot is considered dead and the die() function is called.
-* also updates the current robot state on the server
-* @param {number} cacheVal - The current cache percentage of the robot.
-* @param {number} chargeVal - The current charge percentage of the robot.
-* @returns {void} returns nothing
-*/
+ * Calculates the robot's mood based on the cache and charge percentage and updates the robot's UI mood emoji.
+ * If the robot's charge percentage is less than or equal to 0,
+ * the robot is considered dead and the die() function is called.
+ * also updates the current robot state on the server
+ * @param {number} cacheVal - The current cache percentage of the robot.
+ * @param {number} chargeVal - The current charge percentage of the robot.
+ * @returns {void} returns nothing
+ */
 export function updateRoboMood(cacheVal, chargeVal) {
   const totalHappyVal = (cacheVal + chargeVal) / 2;
 
@@ -357,11 +359,30 @@ export function updateRoboMood(cacheVal, chargeVal) {
   saveRobotState(newRobotState);
 }
 
+/*
+Handles the auto-saving of robot data both locally and on the server using the 'handleUpdateRobot' function.
+This function receives a robot state object as an argument, retrieves the owner's ID from the local storage, and
+calls the 'handleUpdateRobot' function to update the robot's state on the server.Otherwise, the
+'showWelcomeView' function is called to handle the case where the user is not authorized to update the robot.
+*/
+async function saveRobotState(robotObj) {
+  const owner = localStorage.getItem('owner');
+
+  const { robot } = await handleUpdateRobot(owner, robotObj);
+
+  if (robot.owner) {
+    localStorage.setItem('robot', JSON.stringify(robotObj));
+  } else {
+    clearTimeLivedInterval();
+    clearBatteryInterval();
+    handleError('Oops your robot was not found', 1);
+  }
+}
 
 /**
-* This function clears the battery interval that was set by calling setBatteryInterval() function.
-* Once the interval is cleared, the robot will stop discharging its battery over time.
-*/
+ * This function clears the battery interval that was set by calling setBatteryInterval() function.
+ * Once the interval is cleared, the robot will stop discharging its battery over time.
+ */
 export function clearBatteryInterval() {
   clearInterval(batteryInterval);
 }
@@ -372,7 +393,6 @@ export function clearBatteryInterval() {
 export function setBatteryInterval() {
   batteryInterval = setInterval(takeCharge, 12000, 0.5);
 }
-
 
 // Handles robot death
 function die() {
@@ -411,7 +431,8 @@ async function handleDeathActions() {
 
   // Inform user of robot death
   roboSendResponse(
-    `${robotStats.name} has died as a result of insufficient charging. To obtain a new pet, kindly refresh the page.`, 'text',
+    `${robotStats.name} has died as a result of insufficient charging. To obtain a new pet, kindly refresh the page.`,
+    'text',
   );
 
   const owner = localStorage.getItem('owner');
@@ -459,17 +480,29 @@ function setTimeLived(currTimeLived) {
 
   // Formats time display
   if (years >= 1) {
-    hudDisplay.timeLivedDisplay.textContent = `${years} ${years > 1 ? 'years' : 'year'}`;
+    hudDisplay.timeLivedDisplay.textContent = `${years} ${
+      years > 1 ? 'years' : 'year'
+    }`;
   } else if (months >= 1) {
-    hudDisplay.timeLivedDisplay.textContent = `${months} ${months > 1 ? 'months' : 'month'}`;
+    hudDisplay.timeLivedDisplay.textContent = `${months} ${
+      months > 1 ? 'months' : 'month'
+    }`;
   } else if (days >= 1) {
-    hudDisplay.timeLivedDisplay.textContent = `${days} ${days > 1 ? 'days' : 'day'}`;
+    hudDisplay.timeLivedDisplay.textContent = `${days} ${
+      days > 1 ? 'days' : 'day'
+    }`;
   } else if (hours >= 1) {
-    hudDisplay.timeLivedDisplay.textContent = `${hours} ${hours > 1 ? 'hours' : 'hour'}`;
+    hudDisplay.timeLivedDisplay.textContent = `${hours} ${
+      hours > 1 ? 'hours' : 'hour'
+    }`;
   } else if (minutes >= 1) {
-    hudDisplay.timeLivedDisplay.textContent = `${minutes} ${minutes > 1 ? 'minutes' : 'minute'}`;
+    hudDisplay.timeLivedDisplay.textContent = `${minutes} ${
+      minutes > 1 ? 'minutes' : 'minute'
+    }`;
   } else {
-    hudDisplay.timeLivedDisplay.textContent = `${seconds} second${seconds > 1 ? 's' : ''}`;
+    hudDisplay.timeLivedDisplay.textContent = `${seconds} second${
+      seconds > 1 ? 's' : ''
+    }`;
   }
 }
 
@@ -529,7 +562,6 @@ function typeWriter() {
   }
 }
 
-
 // Function enables robot to sleep
 function sleep() {
   roboState.isSleeping = true;
@@ -549,10 +581,13 @@ function awaken() {
   setSleepButtonText('Sleep 😴');
   roboUI.body.setAttribute('id', 'robo-full');
   roboUI.shadow.setAttribute('id', 'idle-shadow');
-  writeResponse('Welcome back!👋<br />Processing user recognition.<br /> Greetings...', 60);
+  writeResponse(
+    'Welcome back!👋<br />Processing user recognition.<br /> Greetings...',
+    60,
+  );
 }
 
 // Upgrades current robot version
 export function upgradeRoboVersion() {
-  robotStats.version = (robotStats.version * 1) + 1;
+  robotStats.version = robotStats.version * 1 + 1;
 }
