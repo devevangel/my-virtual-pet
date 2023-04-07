@@ -81,6 +81,12 @@ const userData = {
   currentUserInput: '',
 };
 
+// contains reference to the loading UI widget and robot control btns
+const robotBtnsUI = {
+  roboBtnsContainer: document.querySelector('.buttons-container'),
+  loadingSpinner: document.querySelector('.loading-spinner'),
+};
+
 /**
 Loads the robot's memory from the browser's local storage. If the data is a valid JSON string under the key 'robot',
 the parsed object is assigned to the global variable 'robotStats'.
@@ -88,6 +94,23 @@ the parsed object is assigned to the global variable 'robotStats'.
 export function loadRobotMemory() {
   const robotInStorage = JSON.parse(localStorage.getItem('robot'));
   robotStats = robotInStorage;
+}
+
+/**
+ * Resets the robot memory by clearing the `robotStats` object and setting `currentUserInput`
+ * and `userInput.value` to empty strings.
+ */
+export function resetRobotMemory() {
+  robotStats = {};
+  userData.currentUserInput = '';
+  userData.userInput.value = '';
+  localStorage.clear();
+  robotBtnsUI.loadingSpinner.classList.remove('hide');
+  robotBtnsUI.roboBtnsContainer.classList.add('hide');
+  hudDisplay.nameDisplay.textContent = '';
+  hudDisplay.powerDisplay.textContent = '';
+  hudDisplay.roboDisplay.textContent = '';
+  hudDisplay.timeLivedDisplay.textContent = '';
 }
 
 
@@ -99,4 +122,5 @@ export {
   roboUI,
   hudDisplay,
   userData,
+  robotBtnsUI,
 };

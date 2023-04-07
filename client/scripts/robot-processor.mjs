@@ -4,7 +4,7 @@ import {
   directionList,
   userData,
   robotStats,
-} from './globals.mjs';
+} from './robot-registers.mjs';
 import {
   parseUserInput,
   roboSendResponse,

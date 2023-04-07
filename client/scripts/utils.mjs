@@ -1,4 +1,5 @@
-import { addWelcomeSectionEventListeners, removeMainSectionEventListeners, removeWelcomeSectionEventLiseners, showWelcomeView } from './index.mjs';
+import { resetRobotMemory } from './robot-registers.mjs';
+import { showWelcomeView } from './index.mjs';
 
 // Sudo generates random int within given range
 export function getRandomIntInclusive(min, max) {
@@ -21,10 +22,7 @@ export function handleError(msg, code = 1) {
   switch (code) {
     case 1:
       alert(`Something went wrong: ${msg}`);
-      localStorage.clear();
-      removeMainSectionEventListeners();
-      removeWelcomeSectionEventLiseners();
-      addWelcomeSectionEventListeners();
+      resetRobotMemory();
       showWelcomeView();
       break;
 

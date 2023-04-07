@@ -8,13 +8,13 @@ import {
   powerRobot,
   getNewRobotSkin,
 } from './robot-os.mjs';
-import { talkToBot } from './robot-text-engine.mjs';
-import { handleCreateRobot, handleGetRobot } from './robot-api.mjs';
+import { talkToBot } from './robot-processor.mjs';
+import { handleCreateRobot, handleGetRobot } from './robot-api-client.mjs';
 
 // UI elements
 const welcomeTextArea = document.querySelector('.welcome-text');
-const welcomeSection = document.querySelector('#welcome-section');
-const mainSection = document.querySelector('#main-section');
+const welcomeView = document.querySelector('#welcome-section');
+const robotView = document.querySelector('#main-section');
 const createRobotForm = document.querySelector('#create-robot-form');
 const getRobotForm = document.querySelector('#get-robot-form');
 const actionTextCreate = document.querySelector('#create-robot');
@@ -50,54 +50,79 @@ window.addEventListener('load', startApp);
 
 // App entry point
 function startApp() {
-  // Welcome section form Event Listeners
-
-
-  // Check to see if there's a current owner avaliable and gets the robot else shows welcome section
   const owner = localStorage.getItem('owner');
   if (owner) {
-    clearInterval(particleInterval);
-    clearTimeout(writingTimeout);
-    mainSection.classList.remove('hide');
-    getCurrentRobotServerData(owner);
-    addMainSectionEventListeners();
-    removeWelcomeSectionEventLiseners();
+    getRobotServerState(owner);
   } else {
     showWelcomeView();
-    addWelcomeSectionEventListeners();
-    removeMainSectionEventListeners();
   }
 }
 
-// Handles showing the welcome view and all its related animations
+/**
+ * Handles showing the welcome view and all its related animations
+ */
 export function showWelcomeView() {
-  welcomeSection.classList.remove('hide');
+  removeRobotViewListeners();
+  robotView.classList.add('hide');
+  welcomeView.classList.remove('hide');
+  resetFormFields();
+  addWelcomeViewListeners();
   particleInterval = setInterval(
     createParticle,
     120,
     1600,
     screen,
-    welcomeSection,
+    welcomeView,
   );
   writeWelcomeMsg();
 }
 
+// Handles changing the text of the robot sleep button
+export function setSleepButtonText(text) {
+  sleepButton.textContent = text;
+}
 
-/**
- * Removes event listeners from various elements in the welcome section of a web page.
+
+/*
+Saves the robot data returned from the server to the device's local
+ storage and shows the robot view by updating the HTML elements.
+ It clears the particle and writing timeouts and powers on the robot.
  */
-export function removeWelcomeSectionEventLiseners() {
+function saveRobot(robot) {
+  localStorage.setItem('owner', robot.owner);
+  localStorage.setItem('robot', JSON.stringify(robot));
+  resetFormFields();
+  showRobotView();
+  powerRobot();
+}
+
+// resets the various welcome view form field values
+function resetFormFields() {
+  roboNameInput.value = '';
+  phoneInput.value = '';
+  getOwnerRobotInput.value = '';
+}
+
+// Handles showing the main robot view and all it's related features and actions
+function showRobotView() {
+  clearInterval(particleInterval);
+  clearTimeout(writingTimeout);
+  removeWelcomeViewLiseners();
+  addRobotViewListeners();
+  welcomeView.classList.add('hide');
+  robotView.classList.remove('hide');
+}
+
+// Removes event listeners from various elements in the welcome section of a web page.
+function removeWelcomeViewLiseners() {
   actionTextCreate.removeEventListener('click', switchForm);
   actionTextGet.removeEventListener('click', switchForm);
   getRobotButton.removeEventListener('click', getRobotAuth);
   createRobotButton.removeEventListener('click', createRobotAuth);
 }
 
-
-/**
- * Removes event listeners from various elements in the main section of a web page.
- */
-export function removeMainSectionEventListeners() {
+// Removes event listeners from various elements in the main section of the web page.
+function removeRobotViewListeners() {
   cleanCacheButton.removeEventListener('click', cleanCache);
   updateOSButton.removeEventListener('click', updateOS);
   chargeButton.removeEventListener('click', () => feedMe(0.5));
@@ -107,20 +132,18 @@ export function removeMainSectionEventListeners() {
   document.removeEventListener('keyup', talkToBot);
 }
 
-/**
-Adds event listeners to various elements in the welcome section of a web page.
-*/
-export function addWelcomeSectionEventListeners() {
+
+// Adds event listeners to various elements in the welcome section of the web page.
+function addWelcomeViewListeners() {
   actionTextCreate.addEventListener('click', switchForm);
   actionTextGet.addEventListener('click', switchForm);
   getRobotButton.addEventListener('click', getRobotAuth);
   createRobotButton.addEventListener('click', createRobotAuth);
 }
 
-/**
-Adds event listeners to various elements in the main section of a web page.
-*/
-export function addMainSectionEventListeners() {
+// Adds event listeners to various elements in the main section of the web page.
+function addRobotViewListeners() {
+  robotView.classList.remove('hide');
   cleanCacheButton.addEventListener('click', cleanCache);
   updateOSButton.addEventListener('click', updateOS);
   chargeButton.addEventListener('click', () => feedMe(0.5));
@@ -129,7 +152,6 @@ export function addMainSectionEventListeners() {
   document.addEventListener('input', handleUserInput);
   document.addEventListener('keyup', talkToBot);
 }
-
 
 // Handles hiding and showing of create and get robot form
 function switchForm() {
@@ -158,7 +180,7 @@ function writeWelcomeMsg() {
   writingTimeout = setTimeout(writeWelcomeMsg, typingDelay);
 }
 
-/**
+/*
  * Authenticates and creates a new robot on the server. If successful,
  * saves the returned robot locally and shows the robot view. Otherwise,
  * displays an authentication error message.
@@ -178,13 +200,14 @@ async function createRobotAuth() {
 
   const { robot } = result;
   if (!robot.owner) {
-    handleError(`Could not create robot, robot with this owner '${phone}' may already exist.`, 2);
+    handleError(`Could not create robot. Robot with this owner '${phone}' may already exist.`, 2);
   } else {
     saveRobot(robot);
   }
 }
 
-/** Asynchronously retrieves robot data from the server using
+/*
+Asynchronously retrieves robot data from the server using
 'handleGetRobot' function, and checks if the data contains an 'owner' property.
 If it does, the robot data is saved locally and the robot view is displayed.
 Otherwise, an alert is displayed with a message 'Authentication failed
@@ -205,38 +228,18 @@ async function getRobotAuth() {
   }
 }
 
-/**
+/*
  Retrieves current robot data from the server using 'handleGetRobot' function,
  saves it locally, and shows the robot view if the data contains an 'owner' property.
  Otherwise, it displays the welcome view.
  */
-async function getCurrentRobotServerData(owner) {
+async function getRobotServerState(owner) {
   const result = await handleGetRobot(owner);
   const { robot } = result;
 
   if (!robot.owner) {
-    handleError(`Could not get robot with owner line '${owner}.'`, 1);
+    handleError(`Could not get robot with owner line '${owner}.'`, 2);
   } else {
     saveRobot(robot);
   }
-}
-
-/**
-  Saves the robot data returned from the server to the device's local
- storage and shows the robot view by updating the HTML elements.
- It clears the particle and writing timeouts and powers on the robot.
- */
-function saveRobot(robot) {
-  localStorage.setItem('owner', robot.owner);
-  localStorage.setItem('robot', JSON.stringify(robot));
-  welcomeSection.classList.add('hide');
-  mainSection.classList.remove('hide');
-  clearInterval(particleInterval);
-  clearTimeout(writingTimeout);
-  powerRobot();
-}
-
-// Handles changing the text of the robot sleep button
-export function setSleepButtonText(text) {
-  sleepButton.textContent = text;
 }

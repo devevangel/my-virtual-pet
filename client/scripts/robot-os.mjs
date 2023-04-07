@@ -1,4 +1,4 @@
-import { handleDeleteRobot, handleUpdateRobot } from './robot-api.mjs';
+import { handleDeleteRobot, handleUpdateRobot } from './robot-api-client.mjs';
 import {
   roboState,
   robotStats,
@@ -7,7 +7,8 @@ import {
   userData,
   robotSkins,
   loadRobotMemory,
-} from './globals.mjs';
+  robotBtnsUI,
+} from './robot-registers.mjs';
 import { setSleepButtonText } from './index.mjs';
 import { getRandomIntInclusive, handleError } from './utils.mjs';
 
@@ -19,10 +20,6 @@ let isTag;
 let typingTimeout;
 let batteryInterval;
 let timeLivedInterval;
-
-// UI elements
-const roboBtnsContainer = document.querySelector('.buttons-container');
-const loadingSpinner = document.querySelector('.loading-spinner');
 
 /**
  * A function that takes in raw user input and returns it in lowercase with all whitespace removed.
@@ -443,8 +440,8 @@ async function handleDeathActions() {
 // Boots up and loads robo OS
 function bootRobot() {
   // Reomve loading spinner
-  loadingSpinner.remove();
-  roboBtnsContainer.classList.remove('hide');
+  robotBtnsUI.roboBtnsContainer.classList.remove('hide');
+  robotBtnsUI.loadingSpinner.classList.add('hide');
 
   // Call init functions
   setBatteryInterval();
