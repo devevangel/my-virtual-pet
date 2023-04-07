@@ -1,4 +1,4 @@
-import { handleError } from './utils.mjs';
+import { handleError } from './robot-utils.mjs';
 
 const URL = 'http://localhost:8080/robots';
 
@@ -21,7 +21,7 @@ export async function handleCreateRobot(requestBody) {
 
     return await response.json();
   } catch (error) {
-    handleError('An error occured creating your robot, please try again.', 2);
+    handleError('An error occured creating your robot, please try again.', 1);
   }
 }
 

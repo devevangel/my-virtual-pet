@@ -1,4 +1,4 @@
-import { createParticle, handleError } from './utils.mjs';
+import { createParticle, handleError } from './robot-utils.mjs';
 import {
   feedMe,
   cleanCache,
@@ -8,7 +8,7 @@ import {
   powerRobot,
   getNewRobotSkin,
 } from './robot-os.mjs';
-import { talkToBot } from './robot-processor.mjs';
+import { talkToBot } from './robot-main-processor.mjs';
 import { handleCreateRobot, handleGetRobot } from './robot-api-client.mjs';
 
 // UI elements
@@ -63,8 +63,8 @@ function startApp() {
  */
 export function showWelcomeView() {
   removeRobotViewListeners();
-  robotView.classList.add('hide');
   welcomeView.classList.remove('hide');
+  robotView.classList.add('hide');
   resetFormFields();
   addWelcomeViewListeners();
   particleInterval = setInterval(
@@ -238,7 +238,7 @@ async function getRobotServerState(owner) {
   const { robot } = result;
 
   if (!robot.owner) {
-    handleError(`Could not get robot with owner line '${owner}.'`, 2);
+    handleError(`Could not get robot with owner line '${owner}.'`, 1);
   } else {
     saveRobot(robot);
   }

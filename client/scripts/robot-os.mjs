@@ -10,7 +10,7 @@ import {
   robotBtnsUI,
 } from './robot-registers.mjs';
 import { setSleepButtonText } from './index.mjs';
-import { getRandomIntInclusive, handleError } from './utils.mjs';
+import { getRandomIntInclusive, handleError } from './robot-utils.mjs';
 
 // Local robot state values
 let textOut = '';

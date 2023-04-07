@@ -21,9 +21,9 @@ Displays an error message using an alert dialog box.
 export function handleError(msg, code = 1) {
   switch (code) {
     case 1:
-      alert(`Something went wrong: ${msg}`);
-      resetRobotMemory();
       showWelcomeView();
+      resetRobotMemory();
+      alert(`Something went wrong: ${msg}`);
       break;
 
     case 2:

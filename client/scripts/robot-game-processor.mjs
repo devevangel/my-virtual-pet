@@ -7,7 +7,7 @@ import {
   writeResponse,
 } from './robot-os.mjs';
 import { directionList, roboState, robotStats } from './robot-registers.mjs';
-import { getRandomIntInclusive } from './utils.mjs';
+import { getRandomIntInclusive } from './robot-utils.mjs';
 
 /**
 * Handles the initialization of a game based on the user input.

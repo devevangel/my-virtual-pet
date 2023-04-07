@@ -19,7 +19,7 @@ import {
   handleSleepAwakeState,
 } from './robot-os.mjs';
 
-import { handleGameInit, playGame } from './game-engine.mjs';
+import { handleGameInit, playGame } from './robot-game-processor.mjs';
 
 const date = new Date(Date.now());
 const timeStamp = new Date(Date.now());
