@@ -149,7 +149,7 @@ export function talkToBot(e) {
           node: hudDisplay.listOrderDisplay,
         });
         break;
-      case 'history':
+      case 'logs':
         for (const cacheItem of robotStats.cacheList) {
           const li = document.createElement('li');
           li.textContent = cacheItem;
