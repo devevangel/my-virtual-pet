@@ -1,5 +1,5 @@
-import { writeToDB, readFromDB } from "./db-read-write.js";
-import { nanoid } from "nanoid";
+import { writeToDB, readFromDB } from './db-read-write.js';
+import { nanoid } from 'nanoid';
 
 /**
  * The RobotDataBaseAPI class provides an API for interacting with the robot database.
@@ -36,7 +36,7 @@ class RobotDataBaseAPI {
       owner,
       timeLived,
       skinclass,
-      version: 16,
+      version: 1,
       chargePercent: 100,
       cachePercent: 100,
       cacheList: [],
@@ -47,28 +47,28 @@ class RobotDataBaseAPI {
   }
 
   /**
-  * Finds a robot in the database that matches the given query.
-  * @param {Object} query - The query to use for finding the robot.
-  * @param {string} query.owner - The owner of the robot to find.
-  * @returns {Object} - The robot object that matches the query, or an empty object if not found.
-  */
+   * Finds a robot in the database that matches the given query.
+   * @param {Object} query - The query to use for finding the robot.
+   * @param {string} query.owner - The owner of the robot to find.
+   * @returns {Object} - The robot object that matches the query, or an empty object if not found.
+   */
   findOne(query) {
     const result = this.database[query.owner];
     return result ?? {};
   }
 
   /**
-  * Updates a robot in the database that matches the given query with the given data.
-  * @async
-  * @param {Object} query - The query to use for finding the robot to update.
-  * @param {string} query.owner - The owner of the robot to update.
-  * @param {Object} data - The data to update the robot with.
-  * @returns {Object} - The updated robot object.
-  */
+   * Updates a robot in the database that matches the given query with the given data.
+   * @async
+   * @param {Object} query - The query to use for finding the robot to update.
+   * @param {string} query.owner - The owner of the robot to update.
+   * @param {Object} data - The data to update the robot with.
+   * @returns {Object} - The updated robot object.
+   */
   updateOne(query, data) {
     let robot = this.database[query.owner];
 
-    if(!robot) return {};
+    if (!robot) return {};
 
     robot = {
       ...robot,
@@ -86,10 +86,10 @@ class RobotDataBaseAPI {
   }
 
   /**
-  * Finds a list of robots from the database.
-  * @param {number} [length=5] - The number of robots to return.
-  * @returns {Array.<Object>} - An array of robot objects.
-  */
+   * Finds a list of robots from the database.
+   * @param {number} [length=5] - The number of robots to return.
+   * @returns {Array.<Object>} - An array of robot objects.
+   */
   find(length = 5) {
     const keys = Object.keys(this.database).slice(0, length);
     const result = [];
@@ -100,11 +100,11 @@ class RobotDataBaseAPI {
   }
 
   /**
-  * Deletes a robot from the database and returns the deleted robot.
-  * @param {object} query - The query object used to identify the robot to delete.
-  * @param {string} query.owner - The owner of the robot to delete.
-  * @returns {object} The deleted robot, or an empty object if the robot was not found in the database.
-  */
+   * Deletes a robot from the database and returns the deleted robot.
+   * @param {object} query - The query object used to identify the robot to delete.
+   * @param {string} query.owner - The owner of the robot to delete.
+   * @returns {object} The deleted robot, or an empty object if the robot was not found in the database.
+   */
   deleteOne(query) {
     const snapshot = this.database;
 

@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 
-const FILE_PATH = './db/robots.json';
+const FILE_PATH = './db/robots-db.json';
 
 /**
 * Reads data as an object from a JSON file located in the specified file path asynchronously.

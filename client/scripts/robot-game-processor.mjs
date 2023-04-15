@@ -10,10 +10,10 @@ import { directionList, roboState, robotStats } from './robot-registers.mjs';
 import { getRandomIntInclusive } from './robot-utils.mjs';
 
 /**
-* Handles the initialization of a game based on the user input.
-* @param {string} userInput - The user's input, either "game", "yes", "y", "no", "n", or "end".
-* @returns {void}
-*/
+ * Handles the initialization of a game based on the user input.
+ * @param {string} userInput - The user's input, either "game", "yes", "y", "no", "n", or "end".
+ * @returns {void}
+ */
 export function handleGameInit(userInput) {
   switch (userInput) {
     case 'game':
@@ -59,7 +59,10 @@ export function handleGameInit(userInput) {
       break;
     default:
       // Informs the user that they didn't enter a valid input and resets roboState.
-      roboSendResponse("Sorry seems like you didn't enter a valid input answer", 'text');
+      roboSendResponse(
+        "Sorry seems like you didn't enter a valid input answer",
+        'text'
+      );
       roboState.isGameInit = false;
       roboState.isGameStarted = false;
       break;
@@ -67,7 +70,11 @@ export function handleGameInit(userInput) {
 }
 
 /**
-Handles showing game rules when the game is initiated. It generates the initial robot guess value using the getRandomIntInclusive function, writes or outputs the game directions for the user, removes the robot battery interval to prevent the robot from discharging while playing, and sets the robot mood state to gaming mood.
+Handles showing game rules when the game is initiated.
+It generates the initial robot guess value using the getRandomIntInclusive function,
+writes or outputs the game directions for the user,
+removes the robot battery interval to prevent the robot from discharging while playing,
+and sets the robot mood state to gaming mood.
 @return {void}
 */
 function showGameRules() {
@@ -78,20 +85,20 @@ function showGameRules() {
 }
 
 /**
-* Handles the user input for the game and checks if it's a valid number or not.
-* If the user input is a valid number, checks if it matches the robot's guess.
-* If the guess is correct, generates a new random guess and asks the user to guess again or end the game.
-* If the guess is incorrect, asks the user to guess again.
-* @param {string} userInput - The user input for the game
-* @returns {undefined} - This function does not return anything
-*/
+ * Handles the user input for the game and checks if it's a valid number or not.
+ * If the user input is a valid number, checks if it matches the robot's guess.
+ * If the guess is correct, generates a new random guess and asks the user to guess again or end the game.
+ * If the guess is incorrect, asks the user to guess again.
+ * @param {string} userInput - The user input for the game
+ * @returns {undefined} - This function does not return anything
+ */
 export function playGame(userInput) {
   const userInputNum = parseInt(userInput);
 
   // Checks if user input in not a number
   if (isNaN(userInputNum)) {
     roboSendResponse(
-      'Invalid input, please ensure to enter a number. Try again',
+      'Invalid input, please ensure to enter a number. Try again'
     );
   }
 
@@ -105,6 +112,6 @@ export function playGame(userInput) {
   roboState.guessVal = getRandomIntInclusive(1, 10);
   roboSendResponse(
     `Hurray! ${userInputNum} is correct. Guess my new number or end game`,
-    'text',
+    'text'
   );
 }

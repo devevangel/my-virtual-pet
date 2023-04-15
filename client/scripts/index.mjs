@@ -8,7 +8,7 @@ import {
   powerRobot,
   getNewRobotSkin,
 } from './robot-os.mjs';
-import { talkToBot } from './robot-main-processor.mjs';
+import { talkToBot } from './robot-text-processor.mjs';
 import { handleCreateRobot, handleGetRobot } from './robot-api-client.mjs';
 
 // UI elements

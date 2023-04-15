@@ -1,33 +1,102 @@
 # Robot Dojo
 
-This is my implementation of the virtual pet course work. In my project I went with the idea of having a robot as virtual pet, as I believe that machines have become part of our everyday life to help improve overall well being and standard of living of it's users. Therefore having a robot as a virtual pet to improve your productivity and well being is very much necessary. Below are the features of the virtual pet.
+Welcome to Robo Dojo Inc., a web application that gives you the ability to own, create and interact with a robot virtual pet.
 
-**Features**
+## Robot Components 
 
-- Global variable state [This was done to better optimize codebase as certain files and functions required and made use of certain data objects frequently ]
+This sections describes the different components that make a the robot and their various functions. It seeks to provide a high level understanding 
 
-- Robo has ability to tell time
+**Storage**
+This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
 
-- Robot has the ability to tell the current date
+- Custom built JSON database and database management system (server).
+- In app JSON based quick read/write storage unit (localstorage - client).
+- Robot main cache memory (an implementation of the in app JSON localstorage unit - client).
+- Runtime storage unit (RAM - client)
 
-- Robot has the ability to play a simple guess game
+**Text Processor**
+This is the component of the robot responsible for processing user text input to enable the robot provide useful responses or output. 80% of the robots funtionality can be accessed via the text processor. The text processor makes use of a very simple text processing system which has the potential to be developed into a more complex system to better handle user input as well improve robot responses. This processor also helps in determining the current mood of the robot which includes: Very Happy, Happy, Sad, Angry, Sleep and Dead. 
 
-- Robot has the ability to display emotions based certain variables it possesses
+**Game Processor**
+This is an extenstion of the text processor. The game processor component of the robot handles the gamplay process within the app. It provides the abliltiy to play a guess the number game where the robot generates a random number between a given min and max value and the user tries to guess the number right. This processor helps in updating the robot game mode.
 
-- Robot the ability to store user commands given to it in it's cache
+**Operating System**
 
-- Robot requires cache cleaning as it only has a limited storage unit to hold all user commands
+**Battery**
+This is the robots power unit, it has to charged from time to time to keep the robot alive.
 
-- Robot requires charging as it's battery runs down as time goes by
+**Display Unit**
+This the component that handles displaying and updating the user interface(UI) of the robot. it displasy the following info:
 
-- Robot has the ability to change it's name based on it's user command
+- Robot pet name
+- Power level in percentage
+- Memory Capacity
+- Time lived
+- Mood : Very Happy 😄| Happy 🙂| Sad 😥| Angry 😡| Sleeping 😴| Gaming 🎮| Dead ☠️
+- Robot text response
+- Warings and Errors
 
-- Robot OS can be updated as the user sees fit
+**Button Controls**
+This consist of buttons that provides the user ablility to control certain aspects of the robot. this functions includes:
 
-- Robot comes with an in-built operations manual
+- Feed Me(chage robot)
+- Sleep/Awaken robot
+- Clean Cache
+- Update OS
 
-- Robot to use manual enter keyword 'Help' or 'help' in the input box
 
-- Robot makes use of text based output via it's terminal to communicate with user
+**Robot Features**
 
-_author up2150727_
+- Ability to tell the time
+
+- Ability to tell the current date
+
+- Ability to play a simple text based game
+
+- Ability to display its feelings or emotions
+
+- Ability to store and display previous user inputs and command history using its memory cache
+
+- Ability to clear cache memory
+
+- Ability to Sleep
+
+- Ability to Change it's designated name on user command
+
+- Ability to update it's OS on user command
+
+- Ability to display usage manual or game guide when the command 'help' is entered
+
+- Ability to provide text based response to user commands
+
+- Ability to store, calculate and display total time lived
+
+- Ability to check it's curernt OS version on user command
+
+**Robot User Control Features**
+
+- Button to charge robot
+- Button to sleep/wake robot
+- Button to clean cache
+- Button to update OS
+
+
+
+## How To Use
+
+1. Clone the repository to your local machine.
+2. Run `npm install` to install the necessary dependencies.
+3. Run `npm start` to start the app.
+4. Open `http://localhost:8080` in your web browser.
+5. Create a new pet or get your existing pet.
+6. Start interacting with your robot pet.
+
+## Conclusion
+
+For my virtual pet course work project, I decided to create a robot as the virtual pet. I believe that machines have become an integral part of our daily lives, helping to improve our overall well-being and standard of living. With this in mind, I thought that having a robot as a virtual pet could be a useful way to enhance productivity and well-being.
+
+## Finds
+
+## Refrences
+
+

@@ -1,7 +1,7 @@
 body {
   margin: 0px;
   padding: 0px;
-  font-family: "Silkscreen", monospace;
+  font-family: 'Silkscreen', monospace;
   color: #00ff00;
   background-color: black;
   overflow: hidden;
@@ -73,7 +73,7 @@ body {
 .cpu-text {
   stroke-width: 1;
   stroke: black;
-  font-family: "Monospace" !important;
+  font-family: 'Monospace' !important;
   font-size: 0.9em;
   text-align: center;
 }
@@ -83,7 +83,7 @@ body {
   text-decoration: underline;
 }
 
-.user-input-holder{
+.user-input-holder {
   width: 98%;
   display: flex;
   flex-direction: row;
@@ -322,7 +322,7 @@ button:hover {
 .cpu-text-die {
   stroke-width: 1;
   stroke: none;
-  font-family: "Monospace" !important;
+  font-family: 'Monospace' !important;
   font-size: 0.9em;
   text-align: center;
 }
@@ -345,7 +345,7 @@ button:hover {
 /* Media queries */
 
 /* Mobile screens only */
-@media only screen and (max-width: 767px) {
+@media (max-width: 767px) {
   .buttons-container {
     flex-direction: column;
     align-items: center;
