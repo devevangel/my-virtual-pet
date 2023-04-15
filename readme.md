@@ -4,7 +4,7 @@ Welcome to Robo Dojo Inc., a web application that gives you the ability to own, 
 
 ## Robot Components 
 
-This sections describes the different components that make a the robot and their various functions. It seeks to provide a high level understanding 
+This sections describes the different components that make a the robot and their various functions. It seeks to provide a high level understanding of the entire application at how it all comes together.
 
 **Storage**
 This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
