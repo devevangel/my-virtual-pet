@@ -102,7 +102,7 @@ This consist of buttons that provides the user ablility to control certain aspec
 
 - Ability to check it's curernt OS version on user command
 
-## Robot User Control Features**
+## Robot User Control Features
 
 - Button to charge robot
 - Button to sleep/wake robot
