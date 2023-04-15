@@ -7,6 +7,7 @@ Welcome to Robo Dojo Inc., a web application that gives you the ability to own, 
 This sections describes the different components that make a the robot and their various functions. It seeks to provide a high level understanding of the entire application at how it all comes together.
 
 **Storage**
+
 This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
 
 - Custom built JSON database and database management system (server).
@@ -15,17 +16,21 @@ This consist of the Robo Dojo main database located on the server, the robot in 
 - Runtime storage unit (RAM - client)
 
 **Text Processor**
+
 This is the component of the robot responsible for processing user text input to enable the robot provide useful responses or output. 80% of the robots funtionality can be accessed via the text processor. The text processor makes use of a very simple text processing system which has the potential to be developed into a more complex system to better handle user input as well improve robot responses. This processor also helps in determining the current mood of the robot which includes: Very Happy, Happy, Sad, Angry, Sleep and Dead. 
 
 **Game Processor**
+
 This is an extenstion of the text processor. The game processor component of the robot handles the gamplay process within the app. It provides the abliltiy to play a guess the number game where the robot generates a random number between a given min and max value and the user tries to guess the number right. This processor helps in updating the robot game mode.
 
 **Operating System**
 
 **Battery**
+
 This is the robots power unit, it has to charged from time to time to keep the robot alive.
 
 **Display Unit**
+
 This the component that handles displaying and updating the user interface(UI) of the robot. it displasy the following info:
 
 - Robot pet name
@@ -37,6 +42,7 @@ This the component that handles displaying and updating the user interface(UI) o
 - Warings and Errors
 
 **Button Controls**
+
 This consist of buttons that provides the user ablility to control certain aspects of the robot. this functions includes:
 
 - Feed Me(chage robot)
@@ -45,7 +51,7 @@ This consist of buttons that provides the user ablility to control certain aspec
 - Update OS
 
 
-**Robot Features**
+## Robot Features**
 
 - Ability to tell the time
 
@@ -73,7 +79,7 @@ This consist of buttons that provides the user ablility to control certain aspec
 
 - Ability to check it's curernt OS version on user command
 
-**Robot User Control Features**
+## Robot User Control Features**
 
 - Button to charge robot
 - Button to sleep/wake robot
