@@ -1,4 +1,4 @@
-import { handleDeleteRobot, handleUpdateRobot } from './robot-api-client.mjs';
+import { handleDeleteRobot, handleUpdateRobot } from './robot-network-driver.mjs';
 import {
   roboState,
   robotStats,

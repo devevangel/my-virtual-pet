@@ -9,7 +9,7 @@ import {
   getNewRobotSkin,
 } from './robot-os.mjs';
 import { talkToBot } from './robot-text-processor.mjs';
-import { handleCreateRobot, handleGetRobot } from './robot-api-client.mjs';
+import { handleCreateRobot, handleGetRobot } from './robot-network-driver.mjs';
 
 // UI elements
 const welcomeTextArea = document.querySelector('.welcome-text');

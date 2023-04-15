@@ -6,7 +6,7 @@ Welcome to Robo Dojo Inc., a web application that gives you the ability to own, 
 
 This sections describes the different components that make a the robot and their various functions. It seeks to provide a high level understanding of the entire application at how it all comes together.
 
-**Storage**
+### Storage
 
 This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
 
@@ -15,21 +15,35 @@ This consist of the Robo Dojo main database located on the server, the robot in 
 - Robot main cache memory (an implementation of the in app JSON localstorage unit - client).
 - Runtime storage unit (RAM - client)
 
-**Text Processor**
+### Text Processor
 
 This is the component of the robot responsible for processing user text input to enable the robot provide useful responses or output. 80% of the robots funtionality can be accessed via the text processor. The text processor makes use of a very simple text processing system which has the potential to be developed into a more complex system to better handle user input as well improve robot responses. This processor also helps in determining the current mood of the robot which includes: Very Happy, Happy, Sad, Angry, Sleep and Dead. 
 
-**Game Processor**
+### Game Processor
 
 This is an extenstion of the text processor. The game processor component of the robot handles the gamplay process within the app. It provides the abliltiy to play a guess the number game where the robot generates a random number between a given min and max value and the user tries to guess the number right. This processor helps in updating the robot game mode.
 
-**Operating System**
+### Network Driver
 
-**Battery**
+This is the component resposible for handling all network requests that the robot needs to make. It sends the data gotten from network requests to various parts of the robot where it's requried. It also sends all possible errors to the error handling compoent where its processed to output useful error messages where necessary.
+
+### Operating System
+
+This is the major component of the entire robot as it controls all other aspects of the robots. It's functions include:
+    - Memory managemnt and usage
+    - Display of the various robot stats
+    - Calculations of variaous values
+    - Handles game play initialization
+    - Powering on and loading store data
+    - Handles version updates
+    - Error handling and display
+    - Making network requests
+
+### Battery
 
 This is the robots power unit, it has to charged from time to time to keep the robot alive.
 
-**Display Unit**
+### Display Unit
 
 This the component that handles displaying and updating the user interface(UI) of the robot. it displasy the following info:
 
@@ -41,7 +55,16 @@ This the component that handles displaying and updating the user interface(UI) o
 - Robot text response
 - Warings and Errors
 
-**Button Controls**
+### Error Handler
+
+This is also a very necessary and important component of the robot. It manages all possible errors and unexpected behaviours that may occur during the usage of the web application. Here some of the major errors handled in the app.
+
+- Network errors: This has to do with all erors that may occur during the process of making network requests.
+- Storage malfunction errors: This has to do with errors that occur as a result of damage to the localstorage of the robot.
+- User generated errors: This has to do with errors that are cuased by the user interaction.
+- Malfunctions: This has to do with unexpect errors or expections.
+
+### Button Controls
 
 This consist of buttons that provides the user ablility to control certain aspects of the robot. this functions includes:
 
@@ -51,7 +74,7 @@ This consist of buttons that provides the user ablility to control certain aspec
 - Update OS
 
 
-## Robot Features**
+## Robot Features
 
 - Ability to tell the time
 
