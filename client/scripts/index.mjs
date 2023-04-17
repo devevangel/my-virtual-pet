@@ -32,7 +32,6 @@ const roboNameInput = document.querySelector('#robot-name');
 const phoneInput = document.querySelector('#owner-line');
 const getOwnerRobotInput = document.querySelector('#get-owner-line');
 
-
 // App state variables
 const typingDelay = 120;
 let charIndex = 0;
@@ -82,7 +81,6 @@ export function setSleepButtonText(text) {
   sleepButton.textContent = text;
 }
 
-
 /*
 Saves the robot data returned from the server to the device's local
  storage and shows the robot view by updating the HTML elements.
@@ -131,7 +129,6 @@ function removeRobotViewListeners() {
   document.removeEventListener('input', handleUserInput);
   document.removeEventListener('keyup', talkToBot);
 }
-
 
 // Adds event listeners to various elements in the welcome section of the web page.
 function addWelcomeViewListeners() {
@@ -200,7 +197,10 @@ async function createRobotAuth() {
 
   const { robot } = result;
   if (!robot.owner) {
-    handleError(`Could not create robot. Robot with this owner '${phone}' may already exist.`, 2);
+    handleError(
+      `Could not create robot. Robot with this owner '${phone}' may already exist.`,
+      2,
+    );
   } else {
     saveRobot(robot);
   }

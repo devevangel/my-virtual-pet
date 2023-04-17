@@ -25,14 +25,15 @@ const date = new Date(Date.now());
 const timeStamp = new Date(Date.now());
 
 /**
- * talkToBot function is responsible for parsing the user's input, and calling the appropriate function based on the parsed user input.
+ * talkToBot function is responsible for calling the parseUserInput function that handles parcing the user input,
+ * and calling the appropriate function based on the parsed user input.
  * The function handles different cases of user input, including updating the robot's name,
  * playing a game, and responding to questions about its name, and its identity.
  * The function receives an event e as a parameter,
  * which is the keydown event that is triggered when the user presses a key on the keyboard.
  * If the keycode of the key pressed is 13 (enter), the function is executed.
  * @param {Event} e - the keydown event that is triggered when the user presses a key on the keyboard
- * @returns {void} This function does not return anything.
+ * @returns {void} - This function does not return anything.
  */
 export function talkToBot(e) {
   if (
@@ -102,24 +103,15 @@ export function talkToBot(e) {
     }
 
     switch (parsedUserInput) {
-      case 'hi':
-        writeResponse('Hello! How can I help you today?', 50);
-        break;
       case 'hello':
+      case 'hi':
+      case 'hey':
         writeResponse(
           "Hi! Is there anything you would like to ask or talk about? I'm here to assist you.",
           50,
         );
         break;
-      case 'hey':
-        writeResponse('Hello! How can I assist you today?', 50);
-        break;
       case 'name':
-        writeResponse(
-          `Confirming identity.<br /> My designated nomenclature is <u> ${robotStats.name}</u>.`,
-          50,
-        );
-        break;
       case 'whatisyourname':
         writeResponse(
           `Confirming identity.<br /> My designated nomenclature is <u> ${robotStats.name}</u>.`,
@@ -127,15 +119,10 @@ export function talkToBot(e) {
         );
         break;
       case 'whoareyou':
-        roboSendResponse(
-          "I'm a semi-autonomous virtual robotic interface here to keep you company,<br /> developed by Evangel CEO Robo Dojo Inc.",
-          'text',
-        );
-        break;
       case 'whatareyou':
-        roboSendResponse(
-          "I'm a semi-autonomous virtual robotic interface here to keep you company,<br/> developed by Evangel CEO Robo Dojo Inc.",
-          'text',
+        writeResponse(
+          "I'm a semi-autonomous virtual robotic interface here to keep you company,<br /> developed by Evangel CEO Robo Dojo Inc.",
+          50,
         );
         break;
       case 'help':

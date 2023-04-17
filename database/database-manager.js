@@ -1,4 +1,4 @@
-import { writeToDB, readFromDB } from './db-read-write.js';
+import { writeToDB, readFromDB } from './database-read-write.js';
 import { nanoid } from 'nanoid';
 
 /**

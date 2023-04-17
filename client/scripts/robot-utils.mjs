@@ -1,45 +1,63 @@
 import { resetRobotMemory } from './robot-registers.mjs';
 import { showWelcomeView } from './index.mjs';
 
-// Sudo generates random int within given range
+/**
+ * Generates a random number between a given minimum and maximum value,
+ * with the maximum value inclusive.
+ * @param {number} min
+ * @param {number} max
+ * @returns {number} Returns the randome generated value
+ */
 export function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// Returns a random float value between the given minimum and maximum values.
+// Returns a random floating point value between a given minimum and maximum value.
 function randomFloatInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /**
-Displays an error message using an alert dialog box.
-@param {string} msg - The error message to be displayed.
-@returns {void}
-*/
+ * Global error handling function. Takes a message string and code number,
+ * which is tested using a switch case to run the appropriate error handling function(s) that correspond to the passed code value and alert the message string.
+ * @param {string} msg - The error message to be displayed.
+ * @param {number} code - The error code t6o determine how to handle the error, Default code is 1.
+ * @returns {void} - This function does not return anything.
+ */
 export function handleError(msg, code = 1) {
   switch (code) {
     case 1:
       showWelcomeView();
       resetRobotMemory();
-      alert(`Something went wrong: ${msg}`);
+      setTimeout(() => {
+        alert(`Something went wrong: ${msg}`);
+      }, 0);
       break;
 
     case 2:
-      alert(`Something went wrong: ${msg}`);
+      setTimeout(() => {
+        alert(`Something went wrong: ${msg}`);
+      }, 0);
       break;
     default:
+      setTimeout(() => {
+        alert(`Something went very wrong: ${msg}`);
+      }, 0);
       break;
   }
 }
 
 /**
-* Creates a moving particle using the div tag.
-* @param {number} lifeTime - The lifespan of the particle in milliseconds.
-* @param {{x: number, y: number}} screen - An object containing the screen dimensions.
-* @param {HTMLElement} containerElem - The HTML element that will contain the particle.
-*/
+ * Creates a moving particle using the HTML div tag and the CSS class 'particle'.
+ * After the particle has been created it goes ahead to recalculate the new position, rotation and speed of the particle.
+ * Finally, the particle is destroyed when it's lifetime is reached
+ * @param {number} lifeTime - The lifespan of the particle in milliseconds.
+ * @param {{x: number, y: number}} screen - An object containing the screen dimensions.
+ * @param {HTMLElement} containerElem - The HTML element that will contain the particles.
+ * @returns {void} - This function does not return anything.
+ */
 export function createParticle(lifeTime, screen, containerElem) {
   // Create a new div element for the particle
   const particle = document.createElement('div');

@@ -7,7 +7,7 @@ const URL = 'http://localhost:8080/robots';
  * @async
  * @param {Object} requestBody - The request body to send with the POST request.
  * @returns {Promise<Object>} A Promise that resolves to the JSON response from the server.
- * @throws {Error} If an error occurs while sending the POST request or parsing the JSON response its paased to the error handler.
+ * @throws {Error} If an error occurs while sending the POST request or parsing the JSON response the handleError() function is invoked.
  */
 export async function handleCreateRobot(requestBody) {
   try {
@@ -30,7 +30,7 @@ export async function handleCreateRobot(requestBody) {
  * @async
  * @param {string} owner - The owner phone line of the robot to retrieve.
  * @returns {Promise<Object>} A Promise that resolves to the JSON response from the server.
- * @throws {Error} If an error occurs while sending the GET request or parsing the JSON response its paased to the error handler.
+ * @throws {Error} If an error occurs while sending the GET request or parsing the JSON response the handleError() function is invoked.
  */
 export async function handleGetRobot(owner) {
   try {
@@ -47,7 +47,7 @@ export async function handleGetRobot(owner) {
  * @param {string} owner - The owner phone line of the robot to update.
  * @param {Object} robotData - The data to update the robot with.
  * @returns {Promise<Object>} A Promise that resolves to the JSON response from the server.
- * @throws {Error} If an error occurs while sending the PATCH request or parsing the JSON response its paased to the error handler.
+ * @throws {Error} If an error occurs while sending the PATCH request or parsing the JSON response the handleError() function is invoked.
  */
 export async function handleUpdateRobot(owner, robotData) {
   try {
@@ -70,7 +70,7 @@ export async function handleUpdateRobot(owner, robotData) {
  * @async
  * @param {string} owner - The owner phone line of the robot to delete.
  * @returns {Promise<Object>} A Promise that resolves to the JSON response from the server.
- * @throws {Error} If an error occurs while sending the DELETE request or parsing the JSON response its paased to the error handler.
+ * @throws {Error} If an error occurs while sending the DELETE request or parsing the JSON response the handleError() function is invoked.
  */
 export async function handleDeleteRobot(owner) {
   try {

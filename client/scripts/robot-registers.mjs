@@ -88,8 +88,10 @@ const robotBtnsUI = {
 };
 
 /**
-Loads the robot's memory from the browser's local storage. If the data is a valid JSON string under the key 'robot',
-the parsed object is assigned to the global variable 'robotStats'.
+* Loads the robot's memory from the browser's local storage. If the data is a valid JSON string under the key 'robot',
+* the parsed object is assigned to the global variable 'robotStats'.
+* This function is local to the 'robot-registers.mjs' file as it directly mutates one of the registers objects.
+* Hence it is placed in the 'robot-registers.mjs' file and accessed wherever its needed'.
 */
 export function loadRobotMemory() {
   const robotInStorage = JSON.parse(localStorage.getItem('robot'));
@@ -98,7 +100,9 @@ export function loadRobotMemory() {
 
 /**
  * Resets the robot memory by clearing the `robotStats` object and setting `currentUserInput`
- * and `userInput.value` to empty strings.
+ * and `userInput.value` to empty strings. In the case an unexpected behaviour or error this function is called.
+ * This function is local to the 'robot-registers.mjs' file as it directly mutates one of the registers objects.
+ * Hence it is placed in the 'robot-registers.mjs' file and accessed wherever its needed'.
  */
 export function resetRobotMemory() {
   robotStats = {};
