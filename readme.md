@@ -30,14 +30,14 @@ This is the component resposible for handling all network requests that the robo
 ### Operating System
 
 This is the major component of the entire robot as it controls all other aspects of the robots. It's functions include:
-    - Memory managemnt and usage
-    - Display of the various robot stats
-    - Calculations of variaous values
-    - Handles game play initialization
-    - Powering on and loading store data
-    - Handles version updates
-    - Error handling and display
-    - Making network requests
+- Memory managemnt and usage
+- Display of the various robot stats
+- Calculations of variaous values
+- Handles game play initialization
+- Powering on and loading store data
+- Handles version updates
+- Error handling and display
+- Making network requests
 
 ### Battery
 
