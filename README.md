@@ -1,33 +1,33 @@
 # Robot Dojo
 
-Welcome to Robo Dojo Inc., a web application that gives you the ability to own, create and interact with a robot virtual pet.
+Welcome to Robo Dojo Inc.! a web application that provides you with the ability to create, own, and interact with a virtual pet robot.
 
 ## Robot Components 
 
-This sections describes the different components that make a robot and their various functions. It seeks to provide a high level overview of the entire application and how it all comes together.
+This section provides an overview of the various components that make up the robot and their respective functions. It aims to give a high-level understanding of the entire application and how all the pieces fit together.
 
-### Storage
+### [Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-registers.mjs)
 
 This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
 
-- Custom built JSON database and database management system (server).
+- Custom built JSON database and Database Management System [DBMS](https://github.com/devevangel/my-virtual-pet/blob/main/database/database-manager.js) (server).
 - In app JSON based quick read/write storage unit (localstorage - client).
 - Robot main cache memory (an implementation of the in app JSON localstorage unit - client).
 - Runtime storage unit (RAM - client)
 
-### Text Processor
+### [Text Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-text-processor.mjs)
 
 This is the component of the robot responsible for processing user text input to enable the robot provide useful responses or output. 80% of the robots funtionality can be accessed via the text processor. The text processor makes use of a very simple text processing system which has the potential to be developed into a more complex system to better handle user input as well improve robot responses. This processor also helps in determining the current mood of the robot which includes: Very Happy, Happy, Sad, Angry, Sleep and Dead. 
 
-### Game Processor
+### [Game Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-game-processor.mjs)
 
 This is an extenstion of the text processor. The game processor component of the robot handles the gamplay process within the app. It provides the abliltiy to play a guess the number game where the robot generates a random number between a given min and max value and the user tries to guess the number right. This processor helps in updating the robot game mode.
 
-### Network Driver
+### [Network Driver]()
 
 This is the component resposible for handling all network requests that the robot needs to make. It sends the data gotten from network requests to various parts of the robot where it's requried. It also sends all possible errors to the error handling compoent where its processed to output useful error messages where necessary.
 
-### Operating System
+### [Operating System]()
 
 This is the major component of the entire robot as it controls all other aspects of the robots. It's functions include:
 - Memory managemnt and usage
@@ -122,10 +122,20 @@ This consist of buttons that provides the user ablility to control certain aspec
 
 ## About My Course Work
 
-For my virtual pet course work project, I decided to create a robot as the virtual pet. I believe that machines have become an integral part of our daily lives, helping to improve our overall well-being and standard of living. With this in mind, I thought that having a robot as a virtual pet could be a useful way to enhance productivity and well-being.
+For my virtual pet coursework, I chose to create a robot as a virtual pet because I believe that machines have become an integral part of our daily lives, contributing to our well-being and quality of life. I thought that a robot as a virtual pet could demonstrate the potential of machines as companions. I drew inspiration for the robot's design heavily from my first-year courses, which included Database Management Systems (DBMS), Networks, Architecture and Operating Systems, and Application Programming.
 
-## Finds
+To increase the engagement of the virtual pet, I incorporated some ideas from ChatGPT's text-based user response system and developed my own text processor engine. This feature enables the robot to receive user input, process it, and provide an appropriate friendly response.
+
+At the core of my project, I aimed to incorporate all the concepts that I had learned so far in the courses mentioned above. Here are a few things I was able to accomplish:
+
+- For my Database Management Systems course, I learned about DBMS (Database Management Systems), how they worked, and the advantages of using them. To manage the robot's database, I built my custom mini DBMS.
+
+- In my Networks course, I learned about computer networking, different network protocols, computer network cards, the Request-Response cycle, and how they worked together to achieve efficient communication over the internet. To enable my robot to make network requests and receive responses, I built my network driver functions utilizing the browser 'fetch API'.
+
+- In my Architecture and Operating Systems course, I learned more about the computer operating system, the Central Processing Unit (CPU), the Arithmetic and Logic Unit (ALU), and how they worked. To control the robot's operating system, I built my custom operating system.
+
+Finally, from learning JavaScript in the Application Programming course, I wrote the entire project in JavaScript.
 
 ## Refrences
 
-
+OpenAI. (2021). ChatGPT [Computer software]. https://openai.com/blog/chat-gpt-3-6b/
