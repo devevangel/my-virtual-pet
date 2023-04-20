@@ -21,9 +21,6 @@ import {
 
 import { handleGameInit, playGame } from './robot-game-processor.mjs';
 
-const date = new Date(Date.now());
-const timeStamp = new Date(Date.now());
-
 /**
  * talkToBot function is responsible for calling the parseUserInput function that handles parcing the user input,
  * and calling the appropriate function based on the parsed user input.
@@ -149,13 +146,13 @@ export function talkToBot(e) {
         break;
       case 'time':
         roboSendResponse(
-          `Current time is ${timeStamp.toLocaleTimeString()}, as per my records.`,
+          `Current time is ${new Date(Date.now()).toLocaleTimeString()}, as per my records.`,
           'text',
         );
         break;
       case 'date':
         roboSendResponse(
-          `According to my calculations,<br /> today is ${date.toDateString()}.`,
+          `According to my calculations,<br /> today is ${new Date(Date.now()).toDateString()}.`,
           'text',
         );
         break;

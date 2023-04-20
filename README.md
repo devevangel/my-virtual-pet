@@ -4,7 +4,7 @@ Welcome to Robo Dojo Inc., a web application that gives you the ability to own, 
 
 ## Robot Components 
 
-This sections describes the different components that make a the robot and their various functions. It seeks to provide a high level understanding of the entire application at how it all comes together.
+This sections describes the different components that make a robot and their various functions. It seeks to provide a high level overview of the entire application and how it all comes together.
 
 ### Storage
 
@@ -34,39 +34,39 @@ This is the major component of the entire robot as it controls all other aspects
 - Display of the various robot stats
 - Calculations of variaous values
 - Handles game play initialization
-- Powering on and loading store data
+- Powering on and loading stored data
 - Handles version updates
 - Error handling and display
 - Making network requests
 
 ### Battery
 
-This is the robots power unit, it has to charged from time to time to keep the robot alive.
+This is the robots power unit, it has to be charged from time to time to keep the robot alive.
 
 ### Display Unit
 
-This the component that handles displaying and updating the user interface(UI) of the robot. it displasy the following info:
+This the component that handles displaying and updating the user interface(UI) of the robot. it displays the following info:
 
 - Robot pet name
 - Power level in percentage
-- Memory Capacity
+- Memory Capacity/Usage in percentage 
 - Time lived
 - Mood : Very Happy 😄| Happy 🙂| Sad 😥| Angry 😡| Sleeping 😴| Gaming 🎮| Dead ☠️
 - Robot text response
-- Warings and Errors
+- Robot Warings and Errors
 
 ### Error Handler
 
-This is also a very necessary and important component of the robot. It manages all possible errors and unexpected behaviours that may occur during the usage of the web application. Here some of the major errors handled in the app.
+This is also a very necessary and important component of the robot. It manages all possible errors and unexpected behaviours that may occur during the usage of the web application. Here are some of the major errors handled in the app.
 
 - Network errors: This has to do with all erors that may occur during the process of making network requests.
 - Storage malfunction errors: This has to do with errors that occur as a result of damage to the localstorage of the robot.
-- User generated errors: This has to do with errors that are cuased by the user interaction.
-- Malfunctions: This has to do with unexpect errors or expections.
+- User generated errors: This has to do with errors that are caused by the user interaction.
+- Malfunctions: This has to do with unexpect errors or exceptions
 
 ### Button Controls
 
-This consist of buttons that provides the user ablility to control certain aspects of the robot. this functions includes:
+This consist of buttons that provides the user ablility to control certain aspects of the robot. these functions includes:
 
 - Feed Me(chage robot)
 - Sleep/Awaken robot
@@ -84,11 +84,11 @@ This consist of buttons that provides the user ablility to control certain aspec
 
 - Ability to display its feelings or emotions
 
-- Ability to store and display previous user inputs and command history using its memory cache
+- Ability to store and display previous user inputs and command history from it's cache memory
 
 - Ability to clear cache memory
 
-- Ability to Sleep
+- Ability to Sleep/Awaken
 
 - Ability to Change it's designated name on user command
 
@@ -120,7 +120,7 @@ This consist of buttons that provides the user ablility to control certain aspec
 5. Create a new pet or get your existing pet.
 6. Start interacting with your robot pet.
 
-## Conclusion
+## About My Course Work
 
 For my virtual pet course work project, I decided to create a robot as the virtual pet. I believe that machines have become an integral part of our daily lives, helping to improve our overall well-being and standard of living. With this in mind, I thought that having a robot as a virtual pet could be a useful way to enhance productivity and well-being.
 
