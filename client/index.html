@@ -15,43 +15,46 @@
 <section class="welcome-section hide" id="welcome-section">
   <div class="welcome-text"></div>
 
-  <div class="welcome-form-container" id="create-robot-form">
+  <form class="welcome-form-container" id="create-robot-form">
     <h4>Create A Robot</h4>
 
     <input
       id="robot-name"
+      name="robot-name"
       type="text"
       placeholder="robot name..."
       required
     />
     <input
       id="owner-line"
+      name="owner-line"
       type="tel"
       placeholder="owner phone line..."
       required
     />
-    <button id="create-robot-button" class="form-btn">Create 🟢</button>
+    <button  type='submit' class="form-btn">Create 🟢</button>
 
     <div class="format-font">
       already have a robot pet?
       <span class="link-text" id="get-robot">get robot</span>
     </div>
-  </div>
+  </form>
 
-  <div class="welcome-form-container hide" id="get-robot-form">
+  <form class="welcome-form-container hide" id="get-robot-form">
     <h4>Get Your Robot</h4>
     <input
       id="get-owner-line"
+      name="owner-line"
       type="tel"
       placeholder="owner phone line..."
       required
     />
-    <button id="get-robot-button" class="form-btn">Get 📥</button>
+    <button type="submit" class="form-btn">Get 📥</button>
     <div class="format-font">
       Dont have a robot?
       <span class="link-text" id="create-robot">create robot</span>
     </div>
-  </div>
+  </form>
 </section>
 
 <!-- Main robot view section -->

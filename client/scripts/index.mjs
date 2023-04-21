@@ -15,12 +15,13 @@ import { handleCreateRobot, handleGetRobot } from './robot-network-drivers.mjs';
 const welcomeTextArea = document.querySelector('.welcome-text');
 const welcomeView = document.querySelector('#welcome-section');
 const robotView = document.querySelector('#main-section');
-const createRobotForm = document.querySelector('#create-robot-form');
-const getRobotForm = document.querySelector('#get-robot-form');
 const actionTextCreate = document.querySelector('#create-robot');
 const actionTextGet = document.querySelector('#get-robot');
-const createRobotButton = document.querySelector('#create-robot-button');
-const getRobotButton = document.querySelector('#get-robot-button');
+
+// Forms
+const createRobotForm = document.querySelector('#create-robot-form');
+const getRobotForm = document.querySelector('#get-robot-form');
+
 // UI robot control buttons
 const cleanCacheButton = document.querySelector('#clean-cache');
 const updateOSButton = document.querySelector('#update-os');
@@ -115,8 +116,8 @@ function showRobotView() {
 function removeWelcomeViewLiseners() {
   actionTextCreate.removeEventListener('click', switchForm);
   actionTextGet.removeEventListener('click', switchForm);
-  getRobotButton.removeEventListener('click', getRobotAuth);
-  createRobotButton.removeEventListener('click', createRobotAuth);
+  createRobotForm.removeEventListener('submit', createRobotAuth);
+  getRobotForm.removeEventListener('submit', getRobotAuth);
 }
 
 // Removes event listeners from various elements in the main section of the web page.
@@ -134,8 +135,8 @@ function removeRobotViewListeners() {
 function addWelcomeViewListeners() {
   actionTextCreate.addEventListener('click', switchForm);
   actionTextGet.addEventListener('click', switchForm);
-  getRobotButton.addEventListener('click', getRobotAuth);
-  createRobotButton.addEventListener('click', createRobotAuth);
+  createRobotForm.addEventListener('submit', createRobotAuth);
+  getRobotForm.addEventListener('submit', getRobotAuth);
 }
 
 // Adds event listeners to various elements in the main section of the web page.
@@ -182,10 +183,14 @@ function writeWelcomeMsg() {
  * saves the returned robot locally and shows the robot view. Otherwise,
  * displays an authentication error message.
  */
-async function createRobotAuth() {
-  const name = roboNameInput.value;
-  const phone = phoneInput.value;
-  if (!name || !phone) return alert('Please fill out all fields');
+async function createRobotAuth(e) {
+  e.preventDefault();
+
+  const formData = new FormData(createRobotForm);
+  const name = formData.get('robot-name');
+  const phone = formData.get('owner-line');
+
+  if (!name || !phone) return handleError('Please fill out all fields', 2);
 
   const reqBody = {
     name,
@@ -212,10 +217,14 @@ Asynchronously retrieves robot data from the server using
 If it does, the robot data is saved locally and the robot view is displayed.
 Otherwise, an alert is displayed with a message 'Authentication failed
 */
-async function getRobotAuth() {
-  const phone = getOwnerRobotInput.value;
+async function getRobotAuth(e) {
+  e.preventDefault();
+
+  const formData = new FormData(getRobotForm);
+  const phone = formData.get('owner-line');
+
   if (!phone) {
-    return alert('Please enter a valid phone number');
+    return handleError('Please enter a valid phone number', 2);
   }
 
   const result = await handleGetRobot(phone);
