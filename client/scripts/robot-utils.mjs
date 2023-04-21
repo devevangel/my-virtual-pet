@@ -1,4 +1,4 @@
-import { resetRobotMemory } from './robot-registers.mjs';
+import { resetRobotMemory } from './robot-global-store.mjs';
 import { showWelcomeView } from './index.mjs';
 
 /**

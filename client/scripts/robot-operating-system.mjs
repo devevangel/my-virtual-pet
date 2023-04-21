@@ -8,7 +8,7 @@ import {
   robotSkins,
   loadRobotMemory,
   robotBtnsUI,
-} from './robot-registers.mjs';
+} from './robot-global-store.mjs';
 import { setSleepButtonText } from './index.mjs';
 import { getRandomIntInclusive, handleError } from './robot-utils.mjs';
 

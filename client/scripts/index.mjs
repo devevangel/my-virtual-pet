@@ -7,7 +7,7 @@ import {
   handleUserInput,
   powerRobot,
   getNewRobotSkin,
-} from './robot-os.mjs';
+} from './robot-operating-system.mjs';
 import { talkToBot } from './robot-text-processor.mjs';
 import { handleCreateRobot, handleGetRobot } from './robot-network-drivers.mjs';
 

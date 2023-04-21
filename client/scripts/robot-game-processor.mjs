@@ -5,8 +5,8 @@ import {
   clearBatteryInterval,
   setBatteryInterval,
   writeResponse,
-} from './robot-os.mjs';
-import { directionList, roboState, robotStats } from './robot-registers.mjs';
+} from './robot-operating-system.mjs';
+import { directionList, roboState, robotStats } from './robot-global-store.mjs';
 import { getRandomIntInclusive } from './robot-utils.mjs';
 
 /**

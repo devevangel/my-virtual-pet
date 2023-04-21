@@ -23,11 +23,7 @@ This is the component of the robot responsible for processing user text input to
 
 This is an extenstion of the text processor. The game processor component of the robot handles the gamplay process within the app. It provides the abliltiy to play a guess the number game where the robot generates a random number between a given min and max value and the user tries to guess the number right. This processor helps in updating the robot game mode.
 
-### [Network Driver]()
-
-This is the component resposible for handling all network requests that the robot needs to make. It sends the data gotten from network requests to various parts of the robot where it's requried. It also sends all possible errors to the error handling compoent where its processed to output useful error messages where necessary.
-
-### [Operating System]()
+### [Operating System](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-os.mjs)
 
 This is the major component of the entire robot as it controls all other aspects of the robots. It's functions include:
 - Memory managemnt and usage
@@ -122,20 +118,29 @@ This consist of buttons that provides the user ablility to control certain aspec
 
 ## About My Course Work
 
-For my virtual pet coursework, I chose to create a robot as a virtual pet because I believe that machines have become an integral part of our daily lives, contributing to our well-being and quality of life. I thought that a robot as a virtual pet could demonstrate the potential of machines as companions. I drew inspiration for the robot's design heavily from my first-year courses, which included Database Management Systems (DBMS), Networks, Architecture and Operating Systems, and Application Programming.
+I opted to create a robot as a virtual pet for my coursework as I wanted to do something different from my classmates and the fact that I found the concept of a robot as a virtual pet to be very cool.
 
-To increase the engagement of the virtual pet, I incorporated some ideas from ChatGPT's text-based user response system and developed my own text processor engine. This feature enables the robot to receive user input, process it, and provide an appropriate friendly response.
+In order to enhance the interaction of my virtual pet, I integrated a user text response feature inspired by ChatGPT, a language model developed by OpenAI. ChatGPT is based on the GPT-3.5 architecture, and has the ability to generate text that resembles human language in response to user prompts. To implement this feature, I created my own simple text processor engine which can process user input and generate friendly, human-like responses.
 
-At the core of my project, I aimed to incorporate all the concepts that I had learned so far in the courses mentioned above. Here are a few things I was able to accomplish:
+From my Database Management Systems (DBMS) classes, I learned about the benefits of using DBMS, which are software tools designed to facilitate efficient communication between a database and a user's application. Using this knowledge, I developed my own custom DBMS to manage my entire robot database.
 
-- For my Database Management Systems course, I learned about DBMS (Database Management Systems), how they worked, and the advantages of using them. To manage the robot's database, I built my custom mini DBMS.
+To modularize my project, I attempted to display the different parts (files) that constitute the entire robot and its capabilities. To accomplish this, I drew inspiration from my core first-year courses: Database Management Systems (DBMS), Networks, Architecture and Operating Systems, and Application Programming. That is why I named my JavaScript files as so:
 
-- In my Networks course, I learned about computer networking, different network protocols, computer network cards, the Request-Response cycle, and how they worked together to achieve efficient communication over the internet. To enable my robot to make network requests and receive responses, I built my network driver functions utilizing the browser 'fetch API'.
+- "robot-game-processor.mjs": contains all the functions that manage the complete game process of the robot, including starting the game, running the main game logic, and ending the game.
 
-- In my Architecture and Operating Systems course, I learned more about the computer operating system, the Central Processing Unit (CPU), the Arithmetic and Logic Unit (ALU), and how they worked. To control the robot's operating system, I built my custom operating system.
+- In "robot-network-drivers.mjs": you can find all the functions that utilize the browser's fetch API. This API enables web applications to send network requests to servers and receive responses from them. The file includes functions that make network requests to update, get, create, and delete robot data, and their respective server responses sent to different parts of the robot application for use.
 
-Finally, from learning JavaScript in the Application Programming course, I wrote the entire project in JavaScript.
+- "robot-operating-system.mjs": contains the core functions of the robot as the name suggests. The file includes functions that assist the robot in processing various user inputs, handle quick read/write actions to the robot's storage unit, allow the robot to calculate and display its various values and mood, and more.
+
+- "robot-global-store.mjs": includes variables that are accessed in multiple files within the robot's file structure. To implement this, I drew inspiration from the Redux store concept, which is a global statement management system designed to simplify accessing and mutating data across an application. Since it was becoming cumbersome to manage data that frequently changed within a single file where it's used the most, I created the "robot-global-store" file to provide easy read and write access to variables that are accessed in multiple places within the application.
+
+- "robot-text-processor.mjs" includes the function that takes parsed user input, runs it through a simple text processor, and responds with a user-friendly output message. To implement this feature, I drew ideas from the ChatGPT user text reponse funtionality.
+
+## Conclusion
+
+In conclusion, working on this coursework project provided me with valuable lessons. I gained a deeper understanding of why certain software tools were created and the challenges they aim to solve, such as Redux and Database Management Systems. This helped me appreciate their usefulness better. I also learned how to use tools like ChatGPT to help me write good code documentation and comments, which is important for creating maintainable and understandable code.
 
 ## Refrences
 
 OpenAI. (2021). ChatGPT [Computer software]. https://openai.com/blog/chat-gpt-3-6b/
+

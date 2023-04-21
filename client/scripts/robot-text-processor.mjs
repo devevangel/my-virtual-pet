@@ -4,7 +4,7 @@ import {
   directionList,
   userData,
   robotStats,
-} from './robot-registers.mjs';
+} from './robot-global-store.mjs';
 import {
   parseUserInput,
   roboSendResponse,
@@ -17,7 +17,7 @@ import {
   resetWriter,
   showError,
   handleSleepAwakeState,
-} from './robot-os.mjs';
+} from './robot-operating-system.mjs';
 
 import { handleGameInit, playGame } from './robot-game-processor.mjs';
 
