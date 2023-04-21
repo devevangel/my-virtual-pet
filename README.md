@@ -6,7 +6,7 @@ Welcome to Robo Dojo Inc.! a web application that provides you with the ability 
 
 This section provides an overview of the various components that make up the robot and their respective functions. It aims to give a high-level understanding of the entire application and how all the pieces fit together.
 
-### [Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-registers.mjs)
+### [Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-global-store.mjs)
 
 This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
 
@@ -23,7 +23,7 @@ This is the component of the robot responsible for processing user text input to
 
 This is an extenstion of the text processor. The game processor component of the robot handles the gamplay process within the app. It provides the abliltiy to play a guess the number game where the robot generates a random number between a given min and max value and the user tries to guess the number right. This processor helps in updating the robot game mode.
 
-### [Operating System](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-os.mjs)
+### [Operating System](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-operating-system.mjs)
 
 This is the major component of the entire robot as it controls all other aspects of the robots. It's functions include:
 - Memory managemnt and usage
@@ -139,6 +139,8 @@ To modularize my project, I attempted to display the different parts (files) tha
 ## Conclusion
 
 In conclusion, working on this coursework project provided me with valuable lessons. I gained a deeper understanding of why certain software tools were created and the challenges they aim to solve, such as Redux and Database Management Systems. This helped me appreciate their usefulness better. I also learned how to use tools like ChatGPT to help me write good code documentation and comments, which is important for creating maintainable and understandable code.
+
+For my final remarks, I would like to say that there is always room for improvement within the codebase. Functions can be written better, and files and folders could be structured in a more efficient way. However, one of the major reasons I chose the current structure of my codebase was to avoid issues of plagiarism. Many students asked me to explain the reasoning behind my coding patterns and ideas, and I often had to teach and provide practical help to them. Occasionally, some of them took a sneak peek at my codebase to borrow a few ideas, which was why I had to be cautious. Nonetheless, I am proud of what I have accomplished so far and look forward to improving my coding skills in the future.
 
 ## Refrences
 
