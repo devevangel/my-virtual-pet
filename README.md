@@ -1,12 +1,45 @@
 # Robot Dojo
 
-Welcome to Robo Dojo Inc.! a web application that provides you with the ability to create, own, and interact with a virtual pet robot.
+Welcome to Robo Dojo Inc.! a web application that provides you with the ability to create, own, and interact with a virtual pet robot. I opted to create a robot as a virtual pet for my coursework as I wanted to do something different from my classmates and the fact that I found the concept of a robot as a virtual pet to be very cool.
 
-## Robot Components 
+## About The Project
 
-This section provides an overview of the various components that make up the robot and their respective functions. It aims to give a high-level understanding of the entire application and how all the pieces fit together.
+This section provides an overview of the various components and files that comprise the robot app, as well as their respective functions. Its objective is to provide a high-level understanding of the entire application and how all the pieces fit together.
 
-### [Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-global-store.mjs)
+The project is divided into two main parts, which are:
+
+### [Server Side](https://github.com/devevangel/my-virtual-pet/blob/main/server.js)
+
+This refers to the part of the application that handles all network requests made from the client side and sends a response accordingly. It houses the database, a universal storage location for the entire app, the Database Management Systems (DBMS), which provides an efficient way of communicating with the database and the client side through the use of queries sent from the client side. Finally, the controllers these are functions that are called when certain conditions are met. They communicate with the DBMS and the client side.
+
+### [Robot Database](https://github.com/devevangel/my-virtual-pet/blob/main/database/robots-database.json)
+
+This is a lightweight JSON global storage location for the entire application. It houses data about every user currently signed up on the application and their respective robot pets in a key-value pair format. The database provides every user with the ability to access their pet from any machine or mobile device. Here is a sample of the database structure:
+
+```json
+{
+        "08036926247": {
+        "id": "R7fUN",
+        "name": "Javis",
+        "owner": "08036926247",
+        "timeLived": "2023-04-21T04:50:33.076Z",
+        "skinclass": "robo-orange",
+        "version": 6,
+        "chargePercent": 90,
+        "cachePercent": 100,
+        "cacheList": []
+    }
+}
+
+```
+
+#### [Robot Database Manager](https://github.com/devevangel/my-virtual-pet/blob/main/database/database-manager.js)
+
+#### [Robot Controller](https://github.com/devevangel/my-virtual-pet/blob/main/controllers/robot.js)
+
+### [Client Side](https://github.com/devevangel/my-virtual-pet/tree/main/client)
+
+#### [Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-global-store.mjs)
 
 This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
 
@@ -15,15 +48,15 @@ This consist of the Robo Dojo main database located on the server, the robot in 
 - Robot main cache memory (an implementation of the in app JSON localstorage unit - client).
 - Runtime storage unit (RAM - client)
 
-### [Text Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-text-processor.mjs)
+#### [Text Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-text-processor.mjs)
 
 This is the component of the robot responsible for processing user text input to enable the robot provide useful responses or output. 80% of the robots funtionality can be accessed via the text processor. The text processor makes use of a very simple text processing system which has the potential to be developed into a more complex system to better handle user input as well improve robot responses. This processor also helps in determining the current mood of the robot which includes: Very Happy, Happy, Sad, Angry, Sleep and Dead. 
 
-### [Game Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-game-processor.mjs)
+#### [Game Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-game-processor.mjs)
 
 This is an extenstion of the text processor. The game processor component of the robot handles the gamplay process within the app. It provides the abliltiy to play a guess the number game where the robot generates a random number between a given min and max value and the user tries to guess the number right. This processor helps in updating the robot game mode.
 
-### [Operating System](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-operating-system.mjs)
+#### [Operating System](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-operating-system.mjs)
 
 This is the major component of the entire robot as it controls all other aspects of the robots. It's functions include:
 - Memory managemnt and usage
@@ -34,6 +67,9 @@ This is the major component of the entire robot as it controls all other aspects
 - Handles version updates
 - Error handling and display
 - Making network requests
+
+
+## Robot Components
 
 ### Battery
 
@@ -68,6 +104,8 @@ This consist of buttons that provides the user ablility to control certain aspec
 - Sleep/Awaken robot
 - Clean Cache
 - Update OS
+
+
 
 
 ## Robot Features
@@ -115,6 +153,8 @@ This consist of buttons that provides the user ablility to control certain aspec
 4. Open `http://localhost:8080` in your web browser.
 5. Create a new pet or get your existing pet.
 6. Start interacting with your robot pet.
+
+## What I Learnt
 
 ## About My Course Work
 
