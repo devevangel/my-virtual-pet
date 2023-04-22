@@ -89,7 +89,17 @@ This is the major component of the entire robot as it controls all other aspects
 - Error handling and display
 - Making network requests
 
-#### [Robot Network Calls]()
+#### [Robot Network Calls](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-utils.mjs)
+
+This file contains all the functions that allow the client-side to make network requests to the Robot server and send the response data to various parts of the r obot application where it's needed. The file contains functions that:
+
+- make POST requests to create a new pet with the user-inputted details
+
+- make GET requests to get data about an existing pet
+
+- make PATCH requests to update data of an existing pet
+
+- make DELETE requests to delete data about an existing pet.
 
 
 ## Robot Components
@@ -179,9 +189,7 @@ This consist of buttons that provides the user ablility to control certain aspec
 
 ## Conclusion
 
-In conclusion, working on this coursework project provided me with valuable lessons. I gained a deeper understanding of why certain software tools were created and the challenges they aim to solve, such as Redux and Database Management Systems. This helped me appreciate their usefulness better. I also learned how to use tools like ChatGPT to help me write good code documentation and comments, which is important for creating maintainable and understandable code.
-
-For my final remarks, I would like to say that there is always room for improvement within the codebase. Functions can be written better, and files and folders could be structured in a more efficient way. However, one of the major reasons I chose the current structure of my codebase was to avoid issues of plagiarism. Many students asked me to explain the reasoning behind my coding patterns and ideas, and I often had to teach and provide practical help to them. Occasionally, some of them took a sneak peek at my codebase to borrow a few ideas, which was why I had to be cautious. Nonetheless, I am proud of what I have accomplished so far and look forward to improving my coding skills in the future.
+ I would like to say that there is always room for improvement within the codebase. Functions can be written better, and files and folders could be structured in a more efficient way. However, one of the major reasons I chose the current structure of my codebase was to avoid issues of plagiarism. Many students asked me to explain the reasoning behind my coding patterns and ideas, and I often had to teach and provide practical help to them. Occasionally, some of them took a sneak peek at my codebase to borrow a few ideas, which was why I had to be cautious. Nonetheless, I am proud of what I have accomplished so far and look forward to improving my coding skills in the future.
 
 ## Refrences
 
