@@ -10,18 +10,18 @@ The project is divided into two main parts, which are:
 
 ### [Server Side](https://github.com/devevangel/my-virtual-pet/blob/main/server.js)
 
-This refers to the part of the application that handles all network requests made from the client side and sends a response accordingly. It houses the database, a universal storage location for the entire app, the Database Management Systems (DBMS), which provides an efficient way of communicating with the database and the client side through the use of queries sent from the client side. Finally, the controllers these are functions that are called when certain conditions are met. They communicate with the DBMS and the client side.
+This refers to the part of the application that handles all network requests made from the client side and sends a response accordingly. It houses the database, a universal storage location for the entire app, the Database Management Systems (DBMS), which provides an efficient way of communicating with the database and the client side through the use of queries sent from the client side. Finally, the controllers these are functions that are called when certain conditions are met. They communicate with the DBMS and the client side. Here are the components/files that make up the server side:
 
-### [Robot Database](https://github.com/devevangel/my-virtual-pet/blob/main/database/robots-database.json)
+#### [Robot Database](https://github.com/devevangel/my-virtual-pet/blob/main/database/robots-database.json)
 
 This is a lightweight JSON global storage location for the entire application. It houses data about every user currently signed up on the application and their respective robot pets in a key-value pair format. The database provides every user with the ability to access their pet from any machine or mobile device. Here is a sample of the database structure:
 
 ```json
 {
-        "08036926247": {
+        "232543224532": {
         "id": "R7fUN",
         "name": "Javis",
-        "owner": "08036926247",
+        "owner": "232543224532",
         "timeLived": "2023-04-21T04:50:33.076Z",
         "skinclass": "robo-orange",
         "version": 6,
@@ -35,11 +35,17 @@ This is a lightweight JSON global storage location for the entire application. I
 
 #### [Robot Database Manager](https://github.com/devevangel/my-virtual-pet/blob/main/database/database-manager.js)
 
+This is a simple custom-built JavaScript class that handles direct communication with the robot JSON database. It exposes top-level functions that provide the ability to add new object data to the database, update existing object data, retrieve object data, and delete object data. I decided to implement this feature because during the development period of this project, I was learning about Database Management Systems (DBMS), specifically PostgresSQL. A DBMS is a software tool that provides an efficient way to communicate between a database and a user-facing application. It prevents direct user communication with the database, which could lead to data corruption or ultimately data loss.
+
 #### [Robot Controller](https://github.com/devevangel/my-virtual-pet/blob/main/controllers/robot.js)
+
+These are a set of functions that carry out specific tasks when called. Each function takes a request and response parameter that enables them to accept requests from the client side and send a response. The functions are mounted on routes, and whenever a route is hit from the client side, the respective function is called, and a response is sent accordingly. These functions make use of the top-level functions exposed by the robot DBMS to perform certain tasks in the robot database and provide a suitable response to the client side. The robot controller contains functions that handle signing up and creating a new pet, getting an existing robot pet, updating a robot pet, as well as deleting a robot pet from the robot database.
 
 ### [Client Side](https://github.com/devevangel/my-virtual-pet/tree/main/client)
 
-#### [Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-global-store.mjs)
+this refers to the part of the application that is closer to the user. It contains all the code responsible for handling the main logic of the application that the user sees and interacts with. The front-end is responsible for showing the user interface and providing output to user interactions also it is respo Components/files that make up the client side:
+
+#### [Global Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-global-store.mjs)
 
 This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
 
