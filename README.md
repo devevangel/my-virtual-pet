@@ -43,26 +43,41 @@ These are a set of functions that carry out specific tasks when called. Each fun
 
 ### [Client Side](https://github.com/devevangel/my-virtual-pet/tree/main/client)
 
-this refers to the part of the application that is closer to the user. It contains all the code responsible for handling the main logic of the application that the user sees and interacts with. The front-end is responsible for showing the user interface and providing output to user interactions also it is respo Components/files that make up the client side:
+this refers to the part of the application that is closer to the user. It contains all the code responsible for handling the main logic of the application that the user sees and interacts with. The front-end is responsible for showing the user interface and providing output to user interactions. Additionally, it is responsible for making network requests to the server-side.
 
-#### [Global Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-global-store.mjs)
+The components and files that make up the client-side include:
 
-This consist of the Robo Dojo main database located on the server, the robot in app JSON storage unit which makes use of the browser localstorage, the main robot cache memory that stores user command history built on top of the JSON localstorage unit and the robot RAM which is a volatile in runtime storage unit.
+#### [Robot Global Storage](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-global-store.mjs)
 
-- Custom built JSON database and Database Management System [DBMS](https://github.com/devevangel/my-virtual-pet/blob/main/database/database-manager.js) (server).
-- In app JSON based quick read/write storage unit (localstorage - client).
-- Robot main cache memory (an implementation of the in app JSON localstorage unit - client).
-- Runtime storage unit (RAM - client)
+he Robot Global Store has two components: the Robot JSON Local Storage Unit, which holds information about the robot on the user's machine, and the Robot Global Store file. The Robot Global Store provides global read/write access to certain robot variables that are accessed and modified at various locations in the Robot file structure.
 
-#### [Text Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-text-processor.mjs)
+The decision to use a global store approach was made because of issues with different files within the client app frequently accessing and modifying some Robot variables. These files didn't necessarily have a direct relationship with each other. Having those variables in a single file that was exported and imported where needed became difficult to manage and maintain. Therefore, the global store was created as a solution that allows all files within the Robot client-side to access and modify those variables. For example, the 'roboState' variable is used 17 times in the 'game processor' file, 36 times in the 'operating system' file, and 6 times in the 'text-processing' file. Although these files don't necessarily relate to each other, they access and modify the same variable. Moving it to a global store improves maintainability and makes it easier to access variables that change frequently within the app.
 
-This is the component of the robot responsible for processing user text input to enable the robot provide useful responses or output. 80% of the robots funtionality can be accessed via the text processor. The text processor makes use of a very simple text processing system which has the potential to be developed into a more complex system to better handle user input as well improve robot responses. This processor also helps in determining the current mood of the robot which includes: Very Happy, Happy, Sad, Angry, Sleep and Dead. 
+```javascript
 
-#### [Game Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-game-processor.mjs)
+const roboState = {
+  maxCache: 10,
+  guessVal: 0,
+  isGameInit: false,
+  isGameStarted: false,
+  isSleeping: false,
+  isError: false,
+  isTyping: false,
+  isDead: false,
+};
+
+export { roboState }
+```
+
+#### [Robot Text Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-text-processor.mjs)
+
+This is the component of the robot responsible for processing user text input to enable the robot provide useful responses or output. 80% of the robots funtionality can be accessed via the text processor. The text processor makes use of a very simple text processing system which has the potential to be developed into a more complex system to better handle user input as well improve robot responses. This processor also helps in determining the current mood of the robot which includes: Very Happy 😄| Happy 🙂| Sad 😥| Angry 😡| Sleeping 😴| Gaming 🎮| Dead ☠️
+
+#### [Robot Game Processor](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-game-processor.mjs)
 
 This is an extenstion of the text processor. The game processor component of the robot handles the gamplay process within the app. It provides the abliltiy to play a guess the number game where the robot generates a random number between a given min and max value and the user tries to guess the number right. This processor helps in updating the robot game mode.
 
-#### [Operating System](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-operating-system.mjs)
+#### [Robot Operating System](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-operating-system.mjs)
 
 This is the major component of the entire robot as it controls all other aspects of the robots. It's functions include:
 - Memory managemnt and usage
@@ -73,6 +88,8 @@ This is the major component of the entire robot as it controls all other aspects
 - Handles version updates
 - Error handling and display
 - Making network requests
+
+#### [Robot Network Calls]()
 
 
 ## Robot Components
@@ -110,8 +127,6 @@ This consist of buttons that provides the user ablility to control certain aspec
 - Sleep/Awaken robot
 - Clean Cache
 - Update OS
-
-
 
 
 ## Robot Features
@@ -161,26 +176,6 @@ This consist of buttons that provides the user ablility to control certain aspec
 6. Start interacting with your robot pet.
 
 ## What I Learnt
-
-## About My Course Work
-
-I opted to create a robot as a virtual pet for my coursework as I wanted to do something different from my classmates and the fact that I found the concept of a robot as a virtual pet to be very cool.
-
-In order to enhance the interaction of my virtual pet, I integrated a user text response feature inspired by ChatGPT, a language model developed by OpenAI. ChatGPT is based on the GPT-3.5 architecture, and has the ability to generate text that resembles human language in response to user prompts. To implement this feature, I created my own simple text processor engine which can process user input and generate friendly, human-like responses.
-
-From my Database Management Systems (DBMS) classes, I learned about the benefits of using DBMS, which are software tools designed to facilitate efficient communication between a database and a user's application. Using this knowledge, I developed my own custom DBMS to manage my entire robot database.
-
-To modularize my project, I attempted to display the different parts (files) that constitute the entire robot and its capabilities. To accomplish this, I drew inspiration from my core first-year courses: Database Management Systems (DBMS), Networks, Architecture and Operating Systems, and Application Programming. That is why I named my JavaScript files as so:
-
-- "robot-game-processor.mjs": contains all the functions that manage the complete game process of the robot, including starting the game, running the main game logic, and ending the game.
-
-- In "robot-network-drivers.mjs": you can find all the functions that utilize the browser's fetch API. This API enables web applications to send network requests to servers and receive responses from them. The file includes functions that make network requests to update, get, create, and delete robot data, and their respective server responses sent to different parts of the robot application for use.
-
-- "robot-operating-system.mjs": contains the core functions of the robot as the name suggests. The file includes functions that assist the robot in processing various user inputs, handle quick read/write actions to the robot's storage unit, allow the robot to calculate and display its various values and mood, and more.
-
-- "robot-global-store.mjs": includes variables that are accessed in multiple files within the robot's file structure. To implement this, I drew inspiration from the Redux store concept, which is a global statement management system designed to simplify accessing and mutating data across an application. Since it was becoming cumbersome to manage data that frequently changed within a single file where it's used the most, I created the "robot-global-store" file to provide easy read and write access to variables that are accessed in multiple places within the application.
-
-- "robot-text-processor.mjs" includes the function that takes parsed user input, runs it through a simple text processor, and responds with a user-friendly output message. To implement this feature, I drew ideas from the ChatGPT user text reponse funtionality.
 
 ## Conclusion
 
