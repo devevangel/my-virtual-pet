@@ -185,7 +185,11 @@ This consist of buttons that provides the user ablility to control certain aspec
 5. Create a new pet or get your existing pet.
 6. Start interacting with your robot pet.
 
-## What I Learnt
+## About ChatGPT
+
+ChatGPT was used in my application to help in writing code documentation, as well as code comments. I found this very much helpful, as it was able to save time, and most of the time, it gave near-perfect documentation and code comments.
+
+ChatGPT is an AI language model that uses deep learning algorithms to generate human-like responses to natural language inputs. It can be used for various applications, including writing code documentation and comments. With ChatGPT, developers can save time by generating code comments and documentation quickly and accurately. Additionally, the generated documentation and comments are often near-perfect, reducing the need for extensive manual editing. Overall, ChatGPT can significantly improve the productivity and efficiency of software development teams.
 
 ## Conclusion
 
@@ -194,4 +198,11 @@ This consist of buttons that provides the user ablility to control certain aspec
 ## Refrences
 
 OpenAI. (2021). ChatGPT [Computer software]. https://openai.com/blog/chat-gpt-3-6b/
+
+Google. (2019). Google Fonts. Google Fonts. https://fonts.google.com/
+
+Cpu Emojis | 🏿🖥⚡🖥️ | Copy & Paste. (n.d.). Emojidb.org. Retrieved April 22, 2023, from https://emojidb.org/cpu-emojis
+
+‌
+
 
