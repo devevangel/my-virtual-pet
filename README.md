@@ -91,7 +91,7 @@ This is the major component of the entire robot as it controls all other aspects
 
 #### [Robot Network Calls](https://github.com/devevangel/my-virtual-pet/blob/main/client/scripts/robot-utils.mjs)
 
-This file contains all the functions that allow the client-side to make network requests to the Robot server and send the response data to various parts of the r obot application where it's needed. The file contains functions that:
+This file contains all the functions that allow the client-side to make network requests to the Robot server and send the server response data to various parts of the robot application where it's needed. The file contains functions that:
 
 - make POST requests to create a new pet with the user-inputted details
 
