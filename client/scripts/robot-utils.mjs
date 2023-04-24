@@ -38,6 +38,7 @@ export function handleError(msg, code = 1) {
   closeModalBtn.addEventListener('click', () => closeModal(code));
 }
 
+// Handles closing the error modal
 function closeModal(code) {
   switch (code) {
     case 1:

@@ -188,7 +188,7 @@ This consist of buttons that provides the user ablility to control certain aspec
 
   1. Download the zip folder
   2. Unzip the folder
-  3. open the folder in your terminal
+  3. Open the folder in your terminal
   4. Run `npm install` to start the app.
   5. Run `npm start` to start the app.
   6. Open `http://localhost:8080` in your web browser.
