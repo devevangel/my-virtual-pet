@@ -21,7 +21,7 @@ export async function handleCreateRobot(requestBody) {
 
     return await response.json();
   } catch (error) {
-    handleError('An error occured creating your robot, please try again.', 1);
+    handleError('Error creating robot. Please try again.', 1);
   }
 }
 
@@ -37,7 +37,7 @@ export async function handleGetRobot(owner) {
     const response = await fetch(`${URL}/${owner}`);
     return await response.json();
   } catch (error) {
-    handleError(`Could not get robot with owner line '${owner}'.`, 1);
+    handleError(`Robot owner '${owner}' not found`, 1);
   }
 }
 
@@ -61,7 +61,7 @@ export async function handleUpdateRobot(owner, robotData) {
 
     return await response.json();
   } catch (error) {
-    handleError(`Could not make to a robot with owner line '${owner}'`, 1);
+    handleError(`Failed to retrieve robot for owner '${owner}'`, 1);
   }
 }
 
@@ -83,6 +83,6 @@ export async function handleDeleteRobot(owner) {
 
     return await response.json();
   } catch (error) {
-    handleError(`Could clear robot data with owner line '${owner}'`, 1);
+    handleError('Could not clear robot data', 1);
   }
 }

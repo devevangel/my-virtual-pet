@@ -203,7 +203,7 @@ async function createRobotAuth(e) {
   const { robot } = result;
   if (!robot.owner) {
     handleError(
-      `Could not create robot. Robot with this owner '${phone}' may already exist.`,
+      `Robot creation failed. Owner '${phone}' already exists.`,
       2,
     );
   } else {
@@ -231,7 +231,7 @@ async function getRobotAuth(e) {
   const { robot } = result;
 
   if (!robot.owner) {
-    handleError(`Could not get robot with owner line '${phone}.'`, 2);
+    handleError(`Error getting robot with owner '${phone}'`, 2);
   } else {
     saveRobot(robot);
   }
@@ -247,7 +247,7 @@ async function getRobotServerState(owner) {
   const { robot } = result;
 
   if (!robot.owner) {
-    handleError(`Could not get robot with owner line '${owner}.'`, 1);
+    handleError(`Failed to retrieve robot data for owner '${owner}'.`, 1);
   } else {
     saveRobot(robot);
   }

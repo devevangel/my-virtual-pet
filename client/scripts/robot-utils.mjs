@@ -1,6 +1,10 @@
 import { resetRobotMemory } from './robot-global-store.mjs';
 import { showWelcomeView } from './index.mjs';
 
+// Gets a handle on the error modal section and close error modal button
+const errorModal = document.querySelector('#error-modal');
+const errorMsgText = document.querySelector('#error-msg');
+
 /**
  * Generates a random number between a given minimum and maximum value,
  * with the maximum value inclusive.
@@ -27,27 +31,29 @@ function randomFloatInRange(min, max) {
  * @returns {void} - This function does not return anything.
  */
 export function handleError(msg, code = 1) {
+  errorModal.classList.remove('hide');
+  errorMsgText.textContent = `${msg}`;
+
+  const closeModalBtn = document.querySelector('#close-modal-btn');
+  closeModalBtn.addEventListener('click', () => closeModal(code));
+}
+
+function closeModal(code) {
   switch (code) {
     case 1:
       showWelcomeView();
       resetRobotMemory();
-      setTimeout(() => {
-        alert(`Something went wrong: ${msg}`);
-      }, 0);
+      errorModal.classList.add('hide');
       break;
-
     case 2:
-      setTimeout(() => {
-        alert(`Something went wrong: ${msg}`);
-      }, 0);
+      errorModal.classList.add('hide');
       break;
     default:
-      setTimeout(() => {
-        alert(`Something went very wrong: ${msg}`);
-      }, 0);
+      errorModal.classList.add('hide');
       break;
   }
 }
+
 
 /**
  * Creates a moving particle using the HTML div tag and the CSS class 'particle'.

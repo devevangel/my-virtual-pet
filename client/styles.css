@@ -64,7 +64,7 @@ button:hover {
 .welcome-form-container {
   border: 2px solid #00ff00;
   width: 40%;
-  height: 40%;
+  height: 350px;
   border-radius: 10px;
   padding: 10px 15px;
   display: flex;
@@ -294,6 +294,54 @@ button:hover {
   font-size: 14px;
 }
 
+/* Error styles */
+.error-modal {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+}
+
+.modal-overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  background-color: rgb(53, 52, 52);
+  opacity: 0.3;
+}
+
+.error-modal-content {
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  border: 1px solid #00ff00;
+  background-color: black;
+  color: #ff2400;
+  padding: 0px 25px;
+  width: 25%;
+  height: 200px;
+  text-align: center;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.error-modal-content button {
+  width: 100px;
+  height: 40px;
+}
+
+.error-heading {
+  font-size: 18px;
+  border-bottom: 1px solid grey;
+  padding-bottom: 5px;
+}
+
+#error-msg {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  font-size: 16px;
+}
+
 .hide {
   display: none;
 }
@@ -303,7 +351,7 @@ button:hover {
   width: 10px;
   height: 10px;
   background-color: #00ff00;
-  z-index: -1;
+  z-index: 1;
   animation: blink 1s infinite;
 }
 
