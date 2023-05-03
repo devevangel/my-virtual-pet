@@ -392,7 +392,7 @@ async function saveRobotState(robotObj) {
   } else {
     clearTimeLivedInterval();
     clearBatteryInterval();
-    handleError('Oops your robot was not found', 1);
+    handleError('Your robot was not found', 1);
   }
 }
 

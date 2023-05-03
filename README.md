@@ -188,11 +188,12 @@ This consist of buttons that provides the user ablility to control certain aspec
 
   1. Download the zip folder
   2. Unzip the folder
-  3. open the folder in your terminal
+  3. Open the folder in your terminal
   4. Run `npm install` to start the app.
   5. Run `npm start` to start the app.
-  6. Create a new pet or get your existing pet.
-  7. Start interacting with your robot pet.
+  6. Open `http://localhost:8080` in your web browser.
+  7. Create a new pet or get your existing pet.
+  8. Start interacting with your robot pet.
 
 
 ## About ChatGPT
