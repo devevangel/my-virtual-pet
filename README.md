@@ -1,4 +1,4 @@
-# Robot Dojo
+# About Robot Dojo
 
 Welcome to Robo Dojo Inc.! A web application that allows you to create, own, and interact with a virtual pet robot. I chose to create a robot as a virtual pet for my coursework as I wanted to do something different from my classmates and the fact that I found the concept of a robot as a virtual pet to be very cool.
 
