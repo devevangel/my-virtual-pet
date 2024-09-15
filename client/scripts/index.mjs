@@ -199,8 +199,9 @@ async function createRobotAuth(e) {
     owner: phone,
   };
   const result = await handleCreateRobot(reqBody);
+  console.log(result);
 
-  const { robot } = result;
+  const { robot = {} } = result || {};
   if (!robot.owner) {
     handleError(
       `Robot creation failed. Owner '${phone}' already exists.`,

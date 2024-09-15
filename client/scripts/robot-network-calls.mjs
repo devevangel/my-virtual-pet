@@ -10,6 +10,7 @@ const URL = 'http://localhost:8080/robots';
  * @throws {Error} If an error occurs while sending the POST request or parsing the JSON response the handleError() function is invoked.
  */
 export async function handleCreateRobot(requestBody) {
+  console.log(URL);
   try {
     const response = await fetch(URL, {
       method: 'POST',

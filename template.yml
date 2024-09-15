@@ -80,13 +80,14 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash
           export DEBIAN_FRONTEND=noninteractive
+          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
           sudo apt update -y
           sudo apt install -y nodejs npm git
           cd /opt
-          git clone https://github.com/devevangel/my-virtual-pet.git  
+          sudo git clone https://github.com/devevangel/my-virtual-pet.git  
           cd my-virtual-pet
-          npm install
-          npm start  
+          sudo npm install
+          sudo npm start  
   EC2KeyPair:
     Type: "AWS::EC2::KeyPair"
     Properties:
