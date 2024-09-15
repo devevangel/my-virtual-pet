@@ -1,6 +1,6 @@
 import { handleError } from './robot-utils.mjs';
 
-const URL = 'http://localhost:8080/robots';
+const URL = '/robots';
 
 /**
  * Sends a POST request to create a new robot using the specified request body.
