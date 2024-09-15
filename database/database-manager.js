@@ -54,7 +54,7 @@ class RobotDataBaseAPI {
    */
   findOne(query) {
     const result = this.database[query.owner];
-    return result ?? {};
+    return result || {};;
   }
 
   /**
